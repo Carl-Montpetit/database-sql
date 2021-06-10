@@ -25,4 +25,3 @@
 
 ## Le schéma physique (relationnel) de la base de données
 
-- 
