@@ -9,40 +9,40 @@
 
 --Création des tables
 create table Personne (
-    Nas                         number(9),    
+    Nas                         number(9) not null,    
     Prenom                      varchar(15) not null,  
     Nom                         varchar(15) not null,     
     primary key (Nas),
 );
 
 create table Adresse (
-    Numero                      number(5),  
-    Rue                         varchar2(50),  
-    Code_postal                 char(6),    
-    Ville                       varchar2(50),   
-    Province                    char(2),
-    Pays                        varchar2(50),
+    Numero                      number(5) not null,  
+    Rue                         varchar2(50) not null,  
+    Code_postal                 char(6) not null,    
+    Ville                       varchar2(50) not null,   
+    Province                    char(2) not null,
+    Pays                        varchar2(50) not null,
     foreign key (Nas) references Personne,   
 );
 
 create table Visiteur (
-    Id_visiteur                 integer(),  
-    Nom_entreprise              varchar2(50),
+    Id_visiteur                 integer() not null,  
+    Nom_entreprise              varchar2(50) not null,
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
 );
 
 create table Employe (
-    Id_employe                  integer(),  
-    Date_de_naissance           date,     
-    Poste                       varchar(15),  
-    Departement                 varchar(15),  
+    Id_employe                  integer() not null,  
+    Date_de_naissance           date not null,     
+    Poste                       varchar(15) not null,  
+    Departement                 varchar(15) not null,  
     primary key (Id_employe),
     foreign key (Nas) references Personne,
 );
 
 create table Salaire (
-    Salaire                     decimal(7,2),  
+    Salaire                     decimal(7,2) not null,  
     Pourcentage_augmentation     integer check (Pourcentage_augmentation between 1 and 100),
     Raison_augmentation         varchar(20),   
     primary key (Salaire),
@@ -50,8 +50,8 @@ create table Salaire (
 );
 
 create table Departement (
-    Id_departement              integer(),  
-    Nom_departement             varchar(20),  
+    Id_departement              integer() not null,  
+    Nom_departement             varchar(20) not null,  
     Pourcentage_attraper_covid  integer(4) check (Pourcentage_augmentation between 1 and 100),
     primary key (Id_departement),
     foreign key (Id_employe) references Employe,
@@ -69,7 +69,7 @@ create table check_in_out (
 ); 
 
 create table Vaccin (
-    Nom_vaccin                  varchar(20),  
+    Nom_vaccin                  varchar(20) not null,  
     Age_minimum                 integer(),
     Date_autorisation           date,  
     Effets_secondaires_possibles    varchar(100),
