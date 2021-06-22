@@ -26,64 +26,71 @@ create table Adresse (
 );
 
 create table Visiteur (
-    Id_visiteur                 integer(5),  
+    Id_visiteur                 integer(),  
     Nom_entreprise              varchar2(50),
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
 );
 
 create table Employe (
-    Id_employe                  integer(5),  
+    Id_employe                  integer(),  
     Date_de_naissance           date,     
-    Poste                       char(...),  
-    Departement                 char(...),  
+    Poste                       varchar(15),  
+    Departement                 varchar(15),  
     primary key (Id_employe),
+    foreign key (Nas) references Personne,
 );
 
 create table Salaire (
     Salaire                     decimal(7,2),  
-    Pourcentage_augmentation     integer check (Pourcentage_augmentation between 1 and 100 and unique),
+    Pourcentage_augmentation     integer check (Pourcentage_augmentation between 1 and 100),
     Raison_augmentation         varchar(20),   
     primary key (Salaire),
+    foreign key (Id_employe) references Employe,
 );
 
 create table Departement (
-    Id_departement              char(...),  
-    Nom_departement             char(...),  
-    Pourcentage_attraper_covid  char(4),    --100% = 4 = max
+    Id_departement              integer(),  
+    Nom_departement             varchar(20),  
+    Pourcentage_attraper_covid  integer(4) check (Pourcentage_augmentation between 1 and 100),
     primary key (Id_departement),
+    foreign key (Id_employe) references Employe,
+    foreign key (Id_visiteur) references Visiteur,
+
 );
 
 create table check_in_out (
     Date_et_heure_Entree        timestamp,  
     Date_et_heure_sortie        timestamp,  
-    Temperature                 char(4),    --max nombre 3 chiffres + symbole de degrée
-    Symptomes                   char(...),  
-    Risque_voisinage            char(...),  
+    Temperature                 decimal(3,1),
+    Symptomes                   varchar(100),  
+    Risque_voisinage            char(3),   --peut etre boolean (binaire)
+    foreign key (Nas) references Personne,
 ); 
 
 create table Vaccin (
-    Nom_vaccin                  char(...),  
-    Age_minimum                 char(3),    --max 3 chiffres
-    Date_autorisation           char(...),  
-    Effets_secondaires_possibles    char(...),
+    Nom_vaccin                  varchar(20),  
+    Age_minimum                 integer(),
+    Date_autorisation           date,  
+    Effets_secondaires_possibles    varchar(100),
     primary key (Nom_vaccin),
+    foreign key (Nas) references Personne,
 );
 
 create table Personne_a_risque (
-    Nas                         char(9),    
-    Prenom                      char(...),  
-    Nom                         char(...),  
-    Contact_moins_2_metres      char(...),  
-    Date_actuelle               char(...),  
+    Nas                         number(9),    
+    Prenom                      varchar(15),  
+    Nom                         varchar(15),  
+    Contact_moins_2_metres      char(3),  --peut etre boolean (binaire)
+    Date_actuelle               date,  
     primary key (Nas),
 );
 
 create table Alerte (
     Nas                         char(9),    
-    Prenom                      char(...),  
-    Nom                         char(...),  
-    Temperature                 char(4),    --max 3 chiffres + symbole degrée
-    Date_actuelle               char(...),  
+    Prenom                      varchar(15),  
+    Nom                         varchar(15),  
+    Temperature                 decimal(3),
+    Date_actuelle               date,  
     primary key (Nas),   
 );
