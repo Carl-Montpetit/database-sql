@@ -74,7 +74,7 @@ create Adresse (
     Numero                      char(...),  --nbr de caractères
     Rue                         char(...),  --nbr de caractères
     Code_postal                 char(7),    --6 caracteres incluant un espace
-    Ville                       char(...)   --nbr de caractères
-    Province                    char(2)     --deux lettres majuscules
-    Pays                        char(...)   --nbr de caractères
+    Ville                       char(...),   --nbr de caractères
+    Province                    char(2),     --deux lettres majuscules
+    Pays                        char(...);   --nbr de caractères
 )
