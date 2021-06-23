@@ -16,24 +16,26 @@ create table Personne (
 );
 
 create table Adresse (
+    Nas                         number(9) not null,
     Numero                      number(5) not null,  
     Rue                         varchar2(50) not null,  
     Code_postal                 char(6) not null,    
     Ville                       varchar2(50) not null,   
     Province                    char(2) not null,
     Pays                        varchar2(50) not null,
+    primary key (Nas),
     foreign key (Nas) references Personne,   
 );
 
 create table Visiteur (
-    Id_visiteur                 integer() not null,  
+    Id_visiteur                 number,  
     Nom_entreprise              varchar2(50) not null,
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
 );
 
 create table Employe (
-    Id_employe                  integer() not null,  
+    Id_employe                  number,  
     Date_de_naissance           date not null,     
     Poste                       varchar(15) not null,  
     Departement                 varchar(15) not null,  
@@ -42,17 +44,17 @@ create table Employe (
 );
 
 create table Salaire (
-    Salaire                     decimal(7,2) not null,  
-    Pourcentage_augmentation     integer check (Pourcentage_augmentation between 1 and 100),
+    Salaire                     number(7,2) not null,  
+    Pourcentage_augmentation    number check (Pourcentage_augmentation between 1 and 100),
     Raison_augmentation         varchar(20),   
-    primary key (Salaire),
+    primary key (Salaire, Id_employe),
     foreign key (Id_employe) references Employe,
 );
 
 create table Departement (
-    Id_departement              integer() not null,  
+    Id_departement              number not null,  
     Nom_departement             varchar(20) not null,  
-    Pourcentage_attraper_covid  integer(4) check (Pourcentage_augmentation between 1 and 100),
+    Pourcentage_attraper_covid  number(4) check (Pourcentage_augmentation between 1 and 100),
     primary key (Id_departement),
     foreign key (Id_employe) references Employe,
     foreign key (Id_visiteur) references Visiteur,
@@ -62,7 +64,7 @@ create table Departement (
 create table check_in_out (
     Date_et_heure_Entree        timestamp,  
     Date_et_heure_sortie        timestamp,  
-    Temperature                 decimal(3,1),
+    Temperature                 number(3,1),
     Symptomes                   varchar(100),  
     Risque_voisinage            char(3),   --peut etre boolean (binaire)
     foreign key (Nas) references Personne,
@@ -70,7 +72,7 @@ create table check_in_out (
 
 create table Vaccin (
     Nom_vaccin                  varchar(20) not null,  
-    Age_minimum                 integer(),
+    Age_minimum                 number(),
     Date_autorisation           date,  
     Effets_secondaires_possibles    varchar(100),
     primary key (Nom_vaccin),
@@ -90,7 +92,7 @@ create table Alerte (
     Nas                         char(9),    
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
-    Temperature                 decimal(3),
+    Temperature                 number(3),
     Date_actuelle               date,  
     primary key (Nas),   
 );
