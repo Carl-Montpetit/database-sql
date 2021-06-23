@@ -27,8 +27,8 @@ create table Vaccin (
 /
 
 create table Personne (
-    Nas                         number(9) not null,  
-    Nom_vaccin                  varchar(20) not null,  
+    Nas                         number(9) not null unique,  
+    Nom_vaccin                  varchar(20),  
     Prenom                      varchar(15) not null,  
     Nom                         varchar(15) not null, 
     Date_vaccination            date,    
@@ -38,35 +38,35 @@ create table Personne (
 
 create table Adresse (
     Nas                         number(9) not null,
-    Numero                      number(5) not null,  
-    Rue                         varchar(50) not null,  
-    Code_postal                 char(6) not null,    
-    Ville                       varchar(50) not null,   
-    Province                    char(2) not null,
-    Pays                        varchar(50) not null,
+    Numero                      number(5),  
+    Rue                         varchar(50),  
+    Code_postal                 char(6),    
+    Ville                       varchar(50),   
+    Province                    char(2),
+    Pays                        varchar(50),
     primary key (Nas),
     foreign key (Nas) references Personne)   
 /
 
 create table Departement (
     Id_departement              number not null,  
-    Nom_departement             varchar(20) not null,  
+    Nom_departement             varchar(20),  
     Pourcentage_attraper_covid  number(4),
     primary key (Id_departement))
 /
 
 create table Visiteur (
-    Id_visiteur                 number,
+    Id_visiteur                 number not null,
     Nas                         number(9) not null, 
     Id_departement              number not null,   
-    Nom_entreprise              varchar(50) not null,
+    Nom_entreprise              varchar(50),
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
     foreign key (Id_departement) references Departement)
 /
 
 create table Employe (
-    Id_employe                  number, 
+    Id_employe                  number not null, 
     Nas                         number(9) not null, 
     Id_departement              number not null,  
     Date_de_naissance           date not null,     
@@ -78,7 +78,7 @@ create table Employe (
 
 create table Salaire (
     Salaire                     number(7,2) not null,
-    Id_employe                  number,  
+    Id_employe                  number not null,  
     Pourcentage_augmentation    number,
     Raison_augmentation         varchar(20),   
     primary key (Salaire, Id_employe),
@@ -87,8 +87,8 @@ create table Salaire (
 
 create table check_in_out (
     Nas                         number(9) not null, 
-    Date_et_heure_Entree        timestamp,  
-    Date_et_heure_sortie        timestamp,  
+    Date_et_heure_Entree        timestamp not null,  
+    Date_et_heure_sortie        timestamp not null,  
     Temperature                 number(3,1),
     Symptomes                   varchar(100),  
     Risque_voisinage            char(3),   --peut etre boolean (binaire)
@@ -97,7 +97,7 @@ create table check_in_out (
 / 
 
 create table Personne_a_risque (
-    Id_personne_a_risque        number,  
+    Id_personne_a_risque        number not null,  
     Nas                         number(9) not null,  
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
@@ -108,8 +108,8 @@ create table Personne_a_risque (
 /
 
 create table Alerte (
-    Id_alerte                   number, 
-    Id_personne_a_risque        number,
+    Id_alerte                   number not null, 
+    Id_personne_a_risque        number not null,
     Nas                         number(9) not null,   
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
