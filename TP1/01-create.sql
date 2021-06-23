@@ -7,6 +7,8 @@
 --  Nom : Mathieu Dumont
 --  Code permanent : DUMM21059400 
 
+-- *IMPORTANT*On a mit "/" au lieu de ";" car cela ne fonctionnait pas dans sqlplus et c'est le "/" qu'on utilisait dans les laboratoires avec Jocelyn.
+
 DROP TABLE Alerte;
 DROP TABLE Personne_a_risque;
 DROP TABLE check_in_out;
@@ -27,7 +29,7 @@ create table Vaccin (
 /
 
 create table Personne (
-    Nas                         number(9) not null unique,  
+    Nas                         number(9) not null,  
     Nom_vaccin                  varchar(20),  
     Prenom                      varchar(15) not null,  
     Nom                         varchar(15) not null, 
