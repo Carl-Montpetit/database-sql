@@ -39,11 +39,11 @@ create table Personne (
 create table Adresse (
     Nas                         number(9) not null,
     Numero                      number(5) not null,  
-    Rue                         varchar2(50) not null,  
+    Rue                         varchar(50) not null,  
     Code_postal                 char(6) not null,    
-    Ville                       varchar2(50) not null,   
+    Ville                       varchar(50) not null,   
     Province                    char(2) not null,
-    Pays                        varchar2(50) not null,
+    Pays                        varchar(50) not null,
     primary key (Nas),
     foreign key (Nas) references Personne)   
 /
@@ -59,7 +59,7 @@ create table Visiteur (
     Id_visiteur                 number,
     Nas                         number(9) not null, 
     Id_departement              number not null,   
-    Nom_entreprise              varchar2(50) not null,
+    Nom_entreprise              varchar(50) not null,
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
     foreign key (Id_departement) references Departement)
@@ -70,8 +70,7 @@ create table Employe (
     Nas                         number(9) not null, 
     Id_departement              number not null,  
     Date_de_naissance           date not null,     
-    Poste                       varchar(15) not null,  
-    Departement                 varchar(15) not null,  
+    Poste                       varchar(15) not null,    
     primary key (Id_employe),
     foreign key (Nas) references Personne,
     foreign key (Id_departement) references Departement)
@@ -80,7 +79,7 @@ create table Employe (
 create table Salaire (
     Salaire                     number(7,2) not null,
     Id_employe                  number,  
-    Pourcentage_augmentation    number check (Pourcentage_augmentation between 1 and 100),
+    Pourcentage_augmentation    number,
     Raison_augmentation         varchar(20),   
     primary key (Salaire, Id_employe),
     foreign key (Id_employe) references Employe)
@@ -114,7 +113,7 @@ create table Alerte (
     Nas                         number(9) not null,   
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
-    Temperature                 number(3),
+    Temperature                 number(3,1),
     Date_actuelle               date,  
     primary key (Id_alerte),
     foreign key (Id_personne_a_risque) references Personne_a_risque,
