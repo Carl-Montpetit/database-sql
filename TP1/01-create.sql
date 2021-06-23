@@ -11,7 +11,8 @@
 create table Personne (
     Nas                         number(9) not null,    
     Prenom                      varchar(15) not null,  
-    Nom                         varchar(15) not null,     
+    Nom                         varchar(15) not null, 
+    Date_vaccination            date,    
     primary key (Nas),
 );
 
@@ -32,6 +33,8 @@ create table Visiteur (
     Nom_entreprise              varchar2(50) not null,
     primary key (Id_visiteur),
     foreign key (Nas) references Personne,
+    foreign key (Id_departement) references Departement,
+
 );
 
 create table Employe (
@@ -41,6 +44,7 @@ create table Employe (
     Departement                 varchar(15) not null,  
     primary key (Id_employe),
     foreign key (Nas) references Personne,
+    foreign key (Id_departement) references Departement,
 );
 
 create table Salaire (
@@ -56,9 +60,6 @@ create table Departement (
     Nom_departement             varchar(20) not null,  
     Pourcentage_attraper_covid  number(4) check (Pourcentage_augmentation between 1 and 100),
     primary key (Id_departement),
-    foreign key (Id_employe) references Employe,
-    foreign key (Id_visiteur) references Visiteur,
-
 );
 
 create table check_in_out (
@@ -76,23 +77,27 @@ create table Vaccin (
     Date_autorisation           date,  
     Effets_secondaires_possibles    varchar(100),
     primary key (Nom_vaccin),
-    foreign key (Nas) references Personne,
+    foreign key (Date_vaccination) references Personne,
 );
 
 create table Personne_a_risque (
-    Nas                         number(9),    
+    Id_personne_a_risque        number,    
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
     Contact_moins_2_metres      char(3),  --peut etre boolean (binaire)
     Date_actuelle               date,  
-    primary key (Nas),
+    primary key (Nas, Id_personne_a_risque),
+    foreign key (Nas) references Personne,
 );
 
 create table Alerte (
-    Nas                         char(9),    
+    id_alerte                   number,    
     Prenom                      varchar(15),  
     Nom                         varchar(15),  
     Temperature                 number(3),
     Date_actuelle               date,  
-    primary key (Nas),   
+    primary key (Nas, Id_personne_a_risque, id_alerte),
+    foreign key (Id_departement) references Personne_a_risque,
+    foreign key (Nas) references Personne,
+    
 );
