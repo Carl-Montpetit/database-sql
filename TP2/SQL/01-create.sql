@@ -23,6 +23,13 @@ drop table Employe;
 drop table Departement;
 drop table Personne;
 ------------------------------------------------------------------------------------------------------------------------
+-- Création des utilisateurs --
+------------------------------------------------------------------------------------------------------------------------
+create user directeur identified by "1234";
+create user employe identified by "1234";
+create user visiteur identified by "1234";
+create user administrateur identified by "1234";
+------------------------------------------------------------------------------------------------------------------------
 -- Création des tables --
 ------------------------------------------------------------------------------------------------------------------------
 create  table  Personne (
