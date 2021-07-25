@@ -23,7 +23,14 @@ drop table Employe;
 drop table Departement;
 drop table Personne;
 ------------------------------------------------------------------------------------------------------------------------
--- Création des utilisateurs --
+-- On détruit les utilisateurs avec leur accès associés préalablement --
+------------------------------------------------------------------------------------------------------------------------
+drop user directeur cascade;
+drop user employe cascade;
+drop user visiteur cascade;
+drop user administrateur;
+------------------------------------------------------------------------------------------------------------------------
+-- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
 ------------------------------------------------------------------------------------------------------------------------
 create user directeur identified by "1234";
 create user employe identified by "1234";
