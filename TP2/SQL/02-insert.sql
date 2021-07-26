@@ -25,6 +25,8 @@ INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTA
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) VALUES ('9', 'Carla', '1000', 'horme', 'montreal', 'h0e h1e');
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) VALUES ('10', 'Benito', '4500', 'van horn', 'montreal', 'r9e 3e5');
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) VALUES ('11', 'alphonso', '8500', 'dupuis', 'montreal', 'e7d 7d1');
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) VALUES ('12', 'Serge', '3641', 'roy', 'montreal', 'z9d 4e3');
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) VALUES ('13', 'Antoine', '3641', 'lemire', 'montreal', 'n6x 7b8');
 
 -- Insertion département
 INSERT INTO "DEPARTEMENT" (NOM_DEPARTEMENT, POURCENTAGE_RISQUE) VALUES ('StockRoom', '75');
@@ -47,6 +49,8 @@ INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departemen
 INSERT INTO "EMPLOYE" (id_personne, date_naissance, poste, salaire, nom_departement) VALUES (7, '1900-07-15', 'technicien qualité', 41600.41, 'Qualité');
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) VALUES (9, '1964-03-05', 'technicien', 56000.00, 'Production');
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) VALUES (11, '1964-03-05', 'technicien', 56000.00, 'Production');
+INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) VALUES (12, '2000-06-11', 'technicien', 56000.00, 'Production');
+INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) VALUES (13, '2003-11-06', 'technicien', 56000.00, 'Production');
 
 -- Insertion visiteur
 INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('2', 'Maxi');
@@ -57,13 +61,17 @@ INSERT INTO "JA291905"."VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('10', 'A
 
 -- Insertion entrée_sortie
 INSERT INTO "ENTREE_SORTIE" (date_heure_entree, id_personne, date_heure_sortie, temperature, symptomes, risque_voisinage) VALUES ('2021-07-25 14:00:00', 1, '2021-07-25 15:00:00', 37.00, 'aucun', 'non');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:00:00', 9, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:30:00', 11, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
 
 -- Insertion Vaccin
 INSERT INTO VACCIN VALUES ('Pfizer', 12, '2021-01-01', 'Possédé par démon');
 
--- Insert
+-- Insert Vaccination
 INSERT INTO VACCINATION VALUES (11, 'Pfizer', '2021-07-23');
 
+-- Insertion Alerte
+INSERT INTO Alerte VALUES ('2021-07-23', 12);
 
 
 
