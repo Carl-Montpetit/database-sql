@@ -15,8 +15,18 @@
 -- Id #4 --> Priorité : Obligatoire
 -- Créer une vue (liste_vaccine) permettant de fournir la liste des employés vaccinés (seuls ceux qui ont pris les 2 doses doivent être considérés) avec le type de vaccin (pfizer, moderna, ...), regroupé par vaccin et trié par date.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
-
+create view liste_vaccine
+as
+select vaccination.id_personne, personne.nom, vaccination.nom_vaccin, vaccination.date_vaccination from vaccination
+inner join personne on
+    personne.id_personne = vaccination.id_personne
+where (vaccination.id_personne) in 
+    (select vaccination.id_personne from vaccination
+    group by vaccination.id_personne
+    having count(id_personne) = 2
+    )
+order by vaccination.date_vaccination;
+/
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #5 --> Priorité : Obligatoire
 -- Créer une vue (liste_quarantaine) permettant de fournir la liste de tous les employés en quarantaine avec le nombre de jours restant de leur quarantaine entre le 1er mai et le 30 juin 2021.
