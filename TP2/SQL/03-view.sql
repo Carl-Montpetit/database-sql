@@ -43,7 +43,26 @@ order by vaccination.date_vaccination;
 -- Id #7 --> Priorité : Obligatoire
 -- Créer une vue (liste_disponiblites) permettant de fournir la liste des employés d’un département dans une journée précise qui seront disponibles pour remplacer un employé du même département atteint par le virus.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
+CREATE VIEW liste_disponibilites
+AS
+SELECT
+    P.id_personne,
+    P.Nom,
+    E.Nom_departement
+FROM employe E
+JOIN Personne P ON E.ID_personne = P.ID_personne
+JOIN Departement D ON E.Nom_departement = D.Nom_Departement
+WHERE NOT EXISTS (
+    SELECT NULL
+    FROM Entree_sortie
+    WHERE E.ID_personne = Entree_sortie.id_personne
+)
+AND NOT EXISTS(
+    SELECT NULL
+    FROM Alerte
+    WHERE E.ID_personne = Alerte.id_personne
+)
+ORDER BY D.Nom_Departement;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #9 --> Priorité : Très important
