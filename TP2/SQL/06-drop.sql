@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------------------------------------------------------
--- Script de destruction/effacement --
+-- Script d'enlèvement --
 ------------------------------------------------------------------------------------------------------------------------
---//FIXME À valider si on doit vraiment faire ce script en plus pour effacer les utilisateurs et les tables
+--//FIXME : À valider si on doit vraiment faire ce script en plus ou laisser tout ça dans le script de création
 ------------------------------------------------------------------------------------------------------------------------
--- On détruit les tables --
+-- On efface les tables --
 ------------------------------------------------------------------------------------------------------------------------
 drop table Vaccination;
 drop table Vaccin;
@@ -17,7 +17,7 @@ drop table Employe;
 drop table Departement;
 drop table Personne;
 ------------------------------------------------------------------------------------------------------------------------
--- On détruit les utilisateurs avec leur accès associés --
+-- On enlève les utilisateurs avec leur accès associés --
 ------------------------------------------------------------------------------------------------------------------------
 drop user directeur cascade;
 drop user employe cascade;
@@ -26,5 +26,5 @@ drop user administrateur cascade;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
--- Fin de la destruction des tables et des utilisateurs --
+-- Fin de la l'enlèvement des tables et des utilisateurs --
 ------------------------------------------------------------------------------------------------------------------------

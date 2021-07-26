@@ -23,14 +23,19 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
-
-
--- Id #8 --> Priorité : Obligatoire --> présent dans insert aussi à vérifier plus tard!
+create or replace procedure "presence"    
+(date_debut IN TIMESTAMP, date_fin IN TIMESTAMP)    
+as   
+begin    
+    --// TODO
+end;        
+------------------------------------------------------------------------------------------------------------------------
+-- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
 
+------------------------------------------------------------------------------------------------------------------------
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er 5 mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
@@ -67,3 +72,8 @@
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
+------------------------------------------------------------------------------------------------------------------------
+--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
+------------------------------------------------------------------------------------------------------------------------
+-- Fin de la création des déclencheurs et des fonctions --
+------------------------------------------------------------------------------------------------------------------------
