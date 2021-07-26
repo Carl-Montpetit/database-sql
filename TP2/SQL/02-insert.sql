@@ -65,7 +65,19 @@ INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:00:00', 9, '2021-07-25 15:00
 INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:30:00', 11, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
 
 -- Insertion Vaccin
-INSERT INTO VACCIN VALUES ('Pfizer', 12, '2021-01-01', 'Possédé par démon');
+insert all
+into vaccin values ('Pfizer', 12, '2021-01-08', 'fievre, maux de tete, faiblesse, fatigue')
+into vaccin values ('Moderna', 12, '2020-10-12', 'fievre, maux de tete, faiblesse, fatigue')
+into vaccin values ('AstraZeneca', 50, '2021-02-26', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+into vaccin values ('Janssen', 18, '2021-02-27', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+into vaccin values ('Sputnik V', 12, '2020-08-11', 'fievre, maux de tete, faiblesse, fatigue')
+into vaccin values ('Sinopharm', 18, '2021-05-07', 'fievre, maux de tete, faiblesse, fatigue')
+into vaccin values ('Covaxin', 12, '2021-07-25', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
+into vaccin values ('EpiVacCorona', 18, '2020-12-07', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+into vaccin values ('ZF2001', 18, '2021-03-01', 'fievre, maux de tete, faiblesse, fatigue')
+into vaccin values ('Soberana 02', 3, '2021-03-21', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+select * from dual;
+/
 
 -- Insert Vaccination
 INSERT INTO VACCINATION VALUES (11, 'Pfizer', '2021-07-23');
