@@ -6,6 +6,9 @@
 --
 --  Nom : Mathieu Dumont
 --  Code permanent : DUMM21059400 
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
+-- Dépôt GIT du TP au besoin --> https://gitlab.info.uqam.ca/montpetit.carl/basededonnees.git
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LA CRÉATION DES TABLES --
 ------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +31,7 @@ drop table Personne;
 drop user directeur cascade;
 drop user employe cascade;
 drop user visiteur cascade;
-drop user administrateur;
+drop user administrateur cascade;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
 ------------------------------------------------------------------------------------------------------------------------
@@ -154,6 +157,42 @@ create table Vaccination (
     foreign key (nom_vaccin) references Vaccin (nom_vaccin)
 )
 /
+------------------------------------------------------------------------------------------------------------------------
+-- Permissions pour les utilisateurs --
+------------------------------------------------------------------------------------------------------------------------
+-- Directeur
+--//FIXME Seulement personne ou aussi employés et visiteurs??
+-- On peut toujours le tester plus tard en relançant ce script en mettant en commentaires des lignes de codes
+grant insert, update, delete, select on personne to directeur;
+grant insert, update, delete, select on employe to directeur;
+grant insert, update, delete, select on visiteur to directeur;
+grant insert, update, delete, select on vaccination to directeur;
+------------------------------------------------------------------------------------------------------------------------
+-- Employés
+--//FIXME On revoke certaines des columns ou pas??
+grant insert, select on vaccination to employe;
+grant insert, select on vaccin to employe; -- Pour les "types" de vaccins ??
+grant insert, select on Entree_Sortie to employe;
+------------------------------------------------------------------------------------------------------------------------
+-- Visiteurs
+--//FIXME On revoke certaines des columns ou pas??
+grant insert, select on vaccination to visiteur;
+grant insert, select on vaccin to visiteur; -- Pour les "types" de vaccins ?? 
+grant insert, select on Entree_Sortie to visiteur;
+------------------------------------------------------------------------------------------------------------------------
+-- Administrateur (pour ∀ les tables)
+grant drop, insert on personne to administrateur;
+grant drop, insert on departement to administrateur;
+grant drop, insert on visiteur to administrateur;
+grant drop, insert on alerte to administrateur;
+grant drop, insert on Entree_Sortie to administrateur;
+grant drop, insert on Quarantaine to administrateur;
+grant drop, insert on rencontre to administrateur;
+grant drop, insert on risque to administrateur;
+grant drop, insert on vaccin to administrateur;
+grant drop, insert on vaccination to administrateur;
+------------------------------------------------------------------------------------------------------------------------
+--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
 -- Fin de la création --
 ------------------------------------------------------------------------------------------------------------------------
