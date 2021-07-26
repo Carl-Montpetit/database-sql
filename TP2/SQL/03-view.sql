@@ -54,8 +54,27 @@ order by vaccination.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #11 --> Priorité : Important
 -- Créer une vue (liste_paresseux) permettant de fournir la liste des employés qui travaillent dans un département à risque de plus que 80% et qui n’ont pas reçu le vaccin, regroupé par département.
+-- **********************************
+-- Pas certain du order by à cause 
+-- **********************************
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
+CREATE VIEW liste_paresseux 
+AS 
+SELECT
+    P.Nom,
+    E.Poste,
+    E.Nom_departement,
+    D.pourcentage_risque
+FROM employe E
+JOIN Personne P ON E.ID_personne = P.ID_personne
+JOIN Departement D ON E.Nom_departement = D.Nom_Departement
+WHERE NOT EXISTS (
+    SELECT NULL
+    FROM vaccination
+    where E.ID_personne = vaccination.id_personne
+)
+AND D.pourcentage_risque > 80 
+ORDER BY D.Nom_Departement;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #18 --> Priorité : Important
