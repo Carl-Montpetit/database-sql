@@ -17,10 +17,10 @@
 -- Insertion personne --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
-VALUES ('1', 'bob', '123', 'soleil', 'montreal', 'j5z 3c4');
+VALUES ('1', 'Bob', '123', 'soleil', 'montreal', 'j5z 3c4');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
-VALUES ('2', 'carl', '2400', 'archambault', 'montreal', 'a3i 6x2');
+VALUES ('2', 'Carl', '2400', 'archambault', 'montreal', 'a3i 6x2');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
 VALUES ('3', 'Matthew', '500', 'Linton', 'montreal', 'a6g 2y5');
@@ -47,13 +47,34 @@ INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTA
 VALUES ('10', 'Benito', '4500', 'van horn', 'montreal', 'r9e 3e5');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
-VALUES ('11', 'alphonso', '8500', 'dupuis', 'montreal', 'e7d 7d1');
+VALUES ('11', 'Alphonso', '8500', 'dupuis', 'montreal', 'e7d 7d1');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
 VALUES ('12', 'Serge', '3641', 'roy', 'montreal', 'z9d 4e3');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
 VALUES ('13', 'Antoine', '3641', 'lemire', 'montreal', 'n6x 7b8');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('14', 'Montserrat', '1134', 'laurier', 'montreal', 'h2j 1g7');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('15', 'Freda', '142', 'papineau', 'chateauguay', 'j6k 1l9');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('16', 'Gaston', '29', 'bolduc', 'gaspesie', 'g4x 1g2');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('17', 'Albert', '5254', 'garnier', 'montreal', 'h2l 3t8');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('18', 'Vincent', '144', 'dion', 'cowansville', 'j2k 2w6');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('19', 'Cedric', '4055', 'dagenais O', 'laval', 'h7r 1l3');
+
+INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
+VALUES ('20', 'Chantal', '281', 'saint catherine', 'montreal', 'h2x 1k7');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion département --
 ------------------------------------------------------------------------------------------------------------------------
@@ -95,18 +116,32 @@ VALUES (12, '2000-06-11', 'technicien', 56000.00, 'Production');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
 VALUES (13, '2003-11-06', 'technicien', 56000.00, 'Production');
+
+INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
+VALUES (15, '1931-10-03', 'paye', 60000.01, 'Finance');
+
+INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
+VALUES (17, '1982-08-11', 'le boss', 99999.99, 'Administration');
+
+INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
+VALUES (19, '2005-04-01', 'livreur', 25000.00, 'Livraison');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion visiteur --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('2', 'Maxi');
 INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('4', 'Métro');
 INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('6', 'IGA');
-INSERT INTO "JA291905"."VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('8', 'Super C');
-INSERT INTO "JA291905"."VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('10', 'Adonis');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('8', 'Super C');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('10', 'Adonis');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('12', 'Loblaws');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('14', 'Sobeys');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('16', 'Provigo');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('18', 'Tigre Geant');
+INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('20', 'Walmart');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion entrée_sortie --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO "ENTREE_SORTIE" (date_heure_entree, id_personne, date_heure_sortie, temperature, symptomes, risque_voisinage) VALUES ('2021-07-25 14:00:00', 1, '2021-07-25 15:00:00', 37.00, 'aucun', 'non');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 14:00:00', 1, '2021-07-25 15:00:00', 37.00, 'aucun', 'non');
 INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:00:00', 9, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
 INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:30:00', 11, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
 ------------------------------------------------------------------------------------------------------------------------
@@ -127,7 +162,18 @@ select * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Vaccination --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO VACCINATION VALUES (11, 'Pfizer', '2021-07-23');
+insert all
+into vaccination values (2, 'Moderna', '2021-05-23')
+into vaccination values (2, 'Moderna', '2021-07-23')
+into vaccination values (3, 'Pfizer', '2021-05-16')
+into vaccination values (3, 'Pfizer', '2021-07-18')
+into vaccination values (4, 'Sputnik V', '2021-04-29')
+into vaccination values (4, 'Sputnik V', '2021-06-30')
+into vaccination values (14, 'AstraZeneca', '2021-03-12')
+into vaccination values (15, 'Janssen', '2021-04-04')
+into vaccination values (16, 'Soberana 02', '2021-04-19')
+into vaccination values (17, 'AstraZeneca', '2021-03-12')
+select * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --
 ------------------------------------------------------------------------------------------------------------------------
