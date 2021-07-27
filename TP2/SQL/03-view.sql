@@ -25,6 +25,11 @@ where (vaccination.id_personne) in
     group by vaccination.id_personne
     having count(id_personne) = 2
     )
+and exists (
+    select null
+    from employe
+    where employe.id_personne = vaccination.id_personne
+)
 order by vaccination.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #5 --> Priorité : Obligatoire
