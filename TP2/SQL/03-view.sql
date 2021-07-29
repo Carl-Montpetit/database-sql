@@ -12,54 +12,66 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LA CRÉATION DES VUES --
 ------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- Id #4 --> Priorité : Obligatoire
 -- Créer une vue (liste_vaccine) permettant de fournir la liste des employés vaccinés (seuls ceux qui ont pris les 2 doses doivent être considérés) avec le type de vaccin (pfizer, moderna, ...), regroupé par vaccin et trié par date.
 ------------------------------------------------------------------------------------------------------------------------
-create view liste_vaccine
-as
-select vaccination.id_personne, personne.nom, vaccination.nom_vaccin, vaccination.date_vaccination from vaccination
-inner join personne on
+CREATE VIEW liste_vaccine
+AS
+SELECT vaccination.id_personne, personne.nom, vaccination.nom_vaccin, vaccination.date_vaccination FROM vaccination
+INNER JOIN personne ON
     personne.id_personne = vaccination.id_personne
-where (vaccination.id_personne) in 
-    (select vaccination.id_personne from vaccination
-    group by vaccination.id_personne
-    having count(id_personne) = 2
+WHERE (vaccination.id_personne) IN 
+    (SELECT vaccination.id_personne FROM vaccination
+    GROUP BY vaccination.id_personne
+    HAVING count(id_personne) = 2
     )
-and exists (
-    select null
-    from employe
-    where employe.id_personne = vaccination.id_personne
+AND EXISTS (
+    SELECT null
+    FROM employe
+    WHERE employe.id_personne = vaccination.id_personne
 )
-order by vaccination.date_vaccination;
+ORDER BY vaccination.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #5 --> Priorité : Obligatoire
 -- Créer une vue (liste_quarantaine) permettant de fournir la liste de tous les employés en quarantaine avec le nombre de jours restant de leur quarantaine entre le 1er mai et le 30 juin 2021.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
-
+CREATE VIEW liste_quarantaine
+AS
+SELECT quarantaine.id_personne, personne.nom,
+-- Fonction qui retourne le nombre absolu de jours entre deux dates pour Oracle SQL
+DIFFDAYS(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') AS date_difference,
+-- Le nombre de jours inclusivement --> plus commun d'utiliser ça (j'ai mis les deux je poserai la question prochain cours)
+DIFFDAYS(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') + 1 AS jours_inclusif 
+FROM quarantaine
+INNER JOIN personne ON quarantaine.id_personne = personne.id_personne
+WHERE
+quarantaine.date_debut > '01-05-2021' AND quanrantaine.date_fin < '30-06-2021'
+GROUP BY personne.nom
+ORDER BY jours_inclusif;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
 -- Créer une vue (liste_admissible_vaccin) permettant de fournir la liste des employés qui sont admissibles pour faire le vaccin moderna.
 ------------------------------------------------------------------------------------------------------------------------
-create view liste_admissible_vaccin
-as
-select employe.id_personne, personne.nom from employe
-left join vaccination on
+CREATE VIEW liste_admissible_vaccin
+AS
+SELECT employe.id_personne, personne.nom FROM employe
+LEFT JOIN vaccination ON
     employe.id_personne = vaccination.id_personne
-inner join personne on
+INNER JOIN personne ON
     employe.id_personne = personne.id_personne
-where not exists (
-    select null
-    from vaccination
-    where employe.id_personne = vaccination.id_personne
+WHERE NOT EXISTS (
+    SELECT null
+    FROM vaccination
+    WHERE employe.id_personne = vaccination.id_personne
 )
-or (vaccination.nom_vaccin = 'Moderna')
-and not exists (
-    select null
-    from liste_vaccine
-    where employe.id_personne = liste_vaccine.id_personne
+OR (vaccination.nom_vaccin = 'Moderna')
+AND NOT EXISTS (
+    SELECT null
+    FROM liste_vaccine
+    WHERE employe.id_personne = liste_vaccine.id_personne
 )
-order by employe.id_personne;
+ORDER BY employe.id_personne;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #7 --> Priorité : Obligatoire
@@ -92,9 +104,11 @@ ORDER BY D.Nom_Departement;
 --// TODO
 CREATE VIEW liste_arisque 
 AS 
-SELECT 
+SELECT rencontre.id_visiteur
 FROM rencontre
 WHERE 
+
+; 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #11 --> Priorité : Important
 -- Créer une vue (liste_paresseux) permettant de fournir la liste des employés qui travaillent dans un département à risque -- de plus que 80% et qui n’ont pas reçu le vaccin, regroupé par département.

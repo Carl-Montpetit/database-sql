@@ -10,7 +10,7 @@
 -- Dépôt GIT du TP au besoin --> https://gitlab.info.uqam.ca/montpetit.carl/basededonnees.git
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
--- CE FICHIER INCLUT LES INSERTIONS --
+-- CE FICHIER INCLUT LES InsertionS --
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion d'au moins 10 enregistrements par table, en s'assurant que les requêtes que vous allez fournir dans les directives qui suivent retournent au moins un enregistrement.
 ------------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTA
 VALUES ('2', 'Carl', '2400', 'archambault', 'montreal', 'a3i 6x2');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
-VALUES ('3', 'Matthew', '500', 'Linton', 'montreal', 'a6g 2y5');
+VALUES ('3', 'Matthew', '500', 'LINTOn', 'montreal', 'a6g 2y5');
 
 INSERT INTO "PERSONNE" (ID_PERSONNE, NOM, ADRESSE_NUMERO, RUE, VILLE, CODE_POSTAL) 
 VALUES ('4', 'Mathieu', '3180', 'lune', 'montreal', 'a4g 9t8');
@@ -147,32 +147,32 @@ INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:30:00', 11, '2021-07-25 15:0
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Vaccin --
 ------------------------------------------------------------------------------------------------------------------------
-insert all
-into vaccin values ('Pfizer', 12, '2021-01-08', 'fievre, maux de tete, faiblesse, fatigue')
-into vaccin values ('Moderna', 12, '2020-10-12', 'fievre, maux de tete, faiblesse, fatigue')
-into vaccin values ('AstraZeneca', 50, '2021-02-26', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-into vaccin values ('Janssen', 18, '2021-02-27', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-into vaccin values ('Sputnik V', 12, '2020-08-11', 'fievre, maux de tete, faiblesse, fatigue')
-into vaccin values ('Sinopharm', 18, '2021-05-07', 'fievre, maux de tete, faiblesse, fatigue')
-into vaccin values ('Covaxin', 12, '2021-07-25', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
-into vaccin values ('EpiVacCorona', 18, '2020-12-07', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-into vaccin values ('ZF2001', 18, '2021-03-01', 'fievre, maux de tete, faiblesse, fatigue')
-into vaccin values ('Soberana 02', 3, '2021-03-21', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-select * from dual;
+INSERT ALL
+INTO vaccin VALUES ('Pfizer', 12, '2021-01-08', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Moderna', 12, '2020-10-12', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('AstraZeneca', 50, '2021-02-26', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Janssen', 18, '2021-02-27', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Sputnik V', 12, '2020-08-11', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Sinopharm', 18, '2021-05-07', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Covaxin', 12, '2021-07-25', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
+INTO vaccin VALUES ('EpiVacCorona', 18, '2020-12-07', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('ZF2001', 18, '2021-03-01', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Soberana 02', 3, '2021-03-21', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- Insertion Vaccination --
+-- Insertion vaccination--
 ------------------------------------------------------------------------------------------------------------------------
-insert all
-into vaccination values (2, 'Moderna', '2021-05-23')
-into vaccination values (2, 'Moderna', '2021-07-23')
-into vaccination values (3, 'Pfizer', '2021-05-16')
-into vaccination values (3, 'Pfizer', '2021-07-18')
-into vaccination values (4, 'Sputnik V', '2021-04-29')
-into vaccination values (4, 'Sputnik V', '2021-06-30')
-into vaccination values (14, 'AstraZeneca', '2021-03-12')
-into vaccination values (15, 'Janssen', '2021-04-04')
-into vaccination values (16, 'Soberana 02', '2021-04-19')
-into vaccination values (17, 'AstraZeneca', '2021-03-12')
+INSERT ALL
+INTO vaccination VALUES (2, 'Moderna', '2021-05-23')
+INTO vaccination VALUES (2, 'Moderna', '2021-07-23')
+INTO vaccination VALUES (3, 'Pfizer', '2021-05-16')
+INTO vaccination VALUES (3, 'Pfizer', '2021-07-18')
+INTO vaccination VALUES (4, 'Sputnik V', '2021-04-29')
+INTO vaccination VALUES (4, 'Sputnik V', '2021-06-30')
+INTO vaccination VALUES (14, 'AstraZeneca', '2021-03-12')
+INTO vaccination VALUES (15, 'Janssen', '2021-04-04')
+INTO vaccination VALUES (16, 'Soberana 02', '2021-04-19')
+INTO vaccination VALUES (17, 'AstraZeneca', '2021-03-12')
 select * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --

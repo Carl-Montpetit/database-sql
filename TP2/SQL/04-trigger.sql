@@ -23,12 +23,12 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
-create or replace procedure "presence"    
-(date_debut IN TIMESTAMP, date_fin IN TIMESTAMP)    
-as   
-begin    
-    --// TODO
-end;        
+-- //TODO
+CREATE OR REPLACE PROCEDURE presence(date_debut IN TIMESTAMP, date_fin IN TIMESTAMP)
+AS
+BEGIN
+    SELECT 
+END;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
