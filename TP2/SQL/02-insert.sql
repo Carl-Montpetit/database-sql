@@ -94,37 +94,37 @@ INSERT INTO "DEPARTEMENT" (NOM_DEPARTEMENT, POURCENTAGE_RISQUE) VALUES ('Livrais
 -- En passant numeric(7, 2) veut dire qu'il peut y avoir 7 chiffres en tout incluant les 2 nombres après la virgule.
 ------------------------------------------------------------------------------------------------------------------------
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (1, '1994-05-21', 'commis comptoir', 30000.00, 'StockRoom');
+VALUES (1, '21-05-1994', 'commis comptoir', 30000.00, 'StockRoom');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (3, '1928-08-08', 'directeur R and D', 10000.00, 'R and D');
+VALUES (3, '08-08-1928', 'directeur R and D', 10000.00, 'R and D');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (5, '1975-01-17', 'gratte-papier', 99999.28, 'Bureau des plaintes');
+VALUES (5, '17-01-1975', 'gratte-papier', 99999.28, 'Bureau des plaintes');
 
 INSERT INTO "EMPLOYE" (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (7, '1900-07-15', 'technicien qualité', 41600.41, 'Qualité');
+VALUES (7, '15-07-1900', 'technicien qualité', 41600.41, 'Qualité');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (9, '1964-03-05', 'technicien', 56000.00, 'Production');
+VALUES (9, '05-03-1964', 'technicien', 56000.00, 'Production');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (11, '1964-03-05', 'technicien', 56000.00, 'Production');
+VALUES (11, '05-03-1964', 'technicien', 56000.00, 'Production');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (12, '2000-06-11', 'technicien', 56000.00, 'Production');
+VALUES (12, '11-06-2000', 'technicien', 56000.00, 'Production');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (13, '2003-11-06', 'technicien', 56000.00, 'Production');
+VALUES (13, '06-11-2003', 'technicien', 56000.00, 'Production');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (15, '1931-10-03', 'paye', 60000.01, 'Finance');
+VALUES (15, '03-10-1931', 'paye', 60000.01, 'Finance');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (17, '1982-08-11', 'le boss', 99999.99, 'Administration');
+VALUES (17, '11-08-1982', 'le boss', 99999.99, 'Administration');
 
 INSERT INTO Employe (id_personne, date_naissance, poste, salaire, nom_departement) 
-VALUES (19, '2005-04-01', 'livreur', 25000.00, 'Livraison');
+VALUES (19, '01-04-2005', 'livreur', 25000.00, 'Livraison');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion visiteur --
 ------------------------------------------------------------------------------------------------------------------------
@@ -141,43 +141,43 @@ INSERT INTO "VISITEUR" (ID_PERSONNE, NOM_ENTREPRISE) VALUES ('20', 'Walmart');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion entrée_sortie --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 14:00:00', 1, '2021-07-25 15:00:00', 37.00, 'aucun', 'non');
-INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:00:00', 9, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
-INSERT INTO "ENTREE_SORTIE"  VALUES ('2021-07-25 08:30:00', 11, '2021-07-25 15:00:00', 40.00, 'aucun', 'oui');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('25-07-2021 14:00:00', 1, '25-07-2021 15:00:00', 37.00, 'aucun', 'non');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('25-07-2021 08:00:00', 9, '25-07-2021 15:00:00', 40.00, 'aucun', 'oui');
+INSERT INTO "ENTREE_SORTIE"  VALUES ('25-07-2021 08:30:00', 11, '25-07-2021 15:00:00', 40.00, 'aucun', 'oui');
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Vaccin --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO vaccin VALUES ('Pfizer', 12, '2021-01-08', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Moderna', 12, '2020-10-12', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('AstraZeneca', 50, '2021-02-26', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('Janssen', 18, '2021-02-27', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('Sputnik V', 12, '2020-08-11', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Sinopharm', 18, '2021-05-07', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Covaxin', 12, '2021-07-25', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
-INTO vaccin VALUES ('EpiVacCorona', 18, '2020-12-07', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('ZF2001', 18, '2021-03-01', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Soberana 02', 3, '2021-03-21', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Pfizer', 12, '08-01-2021', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Moderna', 12, '12-10-2020', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('AstraZeneca', 50, '26-02-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Janssen', 18, '27-02-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Sputnik V', 12, '11-08-2020', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Sinopharm', 18, '07-05-2021', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Covaxin', 12, '25-07-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
+INTO vaccin VALUES ('EpiVacCorona', 18, '07-12-2020', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('ZF2001', 18, '01-03-2021', 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Soberana 02', 3, '21-03-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion vaccination--
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO vaccination VALUES (2, 'Moderna', '2021-05-23')
-INTO vaccination VALUES (2, 'Moderna', '2021-07-23')
-INTO vaccination VALUES (3, 'Pfizer', '2021-05-16')
-INTO vaccination VALUES (3, 'Pfizer', '2021-07-18')
-INTO vaccination VALUES (4, 'Sputnik V', '2021-04-29')
-INTO vaccination VALUES (4, 'Sputnik V', '2021-06-30')
-INTO vaccination VALUES (14, 'AstraZeneca', '2021-03-12')
-INTO vaccination VALUES (15, 'Janssen', '2021-04-04')
-INTO vaccination VALUES (16, 'Soberana 02', '2021-04-19')
-INTO vaccination VALUES (17, 'AstraZeneca', '2021-03-12')
+INTO vaccination VALUES (2, 'Moderna', '23-05-2021')
+INTO vaccination VALUES (2, 'Moderna', '23-07-2021')
+INTO vaccination VALUES (3, 'Pfizer', '16-05-2021')
+INTO vaccination VALUES (3, 'Pfizer', '18-07-2021')
+INTO vaccination VALUES (4, 'Sputnik V', '29-04-2021')
+INTO vaccination VALUES (4, 'Sputnik V', '30-06-2021')
+INTO vaccination VALUES (14, 'AstraZeneca', '12-03-2021')
+INTO vaccination VALUES (15, 'Janssen', '04-04-2021')
+INTO vaccination VALUES (16, 'Soberana 02', '19-04-2021')
+INTO vaccination VALUES (17, 'AstraZeneca', '12-03-2021')
 select * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO Alerte VALUES ('2021-07-23', 12);
+INSERT INTO Alerte VALUES ('23-07-2021', 12);
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------

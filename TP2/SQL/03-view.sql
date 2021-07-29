@@ -40,9 +40,9 @@ CREATE VIEW liste_quarantaine
 AS
 SELECT quarantaine.id_personne, personne.nom,
 -- Fonction qui retourne le nombre absolu de jours entre deux dates pour Oracle SQL
-DIFFDAYS(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') AS date_difference,
+DiffDays(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') AS date_difference,
 -- Le nombre de jours inclusivement --> plus commun d'utiliser ça (j'ai mis les deux je poserai la question prochain cours)
-DIFFDAYS(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') + 1 AS jours_inclusif 
+DiffDays(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') + 1 AS jours_inclusif 
 FROM quarantaine
 INNER JOIN personne ON quarantaine.id_personne = personne.id_personne
 WHERE
