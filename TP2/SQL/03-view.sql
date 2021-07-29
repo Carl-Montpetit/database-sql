@@ -41,7 +41,25 @@ order by vaccination.date_vaccination;
 -- Id #6 --> Priorité : Obligatoire
 -- Créer une vue (liste_admissible_vaccin) permettant de fournir la liste des employés qui sont admissibles pour faire le vaccin moderna.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
+create view liste_admissible_vaccin
+as
+select employe.id_personne, personne.nom from employe
+left join vaccination on
+    employe.id_personne = vaccination.id_personne
+inner join personne on
+    employe.id_personne = personne.id_personne
+where not exists (
+    select null
+    from vaccination
+    where employe.id_personne = vaccination.id_personne
+)
+or (vaccination.nom_vaccin = 'Moderna')
+and not exists (
+    select null
+    from liste_vaccine
+    where employe.id_personne = liste_vaccine.id_personne
+)
+order by employe.id_personne;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #7 --> Priorité : Obligatoire
