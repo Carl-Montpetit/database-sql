@@ -39,18 +39,13 @@ ORDER BY v.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW liste_quarantaine
 AS
-SELECT q.id_personne, p.nom,
--- Fonction qui retourne le nombre absolu de jours entre deux dates pour Oracle SQL
-DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') 
-AS date_difference,
---  //TODO : Le nombre de jours inclusivement --> plus commun d'utiliser ça (j'ai mis les deux je poserai la question prochain cours)
-DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') + 1 
-AS jours_inclusif 
+SELECT q.id_personne, p.nom, (DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') + 1) 
+AS jours_restants -- Le nombre de jours inclusivement (+1) 
 FROM quarantaine q
-INNER JOIN personne p 
+INNER JOIN personne p -- L'⋂ des 2 tables
 ON (q.id_personne = p.id_personne)
-WHERE (q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021')
-ORDER BY jours_inclusif;
+WHERE (q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021') -- borne exclusive 
+ORDER BY jours_restants;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
 -- Créer une vue (liste_admissible_vaccin) permettant de fournir la liste des employés qui sont admissibles pour faire le vaccin moderna.
@@ -110,12 +105,14 @@ FROM rencontre r
 INNER JOIN visiteur v
 ON (r.id_visiteur = v.id_personne) 
 INNER JOIN alerte a 
-ON (v.id_personne = a.id_personne)
-WHERE DiffDays(r.date_rencontre, 'DD-MM-YYYY', a.date_actuelle, 'DD-MM-YYYY') <= 1; 
+ON (v.id_personne = a.id_personne) -- L'⋂ des trois tables
+WHERE (DiffDays(r.date_rencontre, 'DD-MM-YYYY', a.date_actuelle, 'DD-MM-YYYY') <= 1) 
+-- ∆ entre les 2 dates en jours <= 1 jour
+ORDER BY r.id_visiteur; 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #11 --> Priorité : Important
 -- Créer une vue (liste_paresseux) permettant de fournir la liste des employés qui travaillent dans un département à risque -- de plus que 80% et qui n’ont pas reçu le vaccin, regroupé par département.
--- //FIXME : Pas certain du order by à cause 
+--// FIXME : Pas certain du order by à cause 
 ------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW liste_paresseux 
 AS 
@@ -134,9 +131,14 @@ AND (d.pourcentage_risque > 80)
 ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #18 --> Priorité : Important
--- En tant que directeur du projet, je veux que vous développiez 4 une nouvelle vue basée sur une requête complexe impliquant au minimum 4 tables. Cette vue doit répondre à un besoin pertinent qui n’est pas déjà été défini dans le cahier des charges.
+-- En tant que directeur du projet, je veux que vous développiez une nouvelle vue basée sur une requête complexe impliquant au minimum 4 tables. Cette vue doit répondre à un besoin pertinent qui n’est pas déjà été défini dans le cahier des charges.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
+--// FIXME : Idée comme ça pour le moment... Gêné vous pas si vous trouvez mieux!
+-- Description : Affiche la liste des entreprises externes possèdant des employés à risque de contaminer leur établissement après leur visite dans la compagnie G2BUqamInc entre le 1 mai et le 30 juin 2021 ainsi que la date de l'alerte pour chacun de leur employé en plus d'afficher les symptômes et la température des personnes contaminé. De plus, leur numero d'assurance sociale (id_personne), ville, numéro d'adresse et code postal pour les services médicals.
+
+-- Les tables : personne, entree_sortie, alerte et visiteur (4 tables)
+-- Les attributs : v.nom_entreprise, a.date_actuelle, p.id_personne, v.id_personne, a.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
+--// TODO 
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
