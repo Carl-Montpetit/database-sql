@@ -58,7 +58,7 @@ CREATE VIEW liste_admissible_vaccin
 AS
 SELECT e.id_personne, p.nom 
 FROM employe e
-LEFT JOIN vaccination v ON
+LEFT OUTER JOIN vaccination v ON
     e.id_personne = v.id_personne
 INNER JOIN personne p ON
     e.id_personne = p.id_personne
