@@ -149,6 +149,9 @@ CREATE TABLE vaccination (
 -- Permissions pour les utilisateurs --
 ------------------------------------------------------------------------------------------------------------------------
 -- Directeur
+
+-- Id #17 --> Priorité : Important
+-- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 GRANT INSERT, UPDATE, DELETE, SELECT ON personne TO directeur;
 GRANT INSERT, UPDATE, DELETE, SELECT ON employe TO directeur;
 GRANT INSERT, UPDATE, DELETE, SELECT ON visiteur TO directeur;
@@ -165,6 +168,9 @@ GRANT INSERT, SELECT ON vaccin TO visiteur;
 GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
 ------------------------------------------------------------------------------------------------------------------------
 -- Administrateur (pour ∀ les TABLEs)
+
+-- Id #14 --> Priorité : Important
+-- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de remplir chacune des tables avec des données de test.
 -- Les drop n'existe pas pour le grant
 GRANT INSERT, UPDATE, DELETE ON personne TO administrateur;
 GRANT INSERT, UPDATE, DELETE ON departement TO administrateur;

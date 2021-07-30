@@ -23,11 +23,16 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- //TODO
 CREATE OR REPLACE PROCEDURE presence(date_debut IN TIMESTAMP, date_fin IN TIMESTAMP)
 AS
 BEGIN
-    SELECT 
+    SELECT es.date_heure_entree, es.date_heure_sortie,e.nom_departement, p.nom 
+    FROM personne p
+    INNER JOIN entree_sortie es
+    ON p.id_personne = es.id_personne
+    INNER JOIN employe
+    ON p.id_personne = e.id_personne
+    WHERE (es.date_heure_entree AND es.date_heure_sortie) BETWEEN (date_debut AND date_fin) --//TODO pas certain de ça
 END;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
@@ -37,7 +42,7 @@ END;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #12 --> Priorité : Important
--- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er 5 mars 2021 et qui n’ont pas déclaré des symptômes.
+-- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
 
@@ -50,14 +55,12 @@ END;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
-
--- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de remplir chacune des tables avec des données de test.
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #15 --> Priorité : Important
--- Le système doit s’assurer que les codes postaux respectent 4 bien le format suivant : A#A #A#
+-- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
 
@@ -72,6 +75,7 @@ END;
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
 -- code ici
+
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------

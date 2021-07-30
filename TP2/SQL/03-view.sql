@@ -140,6 +140,7 @@ ORDER BY d.nom_departement;
 -- Les attributs : v.nom_entreprise, a.date_actuelle, p.id_personne, v.id_personne, a.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
 --// TODO 
 CREATE OR REPLACE VIEW entreprise_a_risque
+AS
 SELECT 
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
