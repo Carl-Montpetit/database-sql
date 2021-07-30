@@ -86,8 +86,8 @@ SELECT
     p.nom,
     e.nom_departement
 FROM employe e
-JOIN personne p ON e.id_personne = p.id_personne
-JOIN departement d ON e.nom_departement = d.nom_departement
+INNER JOIN personne p ON e.id_personne = p.id_personne
+INNER JOIN departement d ON e.nom_departement = d.nom_departement
 WHERE NOT EXISTS (
     SELECT NULL
     FROM entree_sortie
@@ -124,8 +124,8 @@ SELECT
     e.nom_departement,
     d.pourcentage_risque
 FROM employe e
-JOIN personne p ON e.id_personne = p.id_personne
-JOIN departement d ON e.nom_departement = d.nom_departement
+INNER JOIN personne p ON e.id_personne = p.id_personne
+INNER JOIN departement d ON e.nom_departement = d.nom_departement
 WHERE NOT EXISTS (
     SELECT NULL
     FROM vaccination v
