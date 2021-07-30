@@ -133,15 +133,30 @@ ORDER BY d.nom_departement;
 -- Id #18 --> Priorité : Important
 -- En tant que directeur du projet, je veux que vous développiez une nouvelle vue basée sur une requête complexe impliquant au minimum 4 tables. Cette vue doit répondre à un besoin pertinent qui n’est pas déjà été défini dans le cahier des charges.
 ------------------------------------------------------------------------------------------------------------------------
---// FIXME : Idée comme ça pour le moment... Gênez-vous pas si vous trouvez mieux!
--- Description : Affiche la liste des entreprises externes possédant des employés à risque de contaminer leur établissement après leur visite dans la compagnie G2BUqamInc entre le 1er mai et le 30 juin 2021. D'ailleurs, affiche la date de l'alerte pour chacun de leur employé en plus d'afficher les symptômes et la température des personnes contaminée. De plus, le numéro d'assurance sociale (id_personne), ville, numéro d'adresse et code postal des employés des entreprises externe contaminés pour les services médicaux. Finalement, l'affichage est groupé par nom d'entreprise externe et trié par date des alertes des plus récentes au plus anciennes.
-
--- Les tables : personne, entree_sortie, alerte et visiteur (4 tables)
--- Les attributs : v.nom_entreprise, a.date_actuelle, p.id_personne, v.id_personne, a.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
---// TODO 
 CREATE OR REPLACE VIEW entreprise_a_risque
 AS
-SELECT 
+SELECT v.nom_entreprise, a.date_actuelle, p.id_personne, v.id_personne, a.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
+
+FROM personne p
+INNER JOIN visiteur v
+ON(p.id_personne = v.id_personne)
+INNER JOIN alerte a
+ON(p.id_personne = a.id_personne)
+INNER JOIN entree_sortie es
+ON(p.id_personne = es.id_personne)
+INNER JOIN employe e
+ON(p.id_personne = e.id_personne)
+WHERE (es.date_heure_entree) BETWEEN TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
+AND TO_DATE ('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
+AND
+(es.date_heure_sortie) BETWEEN TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
+AND TO_DATE ('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
+AND EXISTS (
+    SELECT null
+    FROM visiteur v
+    WHERE (p.id_personne = v.id_personne)
+)
+ORDER BY a.date_actuelle ASC;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
