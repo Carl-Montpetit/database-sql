@@ -32,7 +32,11 @@ BEGIN
     ON p.id_personne = es.id_personne
     INNER JOIN employe
     ON p.id_personne = e.id_personne
-    WHERE (es.date_heure_entree AND es.date_heure_sortie) BETWEEN (date_debut AND date_fin) --//TODO pas certain de ça
+    WHERE (es.date_heure_entree) BETWEEN TO_DATE(date_debut, 'DD-MM-YYYY HH24:MI:SS') 
+    AND TO_DATE (date_fin , 'DD-MM-YYYY HH24:MI:SS')
+    AND
+    (es.date_heure_sortie) BETWEEN TO_DATE(date_debut, 'DD-MM-YYYY HH24:MI:SS') 
+    AND TO_DATE (date_fin , 'DD-MM-YYYY HH24:MI:SS')
 END;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
