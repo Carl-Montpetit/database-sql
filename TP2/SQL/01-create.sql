@@ -16,7 +16,7 @@
 SET AUTOCOMMIT ON;
 -- Changement de format des dates --> Par défaut c'est DD-MON-YY dans Oracle SQL --
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'; -- Pour jj-mm-aaaa
-ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH:MI:SS';  -- idem, mais pour le timestamp 
+ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH24:MI:SS'; -- idem, mais pour le timestamp 
 ------------------------------------------------------------------------------------------------------------------------
 -- On efface les tables s'ils existent préalablement --
 ------------------------------------------------------------------------------------------------------------------------

@@ -44,7 +44,7 @@ AS jours_restants -- Le nombre de jours inclusivement (+1)
 FROM quarantaine q
 INNER JOIN personne p -- L'⋂ des 2 tables
 ON (q.id_personne = p.id_personne)
-WHERE (q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021') -- borne exclusive 
+WHERE (q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021') -- bornes exclusives 
 ORDER BY jours_restants;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
