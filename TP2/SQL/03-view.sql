@@ -18,36 +18,37 @@
 ------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW liste_vaccine
 AS
-SELECT vaccination.id_personne, personne.nom, vaccination.nom_vaccin, vaccination.date_vaccination FROM vaccination
-INNER JOIN personne ON
-    personne.id_personne = vaccination.id_personne
-WHERE (vaccination.id_personne) IN 
-    (SELECT vaccination.id_personne FROM vaccination
-    GROUP BY vaccination.id_personne
+SELECT v.id_personne, p.nom, v.nom_vaccin, v.date_vaccination 
+FROM vaccination v
+INNER JOIN personne p ON
+    p.id_personne = v.id_personne
+WHERE (v.id_personne) IN 
+    (SELECT v.id_personne FROM vaccination
+    GROUP BY v.id_personne
     HAVING count(id_personne) = 2
     )
 AND EXISTS (
     SELECT null
-    FROM employe
-    WHERE employe.id_personne = vaccination.id_personne
+    FROM employe e
+    WHERE e.id_personne = v.id_personne
 )
-ORDER BY vaccination.date_vaccination;
+ORDER BY v.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #5 --> Priorité : Obligatoire
 -- Créer une vue (liste_quarantaine) permettant de fournir la liste de tous les employés en quarantaine avec le nombre de jours restant de leur quarantaine entre le 1er mai et le 30 juin 2021.
 ------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW liste_quarantaine
 AS
-SELECT quarantaine.id_personne, personne.nom,
+SELECT q.id_personne, p.nom,
 -- Fonction qui retourne le nombre absolu de jours entre deux dates pour Oracle SQL
-DiffDays(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') AS date_difference,
+DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') AS date_difference,
 -- Le nombre de jours inclusivement --> plus commun d'utiliser ça (j'ai mis les deux je poserai la question prochain cours)
-DiffDays(quarantaine.date_debut, 'DD-MM-YYYY', quarantaine.date_fin, 'DD-MM-YYYY') + 1 AS jours_inclusif 
-FROM quarantaine
-INNER JOIN personne ON quarantaine.id_personne = personne.id_personne
+DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') + 1 AS jours_inclusif 
+FROM quarantaine q
+INNER JOIN personne p ON q.id_personne = p.id_personne
 WHERE
-quarantaine.date_debut > '01-05-2021' AND quanrantaine.date_fin < '30-06-2021'
-GROUP BY personne.nom
+q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021'
+GROUP BY p.nom
 ORDER BY jours_inclusif;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
@@ -55,23 +56,24 @@ ORDER BY jours_inclusif;
 ------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW liste_admissible_vaccin
 AS
-SELECT employe.id_personne, personne.nom FROM employe
-LEFT JOIN vaccination ON
-    employe.id_personne = vaccination.id_personne
-INNER JOIN personne ON
-    employe.id_personne = personne.id_personne
+SELECT e.id_personne, p.nom 
+FROM employe e
+LEFT JOIN vaccination v ON
+    e.id_personne = v.id_personne
+INNER JOIN personne p ON
+    e.id_personne = p.id_personne
 WHERE NOT EXISTS (
     SELECT null
-    FROM vaccination
-    WHERE employe.id_personne = vaccination.id_personne
+    FROM vaccination v
+    WHERE e.id_personne = v.id_personne
 )
-OR (vaccination.nom_vaccin = 'Moderna')
+OR (v.nom_vaccin = 'Moderna')
 AND NOT EXISTS (
     SELECT null
-    FROM liste_vaccine
-    WHERE employe.id_personne = liste_vaccine.id_personne
+    FROM liste_vaccine lv
+    WHERE e.id_personne = lv.id_personne
 )
-ORDER BY employe.id_personne;
+ORDER BY e.id_personne;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #7 --> Priorité : Obligatoire
@@ -80,23 +82,23 @@ ORDER BY employe.id_personne;
 CREATE VIEW liste_disponibilites
 AS
 SELECT
-    P.id_personne,
-    P.Nom,
-    E.Nom_departement
-FROM employe E
-JOIN Personne P ON E.ID_personne = P.ID_personne
-JOIN Departement D ON E.Nom_departement = D.Nom_Departement
+    p.id_personne,
+    p.nom,
+    e.nom_departement
+FROM employe e
+JOIN personne p ON e.id_personne = p.id_personne
+JOIN departement d ON e.nom_departement = d.nom_departement
 WHERE NOT EXISTS (
     SELECT NULL
-    FROM Entree_sortie
-    WHERE E.ID_personne = Entree_sortie.id_personne
+    FROM entree_sortie
+    WHERE e.id_personne = entree_sortie.id_personne
 )
 AND NOT EXISTS(
     SELECT NULL
-    FROM Alerte
-    WHERE E.ID_personne = Alerte.id_personne
+    FROM alerte a
+    WHERE e.id_personne = a.id_personne
 )
-ORDER BY D.Nom_Departement;
+ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #9 --> Priorité : Très important
 -- Créer une vue (liste_arisque) permettant de fournir la liste des visiteurs qui ont contacté un employé atteint du Covid-19 durant la visite (l’employé a déclaré les symptômes au maximum 24 heures plus tard).
@@ -117,20 +119,20 @@ WHERE
 CREATE VIEW liste_paresseux 
 AS 
 SELECT
-    P.Nom,
-    E.Poste,
-    E.Nom_departement,
-    D.pourcentage_risque
-FROM employe E
-JOIN Personne P ON E.ID_personne = P.ID_personne
-JOIN Departement D ON E.Nom_departement = D.Nom_Departement
+    p.nom,
+    e.poste,
+    e.nom_departement,
+    d.pourcentage_risque
+FROM employe e
+JOIN personne p ON e.id_personne = p.id_personne
+JOIN departement d ON e.nom_departement = d.nom_departement
 WHERE NOT EXISTS (
     SELECT NULL
-    FROM vaccination
-    where E.ID_personne = vaccination.id_personne
+    FROM vaccination v
+    where e.id_personne = v.id_personne
 )
-AND D.pourcentage_risque > 80 
-ORDER BY D.Nom_Departement;
+AND d.pourcentage_risque > 80 
+ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #18 --> Priorité : Important
 -- En tant que directeur du projet, je veux que vous développiez 4 une nouvelle vue basée sur une requête complexe impliquant au minimum 4 tables. Cette vue doit répondre à un besoin pertinent qui n’est pas déjà été défini dans le cahier des charges.
