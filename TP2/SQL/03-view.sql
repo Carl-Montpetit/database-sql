@@ -133,10 +133,10 @@ ORDER BY d.nom_departement;
 -- Id #18 --> Priorité : Important
 -- En tant que directeur du projet, je veux que vous développiez une nouvelle vue basée sur une requête complexe impliquant au minimum 4 tables. Cette vue doit répondre à un besoin pertinent qui n’est pas déjà été défini dans le cahier des charges.
 ------------------------------------------------------------------------------------------------------------------------
+-- Description : Affiche la liste des entreprises externes possédant des employés à risque de contaminer leur établissement après leur visite dans la compagnie G2BUqamInc entre le 1er mai et le 30 juin 2021. D'ailleurs, affiche la date de l'alerte pour chacun de leur employé en plus d'afficher les symptômes et la température des personnes contaminée. De plus, le numéro d'assurance sociale (id_personne), ville, numéro d'adresse et code postal des employés des entreprises externe contaminés pour les services médicaux. Finalement, l'affichage est groupé par nom d'entreprise externe et trié par date des alertes des plus récentes au plus anciennes. (5 tables impliqués)
 CREATE OR REPLACE VIEW entreprise_a_risque
 AS
 SELECT v.nom_entreprise, a.date_actuelle, p.id_personne, v.id_personne, a.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
-
 FROM personne p
 INNER JOIN visiteur v
 ON(p.id_personne = v.id_personne)
