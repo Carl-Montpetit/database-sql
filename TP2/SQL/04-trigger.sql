@@ -69,8 +69,23 @@ AND (symptomes = 'aucun');                       --**note: remove semicolon if a
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
-
+-- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP
+-- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé CASCADE
+CREATE OR REPLACE FUNCTION vider_tables 
+AS
+BEGIN
+    TRUNCATE TABLE vaccination CASCADE
+    TRUNCATE TABLE vaccin 
+    TRUNCATE TABLE risque CASCADE
+    TRUNCATE TABLE rencontre CASCADE
+    TRUNCATE TABLE quarantaine CASCADE
+    TRUNCATE TABLE entree_sortie CASCADE
+    TRUNCATE TABLE alerte CASCADE
+    TRUNCATE TABLE visiteur CASCADE
+    TRUNCATE TABLE employe CASCADE
+    TRUNCATE TABLE departement
+    TRUNCATE TABLE personne 
+END;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #15 --> Priorité : Important
 -- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#

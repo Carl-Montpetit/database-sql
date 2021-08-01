@@ -67,8 +67,10 @@ CREATE TABLE Employe (
     nom_departement     VARCHAR(45) NOT NULL ,
 
     PRIMARY KEY (id_personne),
-    FOREIGN KEY (id_personne) REFERENCES personne(id_personne),
+    FOREIGN KEY (id_personne) REFERENCES personne(id_personne)
+     ON DELETE CASCADE,
     FOREIGN KEY (nom_departement) REFERENCES Departement (nom_departement)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Visiteur (
@@ -77,6 +79,7 @@ CREATE TABLE Visiteur (
 
     PRIMARY KEY (id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Alerte (
@@ -85,6 +88,7 @@ CREATE TABLE Alerte (
 
     PRIMARY KEY (date_actuelle, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Entree_Sortie (
@@ -97,6 +101,7 @@ CREATE TABLE Entree_Sortie (
 
     PRIMARY KEY (date_heure_entree, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Quarantaine (
@@ -107,6 +112,7 @@ CREATE TABLE Quarantaine (
 
     PRIMARY KEY (id_quarantaine),
     FOREIGN KEY (id_personne) REFERENCES Employe (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Rencontre (
@@ -115,8 +121,10 @@ CREATE TABLE Rencontre (
     date_rencontre      TIMESTAMP NOT NULL ,
 
     PRIMARY KEY (id_visiteur, id_employe, date_rencontre),
-    FOREIGN KEY (id_visiteur) REFERENCES Visiteur (id_personne),
+    FOREIGN KEY (id_visiteur) REFERENCES Visiteur (id_personne)
+     ON DELETE CASCADE,
     FOREIGN KEY (id_employe) REFERENCES Employe (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Risque (
@@ -125,6 +133,7 @@ CREATE TABLE Risque (
 
     PRIMARY KEY (date_actuelle, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE Vaccin (
@@ -142,8 +151,10 @@ CREATE TABLE vaccination (
     date_vaccination    DATE NOT NULL ,
 
     PRIMARY KEY (id_personne, nom_vaccin, date_vaccination),
-    FOREIGN KEY (id_personne) REFERENCES personne (id_personne),
+    FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+     ON DELETE CASCADE,
     FOREIGN KEY (nom_vaccin) REFERENCES Vaccin (nom_vaccin)
+     ON DELETE CASCADE
 );
 ------------------------------------------------------------------------------------------------------------------------
 -- Permissions pour les utilisateurs --
@@ -172,16 +183,16 @@ GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de remplir chacune des tables avec des données de test.
 -- Les drop n'existe pas pour le grant
-GRANT INSERT, UPDATE, DELETE ON personne TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON departement TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON visiteur TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON alerte TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON Entree_Sortie TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON Quarantaine TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON rencONtre TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON risque TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON vaccin TO administrateur;
-GRANT INSERT, UPDATE, DELETE ON vaccination TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON personne TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON departement TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON visiteur TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON alerte TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Entree_Sortie TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Quarantaine TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON rencONtre TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON risque TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccin TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccination TO administrateur;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
