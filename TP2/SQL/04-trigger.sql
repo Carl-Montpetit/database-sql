@@ -71,7 +71,7 @@ AND (symptomes = 'aucun');                       --**note: remove semicolon if a
 ------------------------------------------------------------------------------------------------------------------------
 -- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP
 -- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé CASCADE
-CREATE OR REPLACE FUNCTION vider_tables 
+CREATE OR REPLACE PROCEDURE vider_tables 
 AS
 BEGIN
     TRUNCATE TABLE vaccination CASCADE
