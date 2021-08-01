@@ -48,7 +48,16 @@ END;
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
+
+--CREATE TEMPORARY VIEW ancient_visiteurs
+--AS
+SELECT v.id_personne FROM visiteur v
+INNER JOIN entree_sortie es
+ON (v.id_personne = es.id_personne)
+WHERE (date_heure_sortie < '01-03-2021 00:00:00')
+AND (symptomes = 'aucun');                       --**note: remove semicolon if adding ↓↓↓↓
+--DELETE FROM visiteur
+--WHERE (ancient_visiteurs.id_personne = v.id_personne);
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #13 --> Priorité : Obligatoire
