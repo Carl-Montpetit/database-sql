@@ -57,17 +57,17 @@ SELECT * FROM dual;
 -- Insertion employé --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO employe VALUES (1, '21-05-1994', 'commis comptoir', 30000.00, 'StockRoom')
-INTO employe VALUES (3, '08-08-1928', 'directeur R and D', 10000.00, 'R and D')
-INTO employe VALUES (5, '17-01-1975', 'gratte-papier', 99999.28, 'Bureau des plaintes')
-INTO employe VALUES (7, '15-07-1900', 'technicien qualité', 41600.41, 'Qualité')
-INTO employe VALUES (9, '05-03-1964', 'technicien', 56000.00, 'Production')
-INTO employe VALUES (11, '05-03-1964', 'technicien', 56000.00, 'Production')
-INTO employe VALUES (12, '11-06-2000', 'technicien', 56000.00, 'Production')
-INTO employe VALUES (13, '06-11-2003', 'technicien', 56000.00, 'Production')
-INTO employe VALUES (15, '03-10-1931', 'paye', 60000.01, 'Finance')
-INTO employe VALUES (17, '11-08-1982', 'le boss', 99999.99, 'Administration')
-INTO employe VALUES (19, '01-04-2005', 'livreur', 25000.00, 'Livraison')
+INTO employe VALUES (1, TO_DATE('21-05-1994', 'DD-MM-YYYY'), 'commis comptoir', 30000.00, 'StockRoom')
+INTO employe VALUES (3, TO_DATE('08-08-1928', 'DD-MM-YYYY'), 'directeur R and D', 10000.00, 'R and D')
+INTO employe VALUES (5, TO_DATE('17-01-1975', 'DD-MM-YYYY'), 'gratte-papier', 99999.28, 'Bureau des plaintes')
+INTO employe VALUES (7, TO_DATE('15-07-1900', 'DD-MM-YYYY'), 'technicien qualité', 41600.41, 'Qualité')
+INTO employe VALUES (9, TO_DATE('05-03-1964', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
+INTO employe VALUES (11, TO_DATE('05-03-1964', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
+INTO employe VALUES (12, TO_DATE('11-06-2000', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
+INTO employe VALUES (13, TO_DATE('06-11-2003', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
+INTO employe VALUES (15, TO_DATE('03-10-1931', 'DD-MM-YYYY'), 'paye', 60000.01, 'Finance')
+INTO employe VALUES (17, TO_DATE('11-08-1982', 'DD_MM-YYYY'), 'le boss', 99999.99, 'Administration')
+INTO employe VALUES (19, TO_DATE('01-04-2005', 'DD-MM-YYYY'), 'livreur', 25000.00, 'Livraison')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion visiteur --
@@ -88,61 +88,81 @@ SELECT * FROM dual;
 -- Insertion entrée_sortie --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO entree_sortie VALUES ('28-02-2021 06:00:00', 15, '28-02-2021 14:00:00', 36.70, 'aucun', 'non')
-INTO entree_sortie VALUES ('28-02-2021 11:30:00', 12, '28-02-2021 13:30:00', 36.00, 'aucun', 'oui')
-INTO entree_sortie VALUES ('28-02-2021 18:00:00', 16, '28-02-2021 20:00:00', 40.20, 'fievre', 'oui')
-INTO entree_sortie VALUES ('28-02-2021 14:00:00', 17, '28-02-2021 22:00:00', 41.00, 'fievre', 'non')
-INTO entree_sortie VALUES ('01-03-2021 10:30:00', 5, '01-03-2021 18:30:00', 36.10, 'aucun', 'non')
-INTO entree_sortie VALUES ('01-03-2021 12:00:00', 14, '01-03-2021 12:34:00', 35.80, 'aucun', 'oui')
-INTO entree_sortie VALUES ('04-04-2021 10:30:00', 19, '04-04-2021 18:30:00', 38.00, 'faiblesse', 'oui')
-INTO entree_sortie VALUES ('04-04-2021 10:30:00', 10, '04-04-2021 11:15:00', 38.20, 'fatigue', 'oui')
-INTO entree_sortie VALUES ('04-04-2021 12:45:00', 4, '04-04-2021 14:00:00', 36.60, 'aucun', 'oui')
-INTO entree_sortie VALUES ('04-04-2021 13:55:00', 20, '04-04-2021 16:30:00', 36.90, 'aucun', 'oui')
-INTO entree_sortie VALUES ('18-05-2021 10:30:00', 1, '18-05-2021 18:30:00', 37.00, 'aucun', 'non')
-INTO entree_sortie VALUES ('23-06-2021 6:00:00', 9, '23-06-2021 14:00:00', 40.00, 'aucun', 'oui')
-INTO entree_sortie VALUES ('23-06-2021 14:00:00', 11, '23-06-2021 22:00:00', 40.00, 'aucun', 'oui')
-INTO entree_sortie VALUES ('23-06-2021 08:30:00', 2, '23-06-2021 15:00:00', 41.00, 'fievre', 'non')
-INTO entree_sortie VALUES ('25-06-2021 10:30:00', 7, '25-06-2021 18:30:00', 36.10, 'aucun', 'non')
-INTO entree_sortie VALUES ('25-06-2021 11:11:00', 6, '25-06-2021 11:45:00', 35.80, 'aucun', 'oui')
-INTO entree_sortie VALUES ('25-06-2021 16:30:00', 8, '25-06-2021 18:25:00', 38.00, 'faiblesse', 'oui')
-INTO entree_sortie VALUES ('02-07-2021 10:30:00', 13, '02-07-2021 18:30:00', 38.20, 'fatigue', 'oui')
-INTO entree_sortie VALUES ('25-07-2021 08:30:00', 3, '25-07-2021 15:00:00', 36.60, 'aucun', 'oui')
-INTO entree_sortie VALUES ('25-07-2021 08:30:00', 18, '25-07-2021 15:00:00', 36.90, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('28-02-2021 06:00:00', 'DD-MM-YYYY HH24:MI:SS'), 15,
+                           TO_DATE('28-02-2021 14:00:00', 'DD-MM-YYYY HH24:MI:SS'), 36.70, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('28-02-2021 11:30:00', 'DD-MM-YYYY HH24:MI:SS'), 12,
+                           TO_DATE('28-02-2021 13:30:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('28-02-2021 18:00:00', 'DD-MM-YYYY HH24:MI:SS'), 16,
+                           TO_DATE('28-02-2021 20:00:00', 'DD-MM-YYYY HH24:MI:SS'), 40.20, 'fievre', 'oui')
+INTO entree_sortie VALUES (TO_DATE('28-02-2021 14:00:00', 'DD-MM-YYYY HH24:MI:SS'), 17,
+                           TO_DATE('28-02-2021 22:00:00', 'DD-MM-YYYY HH24:MI:SS'), 41.00, 'fievre', 'non')
+INTO entree_sortie VALUES (TO_DATE('01-03-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 5,
+                           TO_DATE('01-03-2021 18:30:00', 'DD-MM-YYYY HH24:MI:SS'), 36.10, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('01-03-2021 12:00:00', 'DD-MM-YYYY HH24:MI:SS'), 14,
+                           TO_DATE('01-03-2021 12:34:00', 'DD-MM-YYYY HH24:MI:SS'), 35.80, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('04-04-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 19,
+                           TO_DATE('04-04-2021 18:30:00', 'DD-MM-YYYY HH24:MI:SS'), 38.00, 'faiblesse', 'oui')
+INTO entree_sortie VALUES (TO_DATE('04-04-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 10,
+                           TO_DATE('04-04-2021 11:15:00', 'DD-MM-YYYY HH24:MI:SS'), 38.20, 'fatigue', 'oui')
+INTO entree_sortie VALUES (TO_DATE('04-04-2021 12:45:00', 'DD-MM-YYYY HH24:MI:SS'), 4,
+                           TO_DATE('04-04-2021 14:00:00', 'DD-MM-YYYY HH24:MI:SS'), 36.60, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('04-04-2021 13:55:00', 'DD-MM-YYYY HH24:MI:SS'), 20,
+                           TO_DATE('04-04-2021 16:30:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('18-05-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 1,
+                           TO_DATE('18-05-2021 18:30:00', 'DD-MM-YYYY HH24:MI:SS'), 37.00, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('23-06-2021 6:00:00', 'DD-MM-YYYY HH24:MI:SS'), 9,
+                           TO_DATE('23-06-2021 14:00:00', 'DD-MM-YYYY HH24:MI:SS'), 40.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('23-06-2021 14:00:00', 'DD-MM-YYYY HH24:MI:SS'), 11,
+                           TO_DATE('23-06-2021 22:00:00', 'DD-MM-YYYY HH24:MI:SS'), 40.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('23-06-2021 08:30:00', 'DD-MM-YYYY HH24:MI:SS'), 2,
+                           TO_DATE('23-06-2021 15:00:00', 'DD-MM-YYYY HH24:MI:SS'), 41.00, 'fievre', 'non')
+INTO entree_sortie VALUES (TO_DATE('25-06-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 7,
+                           TO_DATE('25-06-2021 18:30:00', 'DD-MM-YYYY HH24:MI:SS'), 36.10, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('25-06-2021 11:11:00', 'DD-MM-YYYY HH24:MI:SS'), 6,
+                           TO_DATE('25-06-2021 11:45:00', 'DD-MM-YYYY HH24:MI:SS'), 35.80, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('25-06-2021 16:30:00', 'DD-MM-YYYY HH24:MI:SS'), 8,
+                           TO_DATE('25-06-2021 18:25:00', 'DD-MM-YYYY HH24:MI:SS'), 38.00, 'faiblesse', 'oui')
+INTO entree_sortie VALUES (TO_DATE('02-07-2021 10:30:00', 'DD-MM-YYYY HH24:MI:SS'), 13,
+                           TO_DATE('02-07-2021 18:30:00', 'DD-MM-YYYY HH24:MI:SS'), 38.20, 'fatigue', 'oui')
+INTO entree_sortie VALUES (TO_DATE('25-07-2021 08:30:00', 'DD-MM-YYYY HH24:MI:SS'), 3,
+                           TO_DATE('25-07-2021 15:00:00', 'DD-MM-YYYY HH24:MI:SS'), 36.60, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('25-07-2021 08:30:00', 'DD-MM-YYYY HH24:MI:SS'), 18,
+                           TO_DATE('25-07-2021 15:00:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Vaccin --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO vaccin VALUES ('Pfizer', 12, '08-01-2021', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Moderna', 12, '12-10-2020', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('AstraZeneca', 50, '26-02-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('Janssen', 18, '27-02-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('Sputnik V', 12, '11-08-2020', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Sinopharm', 18, '07-05-2021', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Covaxin', 12, '25-07-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins') 
-INTO vaccin VALUES ('EpiVacCorona', 18, '07-12-2020', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
-INTO vaccin VALUES ('ZF2001', 18, '01-03-2021', 'fievre, maux de tete, faiblesse, fatigue')
-INTO vaccin VALUES ('Soberana 02', 3, '21-03-2021', 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Pfizer', 12, TO_DATE('08-01-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Moderna', 12, TO_DATE('12-10-2020', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('AstraZeneca', 50, TO_DATE('26-02-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Janssen', 18, TO_DATE('27-02-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('Sputnik V', 12, TO_DATE('11-08-2020', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Sinopharm', 18, TO_DATE('07-05-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Covaxin', 12, TO_DATE('25-07-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('EpiVacCorona', 18, TO_DATE('07-12-2020', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
+INTO vaccin VALUES ('ZF2001', 18, TO_DATE('01-03-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue')
+INTO vaccin VALUES ('Soberana 02', 3, TO_DATE('21-03-2021', 'DD-MM-YYYY'), 'fievre, maux de tete, faiblesse, fatigue, caillots sanguins')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion vaccination--
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO vaccination VALUES (2, 'Moderna', '23-05-2021')
-INTO vaccination VALUES (2, 'Moderna', '23-07-2021')
-INTO vaccination VALUES (3, 'Pfizer', '16-05-2021')
-INTO vaccination VALUES (3, 'Pfizer', '18-07-2021')
-INTO vaccination VALUES (4, 'Sputnik V', '29-04-2021')
-INTO vaccination VALUES (4, 'Sputnik V', '30-06-2021')
-INTO vaccination VALUES (14, 'AstraZeneca', '12-03-2021')
-INTO vaccination VALUES (15, 'Janssen', '04-04-2021')
-INTO vaccination VALUES (16, 'Soberana 02', '19-04-2021')
-INTO vaccination VALUES (17, 'AstraZeneca', '12-03-2021')
+INTO vaccination VALUES (2, 'Moderna', TO_DATE('23-05-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (2, 'Moderna', TO_DATE('23-07-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (3, 'Pfizer', TO_DATE('16-05-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (3, 'Pfizer', TO_DATE('18-07-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (4, 'Sputnik V', TO_DATE('29-04-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (4, 'Sputnik V', TO_DATE('30-06-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (14, 'AstraZeneca', TO_DATE('12-03-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (15, 'Janssen', TO_DATE('04-04-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (16, 'Soberana 02', TO_DATE('19-04-2021', 'DD-MM-YYYY'))
+INTO vaccination VALUES (17, 'AstraZeneca', TO_DATE('12-03-2021', 'DD-MM-YYYY'))
 SELECT * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO Alerte VALUES ('23-07-2021', 12);
+INSERT INTO Alerte VALUES (TO_DATE('23-07-2021', 'DD-MM-YYYY'), 12);
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
