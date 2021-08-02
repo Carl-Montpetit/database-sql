@@ -48,23 +48,14 @@ END;
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME
--- On va utiliser le DELETE pour supprimer un enregistrement (row) à la table visiteur
-CREATE OR REPLACE PROCEDURE p_supprimer_visiteur
-AS 
-BEGIN
-  NULL; -- remplacer le NULL par du code
-END p_supprimer_visiteur;
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
---CREATE TEMPORARY VIEW ancient_visiteurs
---AS
-SELECT v.id_personne FROM visiteur v
-INNER JOIN entree_sortie es
-ON (v.id_personne = es.id_personne)
-WHERE (date_heure_sortie < '01-03-2021 00:00:00')
-AND (symptomes = 'aucun');                       --**note: remove semicolon if adding ↓↓↓↓
---DELETE FROM visiteur
---WHERE (ancient_visiteurs.id_personne = v.id_personne);
+DELETE FROM visiteur v
+WHERE EXISTS (
+SELECT es.date_heure_sortie
+    FROM entree_sortie es
+    WHERE (v.id_personne = es.id_personne
+    AND es.date_heure_sortie < '01-03-2021 00:00:00')
+    AND (es.symptomes = 'aucun')
+);
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #13 --> Priorité : Obligatoire
 -- Créer un déclencheur qui insère dans la table « alerte » la liste des personnes (leur id, le nom, la température, la date actuelle) qui ont une température de 39 degrés ou plus au moins 3 fois pendant les 5 derniers jours lors de l’entrée à l’usine.
