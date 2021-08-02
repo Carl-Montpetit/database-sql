@@ -11,6 +11,7 @@
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LES DÉCLENCHEURS ET LES FONCTIONS --
+-- Les fonctions et les procedures doivent être lancés soit par EXECUTE nom__fonction/procedure; OU par BEGIN nom_fonction/procedure(); END; les triggers sont enclenchés avant ou après un UPDATE, INSERT OU un DELETE
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #3 --> Priorité : Obligatoire
 -- Créer une procédure « presence » permettant de fournir la liste des personnes dans l’usine entre deux dates (qui seront passées en paramètre à la procédure). 
@@ -43,7 +44,6 @@ REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour 
 BEGIN
   NULL; -- remplacer le NULL par du code
 END;
-
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
@@ -117,7 +117,7 @@ END p_vider_tables;
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
 -- On va utiliser le UPDATE ici pour augmenter les salaires
--- //TODO ⟹ PAS FINIT
+-- //TODO ⟹ PAS FINIT ⟹ augmente les salaires one shot pour tout les employés
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe
