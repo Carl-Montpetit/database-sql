@@ -23,21 +23,13 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE PROCEDURE presence(date_debut IN TIMESTAMP, date_fin IN TIMESTAMP)
-AS
+-- Pour certain, c'est la structure de base d'une procedure
+-- //TODO
+CREATE OR REPLACE PROCEDURE presence (date_debut IN DATE, date_fin IN DATE) 
+AS 
 BEGIN
-    SELECT es.date_heure_entree, es.date_heure_sortie,e.nom_departement, p.nom 
-    FROM personne p
-    INNER JOIN entree_sortie es
-    ON p.id_personne = es.id_personne
-    INNER JOIN employe
-    ON p.id_personne = e.id_personne
-    WHERE (es.date_heure_entree) BETWEEN TO_DATE(date_debut, 'DD-MM-YYYY HH24:MI:SS') 
-    AND TO_DATE (date_fin , 'DD-MM-YYYY HH24:MI:SS')
-    AND
-    (es.date_heure_sortie) BETWEEN TO_DATE(date_debut, 'DD-MM-YYYY HH24:MI:SS') 
-    AND TO_DATE (date_fin , 'DD-MM-YYYY HH24:MI:SS')
-END;
+  NULL; -- remplacer le NULL par du code
+END presence;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
@@ -48,7 +40,13 @@ END;
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
-
+-- //FIXME
+CREATE OR REPLACE PROCEDURE supp_visiteurs_avant_premier_mars_sans_sympt 
+AS 
+BEGIN
+  NULL; -- remplacer le NULL par du code
+END supp_visiteurs_avant_premier_mars_sans_sympt ;
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 --CREATE TEMPORARY VIEW ancient_visiteurs
 --AS
 SELECT v.id_personne FROM visiteur v
@@ -58,7 +56,6 @@ WHERE (date_heure_sortie < '01-03-2021 00:00:00')
 AND (symptomes = 'aucun');                       --**note: remove semicolon if adding ↓↓↓↓
 --DELETE FROM visiteur
 --WHERE (ancient_visiteurs.id_personne = v.id_personne);
-
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #13 --> Priorité : Obligatoire
 -- Créer un déclencheur qui insère dans la table « alerte » la liste des personnes (leur id, le nom, la température, la date actuelle) qui ont une température de 39 degrés ou plus au moins 3 fois pendant les 5 derniers jours lors de l’entrée à l’usine.
@@ -72,20 +69,10 @@ AND (symptomes = 'aucun');                       --**note: remove semicolon if a
 -- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP
 -- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé CASCADE
 CREATE OR REPLACE PROCEDURE vider_tables 
-AS
+AS 
 BEGIN
-    TRUNCATE TABLE vaccination CASCADE
-    TRUNCATE TABLE vaccin 
-    TRUNCATE TABLE risque CASCADE
-    TRUNCATE TABLE rencontre CASCADE
-    TRUNCATE TABLE quarantaine CASCADE
-    TRUNCATE TABLE entree_sortie CASCADE
-    TRUNCATE TABLE alerte CASCADE
-    TRUNCATE TABLE visiteur CASCADE
-    TRUNCATE TABLE employe CASCADE
-    TRUNCATE TABLE departement
-    TRUNCATE TABLE personne 
-END;
+  NULL; -- remplacer le NULL par du code
+END vider_tables;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #15 --> Priorité : Important
 -- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
@@ -102,8 +89,11 @@ END;
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
-
+CREATE OR REPLACE PROCEDURE augmenter_salaire_deux_pourcent 
+AS 
+BEGIN
+  NULL; -- remplacer le NULL par du code
+END augmenter_salaire_deux_pourcent;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
