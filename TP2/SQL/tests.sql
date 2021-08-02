@@ -9,21 +9,21 @@ select * from employe;          -- ✔
 select * from visiteur;         -- ✔
 select * from alerte;           -- ✔
 select * from entree_sortie;    -- ✔
-select * from quarantaine;      -- pas de insert data ⟹ OKAY une fois intégré
-select * from rencontre;        -- pas de insert data ⟹ OKAY une fois intégré
-select * from risque;           -- pas de insert data ⟹ OKAY une fois intégré
+select * from quarantaine;      -- ✔
+select * from rencontre;        -- ✔
+select * from risque;           -- ✔
 select * from vaccin;           -- ✔
 select * from vaccination;      -- ✔
 ------------------------------------------------------------------------------------------------------------------------
 -- Tests views -- ⚠
 ------------------------------------------------------------------------------------------------------------------------
 select * from liste_vaccine;            -- ✔
-select * from liste_quarantaine;        -- ∅ de données ⟹ À testé une fois intégré ⚠︎
+select * from liste_quarantaine;        -- ∅ À fixer
 select * from liste_admissible_vaccin;  -- ✔
-select * from liste_disponibilites;     -- ∅ de données ⟹ À testé une fois intégré ⚠︎
-select * from liste_arisque;            -- ∅ de données ⟹ À testé une fois intégré ⚠︎
-select * from liste_paresseux;          -- ✔
-select * from entreprise_a_risque;      -- ∅ de données ⟹ À testé une fois intégré ⚠︎
+select * from liste_disponibilites;     -- ∅ À fixer
+select * from liste_arisque;            -- ∅ devrait être bon, mais à valider
+select * from liste_paresseux;          -- ✔ 
+select * from entreprise_a_risque;      -- ∅ À fixer 
 ------------------------------------------------------------------------------------------------------------------------
 -- Tests procedures --
 ------------------------------------------------------------------------------------------------------------------------
