@@ -63,7 +63,6 @@ INTO employe VALUES (5, TO_DATE('17-01-1975', 'DD-MM-YYYY'), 'gratte-papier', 99
 INTO employe VALUES (7, TO_DATE('15-07-1900', 'DD-MM-YYYY'), 'technicien qualité', 41600.41, 'Qualité')
 INTO employe VALUES (9, TO_DATE('05-03-1964', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
 INTO employe VALUES (11, TO_DATE('05-03-1964', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
-INTO employe VALUES (12, TO_DATE('11-06-2000', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
 INTO employe VALUES (13, TO_DATE('06-11-2003', 'DD-MM-YYYY'), 'technicien', 56000.00, 'Production')
 INTO employe VALUES (15, TO_DATE('03-10-1931', 'DD-MM-YYYY'), 'paye', 60000.01, 'Finance')
 INTO employe VALUES (17, TO_DATE('11-08-1982', 'DD_MM-YYYY'), 'le boss', 99999.99, 'Administration')
@@ -160,65 +159,74 @@ INTO vaccination VALUES (16, 'Soberana 02', TO_DATE('19-04-2021', 'DD-MM-YYYY'))
 INTO vaccination VALUES (17, 'AstraZeneca', TO_DATE('12-03-2021', 'DD-MM-YYYY'))
 SELECT * from dual;
 ------------------------------------------------------------------------------------------------------------------------
+-- Insertion risque --
+------------------------------------------------------------------------------------------------------------------------
+INSERT ALL
+INTO risque VALUES (TO_DATE('01-07-2020', 'DD-MM-YYYY'), 1)
+INTO risque VALUES (TO_DATE('31-10-2020', 'DD-MM-YYYY'), 3)
+INTO risque VALUES (TO_DATE('11-11-2020', 'DD-MM-YYYY'), 5)
+INTO risque VALUES (TO_DATE('25-12-2020', 'DD-MM-YYYY'), 7)
+INTO risque VALUES (TO_DATE('01-01-2021', 'DD-MM-YYYY'), 9)
+INTO risque VALUES (TO_DATE('14-02-2021', 'DD-MM-YYYY'), 11)
+INTO risque VALUES (TO_DATE('23-05-2021', 'DD-MM-YYYY'), 13)
+INTO risque VALUES (TO_DATE('30-06-2021', 'DD-MM-YYYY'), 15)
+INTO risque VALUES (TO_DATE('01-07-2021', 'DD-MM-YYYY'), 17)
+INTO risque VALUES (TO_DATE('22-07-2021', 'DD-MM-YYYY'), 19)
+SELECT * FROM dual;
+------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO Alerte VALUES (TO_DATE('23-07-2021', 'DD-MM-YYYY'), 12)
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-INTO Alerte VALUES ('date_actuelle', 'id_personne')
-SELECT * FROM dual;
-------------------------------------------------------------------------------------------------------------------------
--- Insertion quarantaine --
-------------------------------------------------------------------------------------------------------------------------
-INSERT ALL
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
-INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO Alerte VALUES (TO_DATE('01-07-2020', 'DD-MM-YYYY'), 6)
+INTO Alerte VALUES (TO_DATE('31-10-2020', 'DD-MM-YYYY'), 10)
+INTO Alerte VALUES (TO_DATE('11-11-2020', 'DD-MM-YYYY'), 4)
+INTO Alerte VALUES (TO_DATE('25-12-2020', 'DD-MM-YYYY'), 2)
+INTO Alerte VALUES (TO_DATE('01-01-2021', 'DD-MM-YYYY'), 14)
+INTO Alerte VALUES (TO_DATE('14-02-2021', 'DD-MM-YYYY'), 16)
+INTO Alerte VALUES (TO_DATE('23-05-2021', 'DD-MM-YYYY'), 8)
+INTO Alerte VALUES (TO_DATE('30-06-2021', 'DD-MM-YYYY'), 20)
+INTO Alerte VALUES (TO_DATE('01-07-2021', 'DD-MM-YYYY'), 18)
+INTO Alerte VALUES (TO_DATE('22-07-2021', 'DD-MM-YYYY'), 12)
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion rencontre --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
-INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES (6, 1, (TO_DATE('01-07-2020', 'DD-MM-YYYY'))
+INTO rencontre VALUES (10, 3, (TO_DATE('31-10-2020', 'DD-MM-YYYY'))
+INTO rencontre VALUES (4, 5, (TO_DATE('11-11-2020', 'DD-MM-YYYY'))
+INTO rencontre VALUES (2, 7, (TO_DATE('25-12-2020', 'DD-MM-YYYY'))
+INTO rencontre VALUES (14, 9, (TO_DATE('01-01-2021', 'DD-MM-YYYY'))
+INTO rencontre VALUES (16, 11, (TO_DATE('14-02-2021', 'DD-MM-YYYY'))
+INTO rencontre VALUES (8, 13, (TO_DATE('23-05-2021', 'DD-MM-YYYY'))
+INTO rencontre VALUES (20, 15, (TO_DATE('30-06-2021', 'DD-MM-YYYY'))
+INTO rencontre VALUES (18, 17, (TO_DATE('01-07-2021', 'DD-MM-YYYY'))
+INTO rencontre VALUES (12, 19, (TO_DATE('22-07-2021', 'DD-MM-YYYY'))
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- Insertion risque --
+-- Insertion quarantaine --
 ------------------------------------------------------------------------------------------------------------------------
 INSERT ALL
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
-INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO quarantaine VALUES (1, (TO_DATE('01-07-2020', 'DD-MM-YYYY'), (TO_DATE('10-08-2020', 'DD-MM-YYYY'), 1)
+INTO quarantaine VALUES (2, (TO_DATE('01-07-2020', 'DD-MM-YYYY'), (TO_DATE('10-08-2020', 'DD-MM-YYYY'), 6)
+INTO quarantaine VALUES (3, (TO_DATE('31-10-2020', 'DD-MM-YYYY'), (TO_DATE('10-12-2020', 'DD-MM-YYYY'), 3)
+INTO quarantaine VALUES (4, (TO_DATE('31-10-2020', 'DD-MM-YYYY'), (TO_DATE('10-12-2020', 'DD-MM-YYYY'), 10)
+INTO quarantaine VALUES (5, (TO_DATE('11-11-2020', 'DD-MM-YYYY'), (TO_DATE('21-12-2020', 'DD-MM-YYYY'), 5)
+INTO quarantaine VALUES (6, (TO_DATE('11-11-2020', 'DD-MM-YYYY'), (TO_DATE('21-12-2020', 'DD-MM-YYYY'), 4)
+INTO quarantaine VALUES (7, (TO_DATE('25-12-2020', 'DD-MM-YYYY'), (TO_DATE('03-02-2021', 'DD-MM-YYYY'), 7)
+INTO quarantaine VALUES (8, (TO_DATE('25-12-2020', 'DD-MM-YYYY'), (TO_DATE('03-02-2021', 'DD-MM-YYYY'), 2)
+INTO quarantaine VALUES (9, (TO_DATE('01-01-2021', 'DD-MM-YYYY'), (TO_DATE('10-02-2021', 'DD-MM-YYYY'), 9)
+INTO quarantaine VALUES (10, (TO_DATE('01-01-2021', 'DD-MM-YYYY'), (TO_DATE('10-02-2021', 'DD-MM-YYYY'), 14)
+INTO quarantaine VALUES (11, (TO_DATE('14-02-2021', 'DD-MM-YYYY'), (TO_DATE('26-03-2021', 'DD-MM-YYYY'), 11)
+INTO quarantaine VALUES (12, (TO_DATE('14-02-2021', 'DD-MM-YYYY'), (TO_DATE('26-03-2021', 'DD-MM-YYYY'), 16)
+INTO quarantaine VALUES (13, (TO_DATE('23-05-2021', 'DD-MM-YYYY'), (TO_DATE('02-07-2021', 'DD-MM-YYYY'), 13)
+INTO quarantaine VALUES (14, (TO_DATE('23-05-2021', 'DD-MM-YYYY'), (TO_DATE('02-07-2021', 'DD-MM-YYYY'), 8)
+INTO quarantaine VALUES (15, (TO_DATE('30-06-2021', 'DD-MM-YYYY'), (TO_DATE('09-08-2021', 'DD-MM-YYYY'), 15)
+INTO quarantaine VALUES (16, (TO_DATE('30-06-2021', 'DD-MM-YYYY'), (TO_DATE('09-08-2021', 'DD-MM-YYYY'), 20)
+INTO quarantaine VALUES (17, (TO_DATE('01-07-2021', 'DD-MM-YYYY'), (TO_DATE('10-08-2021', 'DD-MM-YYYY'), 17)
+INTO quarantaine VALUES (18, (TO_DATE('01-07-2021', 'DD-MM-YYYY'), (TO_DATE('10-08-2021', 'DD-MM-YYYY'), 18)
+INTO quarantaine VALUES (19, (TO_DATE('22-07-2021', 'DD-MM-YYYY'), (TO_DATE('31-08-2021', 'DD-MM-YYYY'), 19)
+INTO quarantaine VALUES (20, (TO_DATE('22-07-2021', 'DD-MM-YYYY'), (TO_DATE('31-08-2021', 'DD-MM-YYYY'), 12)
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
