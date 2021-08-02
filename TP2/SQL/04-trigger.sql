@@ -25,7 +25,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- Pour certain, c'est la structure de base d'une procedure
 -- //TODO
-CREATE OR REPLACE PROCEDURE presence (date_debut IN DATE, date_fin IN DATE) 
+CREATE OR REPLACE PROCEDURE presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites
 AS 
 BEGIN
   NULL; -- remplacer le NULL par du code
