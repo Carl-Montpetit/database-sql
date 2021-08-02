@@ -23,7 +23,7 @@ select * from liste_admissible_vaccin;  -- ✔
 select * from liste_disponibilites;     -- ∅ À fixer
 select * from liste_arisque;            -- ∅ devrait être bon, mais à valider
 select * from liste_paresseux;          -- ✔ 
-select * from entreprise_a_risque;      -- ∅ À fixer 
+select * from entreprise_a_risque;      -- ✔
 ------------------------------------------------------------------------------------------------------------------------
 -- Tests procedures --
 ------------------------------------------------------------------------------------------------------------------------
