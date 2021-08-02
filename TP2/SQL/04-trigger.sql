@@ -111,8 +111,8 @@ END p_vider_tables;
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe
-v_augmentation_salaire PLS_INTEGER := 1.02; -- une variable contenant un nombre
-v_ancien_salaire PLS_INTEGER; -- une variable contenant un autre nombre
+v_augmentation_salaire NUMERIC(7, 2) := 1.02; -- une variable contenant un nombre
+v_ancien_salaire NUMERIC(7, 2); -- une variable contenant un autre nombre
 BEGIN
   FOR r_employe IN c_employe LOOP
     v_ancien_salaire := r_employe.salaire;
