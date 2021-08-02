@@ -104,14 +104,18 @@ ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW liste_arisque 
 AS 
-SELECT r.id_visiteur
+SELECT r.id_visiteur, p.nom
 FROM rencontre r
 INNER JOIN visiteur v
 ON (r.id_visiteur = v.id_personne) 
-INNER JOIN alerte a -- L'⋂ des 3 tables
+INNER JOIN alerte a 
 ON (v.id_personne = a.id_personne) 
+INNER JOIN personne p -- L'⋂ des 4 tables
+ON (a.id_personne = p.id_personne) 
 WHERE (TO_DATE(r.date_rencontre, 'DD-MM-YYYY HH24:MI:SS') - TO_DATE(a.date_actuelle, 'DD-MM-YYYY') <= 1) 
--- ∆ entre les 2 dates en jours <= 1 jour
+-- ∆ entre les 2 dates en jours est <= 1 jour (bornée par 1 jour)
+AND
+p.id_personne = r.id_visiteur
 ORDER BY r.id_visiteur; 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #11 --> Priorité : Important
