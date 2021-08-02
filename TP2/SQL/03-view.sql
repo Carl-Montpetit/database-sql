@@ -20,7 +20,7 @@ CREATE OR REPLACE VIEW liste_vaccine
 AS
 SELECT v.id_personne, p.nom, v.nom_vaccin, v.date_vaccination 
 FROM vaccination v
-INNER JOIN personne p 
+INNER JOIN personne p  -- L'⋂ des 2 tables
 ON (p.id_personne = v.id_personne)
 WHERE (v.id_personne) IN 
     (SELECT v.id_personne FROM vaccination v
@@ -57,20 +57,20 @@ CREATE OR REPLACE VIEW liste_admissible_vaccin
 AS
 SELECT e.id_personne, p.nom 
 FROM employe e
-LEFT OUTER JOIN vaccination v 
+LEFT OUTER JOIN vaccination v -- Va inclure les champs null de la table de gauche (employe) mais pas l'autre (vaccination)
 ON (e.id_personne = v.id_personne)
-INNER JOIN personne p 
+INNER JOIN personne p -- L'⋂ avec la table personne
 ON (e.id_personne = p.id_personne)
 WHERE NOT EXISTS (
     SELECT null
     FROM vaccination v
-    WHERE (e.id_personne = v.id_personne)
+    WHERE (e.id_personne = v.id_personne) -- assure //TODO
 )
-OR (v.nom_vaccin = 'Moderna')
+OR (v.nom_vaccin = 'Moderna') -- ou le vaccin est Moderna
 AND NOT EXISTS (
     SELECT null
     FROM liste_vaccine lv
-    WHERE (e.id_personne = lv.id_personne)
+    WHERE (e.id_personne = lv.id_personne) -- assure //TODO
 )
 ORDER BY e.id_personne;
 
@@ -83,19 +83,19 @@ CREATE OR REPLACE VIEW liste_disponibilites
 AS
 SELECT p.id_personne, p.nom, e.nom_departement
 FROM employe e
-INNER JOIN personne p 
+INNER JOIN personne p  
 ON (e.id_personne = p.id_personne)
-INNER JOIN departement d 
+INNER JOIN departement d  -- L'⋂ des 3 tables
 ON (e.nom_departement = d.nom_departement)
 WHERE NOT EXISTS (
     SELECT NULL
     FROM entree_sortie es
-    WHERE (e.id_personne = es.id_personne)
+    WHERE (e.id_personne = es.id_personne) -- assure que la personne entrante et sortante est un employé
 )
 AND NOT EXISTS(
     SELECT NULL
     FROM alerte a
-    WHERE (e.id_personne = a.id_personne)
+    WHERE (e.id_personne = a.id_personne) -- assure que l'alerte est généré par un employé
 )
 ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
@@ -108,8 +108,8 @@ SELECT r.id_visiteur
 FROM rencontre r
 INNER JOIN visiteur v
 ON (r.id_visiteur = v.id_personne) 
-INNER JOIN alerte a 
-ON (v.id_personne = a.id_personne) -- L'⋂ des trois tables
+INNER JOIN alerte a -- L'⋂ des 3 tables
+ON (v.id_personne = a.id_personne) 
 WHERE (TO_DATE(r.date_rencontre, 'DD-MM-YYYY HH24:MI:SS') - TO_DATE(a.date_actuelle, 'DD-MM-YYYY') <= 1) 
 -- ∆ entre les 2 dates en jours <= 1 jour
 ORDER BY r.id_visiteur; 
@@ -124,14 +124,14 @@ SELECT p.nom, e.poste, e.nom_departement, d.pourcentage_risque
 FROM employe e
 INNER JOIN personne p 
 ON (e.id_personne = p.id_personne)
-INNER JOIN departement d 
+INNER JOIN departement d  -- L'⋂ des 3 tables
 ON (e.nom_departement = d.nom_departement)
 WHERE NOT EXISTS (
     SELECT NULL
     FROM vaccination v
-    WHERE (e.id_personne = v.id_personne)
+    WHERE (e.id_personne = v.id_personne) -- assure //TODO
 )
-AND (d.pourcentage_risque > 80) 
+AND (d.pourcentage_risque > 80) -- et le pourcentage de risque est supérieur à 80 (exclusivement)
 ORDER BY d.nom_departement;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #18 --> Priorité : Important
