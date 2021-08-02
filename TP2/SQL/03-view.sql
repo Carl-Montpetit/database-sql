@@ -35,16 +35,19 @@ AND EXISTS (
 ORDER BY v.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #5 --> Priorité : Obligatoire
--- Créer une vue (liste_quarantaine) permettant de fournir la liste de tous les employés en quarantaine avec le nombre de jours restant de leur quarantaine entre le 1er mai et le 30 juin 2021.
+-- Créer une vue (liste_quarantaine) permettant de fournir la liste de tous les employés en quarantaine avec le nombre de jours restant de leur quarantaine selon le 1er juillet 2021.
 ------------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW liste_quarantaine
 AS
-SELECT q.id_personne, p.nom, (TO_DATE(q.date_debut, 'DD-MM-YYYY') - TO_DATE(q.date_fin, 'DD-MM-YYYY') + 1) 
-AS jours_restants -- Le nombre de jours inclusivement (+1) 
+SELECT q.id_personne, p.nom, (TO_DATE('01-07-2021', 'DD-MM-YYYY') - (TO_DATE(q.date_debut, 'DD-MM-YYYY')) + 40) 
+AS jours_restants -- La distance entre le 1er juillet et la date de début + 40 jours doit être dans nbrjours∈(0,40]
 FROM quarantaine q
 INNER JOIN personne p -- L'⋂ des 2 tables
 ON (q.id_personne = p.id_personne)
-WHERE (q.date_debut > TO_DATE('01-05-2021', 'DD-MM-YYYY') AND q.date_fin < TO_DATE('30-06-2021', 'DD-MM-YYYY')) -- bornes exclusives 
+WHERE 
+(TO_DATE('01-07-2021', 'DD-MM-YYYY') - (TO_DATE(q.date_debut, 'DD-MM-YYYY')) + 40) > 0 -- borne exclusive
+AND 
+(TO_DATE('01-07-2021', 'DD-MM-YYYY') - (TO_DATE(q.date_debut, 'DD-MM-YYYY')) + 40) <= 40 -- borne inclusive 
 ORDER BY jours_restants;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
@@ -75,6 +78,7 @@ ORDER BY e.id_personne;
 -- Id #7 --> Priorité : Obligatoire
 -- Créer une vue (liste_disponiblites) permettant de fournir la liste des employés d’un département dans une journée précise qui seront disponibles pour remplacer un employé du même département atteint par le virus.
 ------------------------------------------------------------------------------------------------------------------------
+-- //FIXME
 CREATE OR REPLACE VIEW liste_disponibilites
 AS
 SELECT p.id_personne, p.nom, e.nom_departement
@@ -106,7 +110,7 @@ INNER JOIN visiteur v
 ON (r.id_visiteur = v.id_personne) 
 INNER JOIN alerte a 
 ON (v.id_personne = a.id_personne) -- L'⋂ des trois tables
-WHERE (DiffDays(r.date_rencontre, 'DD-MM-YYYY', a.date_actuelle, 'DD-MM-YYYY') <= 1) 
+WHERE (TO_DATE(r.date_rencontre, 'DD-MM-YYYY HH24:MI:SS') - TO_DATE(a.date_actuelle, 'DD-MM-YYYY') <= 1) 
 -- ∆ entre les 2 dates en jours <= 1 jour
 ORDER BY r.id_visiteur; 
 ------------------------------------------------------------------------------------------------------------------------
