@@ -162,7 +162,64 @@ SELECT * from dual;
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertion Alerte --
 ------------------------------------------------------------------------------------------------------------------------
-INSERT INTO Alerte VALUES (TO_DATE('23-07-2021', 'DD-MM-YYYY'), 12);
+INSERT ALL
+INTO Alerte VALUES (TO_DATE('23-07-2021', 'DD-MM-YYYY'), 12)
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+INTO Alerte VALUES ('date_actuelle', 'id_personne')
+SELECT * FROM dual;
+------------------------------------------------------------------------------------------------------------------------
+-- Insertion quarantaine --
+------------------------------------------------------------------------------------------------------------------------
+INSERT ALL
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+INTO quarantaine VALUES ('id_quarantine', 'date_debut', 'date_fin', 'id_personne')
+SELECT * FROM dual;
+------------------------------------------------------------------------------------------------------------------------
+-- Insertion rencontre --
+------------------------------------------------------------------------------------------------------------------------
+INSERT ALL
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+INTO rencontre VALUES ('id_visiteur', 'id_employe', 'date_rencontre')
+SELECT * FROM dual;
+------------------------------------------------------------------------------------------------------------------------
+-- Insertion risque --
+------------------------------------------------------------------------------------------------------------------------
+INSERT ALL
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+INTO risque VALUES ('date_actuelle', 'id_personne')
+SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------

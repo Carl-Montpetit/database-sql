@@ -18,8 +18,9 @@ SET AUTOCOMMIT ON;
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'; -- Pour jj-mm-aaaa
 ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH24:MI:SS'; -- idem, mais pour le timestamp 
 ------------------------------------------------------------------------------------------------------------------------
--- On efface les tables s'ils existent préalablement --
+-- On efface les tables et les vues  s'ils existent préalablement --
 ------------------------------------------------------------------------------------------------------------------------
+-- Drop tables
 DROP TABLE Vaccination;
 DROP TABLE Vaccin;
 DROP TABLE Risque;
@@ -31,6 +32,11 @@ DROP TABLE Visiteur;
 DROP TABLE Employe;
 DROP TABLE Departement;
 DROP TABLE Personne;
+------------------------------------------------------------------------------------------------------------------------
+-- Drop vues
+DROP VIEW LISTE_DISPONIBILITES;
+DROP VIEW LISTE_PARESSEUX;
+DROP VIEW LISTE_VACCINE;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
 ------------------------------------------------------------------------------------------------------------------------

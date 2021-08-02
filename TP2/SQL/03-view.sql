@@ -23,7 +23,7 @@ FROM vaccination v
 INNER JOIN personne p 
 ON (p.id_personne = v.id_personne)
 WHERE (v.id_personne) IN 
-    (SELECT v.id_personne FROM vaccination
+    (SELECT v.id_personne FROM vaccination v
     GROUP BY v.id_personne
     HAVING count(id_personne) = 2
     )
@@ -39,12 +39,12 @@ ORDER BY v.date_vaccination;
 ------------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW liste_quarantaine
 AS
-SELECT q.id_personne, p.nom, (DiffDays(q.date_debut, 'DD-MM-YYYY', q.date_fin, 'DD-MM-YYYY') + 1) 
+SELECT q.id_personne, p.nom, (TO_DATE(q.date_debut, 'DD-MM-YYYY') - TO_DATE(q.date_fin, 'DD-MM-YYYY') + 1) 
 AS jours_restants -- Le nombre de jours inclusivement (+1) 
 FROM quarantaine q
 INNER JOIN personne p -- L'⋂ des 2 tables
 ON (q.id_personne = p.id_personne)
-WHERE (q.date_debut > '01-05-2021' AND q.date_fin < '30-06-2021') -- bornes exclusives 
+WHERE (q.date_debut > TO_DATE('01-05-2021', 'DD-MM-YYYY') AND q.date_fin < TO_DATE('30-06-2021', 'DD-MM-YYYY')) -- bornes exclusives 
 ORDER BY jours_restants;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #6 --> Priorité : Obligatoire
