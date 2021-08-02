@@ -85,8 +85,8 @@ INNER JOIN departement d
 ON (e.nom_departement = d.nom_departement)
 WHERE NOT EXISTS (
     SELECT NULL
-    FROM entree_sortie
-    WHERE (e.id_personne = entree_sortie.id_personne)
+    FROM entree_sortie es
+    WHERE (e.id_personne = es.id_personne)
 )
 AND NOT EXISTS(
     SELECT NULL
