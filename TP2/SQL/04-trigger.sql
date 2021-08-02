@@ -25,7 +25,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- Pour certain, c'est la structure de base d'une procedure
 -- //TODO
--- Je ne suis pas certain, mais le ⟹ dbs_output.put_line("Un string ou une variable à imprimer à l'écran") dans le bloc BEGIN/END avec un FOR ou un WHILE pourrait être utilile? 🤔 
+-- Je ne suis pas certain, mais le ⟹ dbs_output.put_line("Un string ou une variable à imprimer à l'écran") dans le bloc BEGIN/END avec un FOR ou un WHILE pourrait être utile? 🤔 
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 BEGIN
@@ -50,11 +50,11 @@ END;
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME
 -- On va utiliser le DELETE pour supprimer un enregistrement (row) à la table visiteur
-CREATE OR REPLACE PROCEDURE p_supp_visite_avant_premier_mars_sans_sympt 
+CREATE OR REPLACE PROCEDURE p_supprimer_visiteur
 AS 
 BEGIN
   NULL; -- remplacer le NULL par du code
-END p_supp_visite_avant_premier_mars_sans_sympt ;
+END p_supprimer_visiteur;
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 --CREATE TEMPORARY VIEW ancient_visiteurs
 --AS
@@ -107,11 +107,22 @@ END p_vider_tables;
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
 -- On va utiliser le UPDATE ici pour augmenter les salaires
-CREATE OR REPLACE PROCEDURE p_augmenter_salaire_deux_pourcent 
+-- //TODO ⟹ PAS FINIT
+CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
+CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe
+v_augmentation_salaire PLS_INTEGER := 1.02; -- une variable contenant un nombre
+v_ancien_salaire PLS_INTEGER; -- une variable contenant un autre nombre
 BEGIN
-  NULL; -- remplacer le NULL par du code
-END p_augmenter_salaire_deux_pourcent;
+  FOR r_employe IN c_employe LOOP
+    v_ancien_salaire := r_employe.salaire;
+    r_employe.salaire := r_employe.salaire * v_augmentation_salaire;
+    UPDATE employe SET 
+    ROW = r_employe 
+    WHERE CURRENT OF c_employe;
+    dbms_output.put_line('Le salaire de ' || r_employe.id_personne || ' a augmenter de ' || v_ancien_salaire || ' à ' || r_employe.salaire); 
+    END LOOP;
+END p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
