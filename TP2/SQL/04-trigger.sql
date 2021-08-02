@@ -25,6 +25,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- Pour certain, c'est la structure de base d'une procedure
 -- //TODO
+-- Je ne suis pas certain, mais le ⟹ dbs_output.put_line("Un string ou une variable à imprimer à l'écran") dans le bloc BEGIN/END avec un FOR ou un WHILE pourrait être utilile? 🤔 
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 BEGIN
@@ -35,6 +36,7 @@ END p_presence;
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
 ------------------------------------------------------------------------------------------------------------------------
 -- //TODO
+-- On va utiliser le INSERT pour ajouter à la table risque
 CREATE OR REPLACE TRIGGER t_personne_a_risque
 AFTER INSERT ON rencontre 
 REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour l'instant 
@@ -47,6 +49,7 @@ END;
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME
+-- On va utiliser le DELETE pour supprimer un enregistrement (row) à la table visiteur
 CREATE OR REPLACE PROCEDURE p_supp_visite_avant_premier_mars_sans_sympt 
 AS 
 BEGIN
@@ -67,6 +70,7 @@ AND (symptomes = 'aucun');                       --**note: remove semicolon if a
 -- Créer un déclencheur qui insère dans la table « alerte » la liste des personnes (leur id, le nom, la température, la date actuelle) qui ont une température de 39 degrés ou plus au moins 3 fois pendant les 5 derniers jours lors de l’entrée à l’usine.
 ------------------------------------------------------------------------------------------------------------------------
 -- //TODO
+-- On va utiliser le INSERT pour ajouter à la table alerte
 CREATE OR REPLACE TRIGGER t_personne_alerte
 AFTER INSERT ON entree_sortie 
 REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour l'instant 
@@ -78,8 +82,8 @@ END;
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
 ------------------------------------------------------------------------------------------------------------------------
--- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP
--- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé CASCADE
+-- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP ≠ DELETE
+-- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé ⟹ CASCADE
 -- //TODO
 CREATE OR REPLACE PROCEDURE p_vider_tables 
 AS 
@@ -102,6 +106,7 @@ END p_vider_tables;
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
+-- On va utiliser le UPDATE ici pour augmenter les salaires
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire_deux_pourcent 
 AS 
 BEGIN
