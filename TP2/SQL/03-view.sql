@@ -143,7 +143,7 @@ CREATE OR REPLACE VIEW entreprise_a_risque
 AS
 SELECT v.nom_entreprise, a.date_actuelle, p.id_personne, p.nom, p.adresse_numero, p.ville, es.date_heure_entree, es.date_heure_sortie, es.symptomes, es.temperature
 FROM personne p
-FULL OUTER JOIN visiteur v
+FULL OUTER JOIN visiteur v          -- FULL OUTER JOIN ⟹ ⋃ des 5 tables ⟹ va inclure aussi les données avec des champs null
 ON(p.id_personne = v.id_personne)
 FULL OUTER JOIN alerte a
 ON(p.id_personne = a.id_personne)
@@ -153,20 +153,20 @@ FULL OUTER JOIN employe e
 ON(p.id_personne = e.id_personne)
 WHERE 
 (
-es.date_heure_entree > TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
+es.date_heure_entree > TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') -- borne exclusive
 AND
-es.date_heure_entree < TO_DATE('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
+es.date_heure_entree < TO_DATE('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS') -- borne exclusive
 )
 AND
 (
-es.date_heure_sortie > TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
+es.date_heure_sortie > TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') -- borne exclusive
 AND 
-es.date_heure_sortie < TO_DATE ('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
+es.date_heure_sortie < TO_DATE ('30-06-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS') -- borne exclusive
 )
 AND EXISTS (
     SELECT null
     FROM visiteur v
-    WHERE (p.id_personne = v.id_personne)
+    WHERE (p.id_personne = v.id_personne) -- assure que la personne est un visiteur
 )
 ORDER BY a.date_actuelle ASC;
 ------------------------------------------------------------------------------------------------------------------------
