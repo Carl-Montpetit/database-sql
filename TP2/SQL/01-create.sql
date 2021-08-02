@@ -14,6 +14,8 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- On met le commit automatique après chaque requêtes validés avec succès 
 SET AUTOCOMMIT ON;
+-- Pour activer les outputs
+SET SERVEROUTPUT ON;
 -- Changement de format des dates --> Par défaut c'est DD-MON-YY dans Oracle SQL --
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'; -- Pour jj-mm-aaaa
 ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH24:MI:SS'; -- idem, mais pour le timestamp 

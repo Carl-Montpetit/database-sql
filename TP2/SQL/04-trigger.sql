@@ -82,13 +82,23 @@ END;
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
 ------------------------------------------------------------------------------------------------------------------------
--- TRUNCATE supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit ⟹ TRUNCATE ≠ DROP ≠ DELETE
+-- DELETE FROM nom_table ⟹ supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit 
 -- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé ⟹ CASCADE
--- //TODO
 CREATE OR REPLACE PROCEDURE p_vider_tables 
-AS 
+AS
 BEGIN
-  NULL; -- remplacer le NULL par du code
+   EXECUTE IMMEDIATE 'DELETE FROM vaccin CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM vaccination CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM risque CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM entree_sortie CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM departement CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM employe CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM quarantaine CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM rencontre CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM visiteur CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM alerte CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM personne CASCADE';
+   DBMS_OUTPUT.put_line ('Toutes les tables ont été vidées avec succès!..');
 END p_vider_tables;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #15 --> Priorité : Important
