@@ -36,14 +36,43 @@ END p_presence;
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
 ------------------------------------------------------------------------------------------------------------------------
--- //TODO
--- On va utiliser le INSERT pour ajouter à la table risque
-CREATE OR REPLACE TRIGGER t_personne_a_risque
-AFTER INSERT ON rencontre 
-REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour l'instant 
+create or replace TRIGGER RISQUE_CONTAMINATION_T1 
+AFTER INSERT ON RENCONTRE 
+REFERENCING OLD AS OLD NEW AS NEW 
+FOR EACH ROW
+
+DECLARE
+    valide INTEGER;
 BEGIN
-  NULL; -- remplacer le NULL par du code
-END;
+dbms_output.Put_line('employé entrée correspond à : ' || :NEW.id_employe);
+    FOR rec IN(
+        SELECT
+            employe.id_personne 
+        FROM 
+            employe
+        WHERE EXISTS(
+            SELECT NULL
+            FROM alerte a
+            WHERE (employe.id_personne = a.id_personne)
+        )
+    )
+    LOOP
+    dbms_output.Put_line('ID employé présent dans la table alerte : ' || rec.id_personne); 
+        IF rec.id_personne = :NEW.id_employe THEN
+            valide := 1;
+        END IF;
+        IF valide = 1 THEN
+        dbms_output.Put_line('Le ID inséré correspond à un ID employé de la table Alerte');
+            INSERT INTO Risque
+            VALUES
+            (:NEW.Date_rencontre,
+            :NEW.ID_visiteur);
+            valide := 0;
+        ELSE
+            dbms_output.Put_line('Le ID inséré ne correspond pas à un ID employé de la table Alerte');
+        END IF;
+    END LOOP;
+END RISQUE_CONTAMINATION_T1;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
