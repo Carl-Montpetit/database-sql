@@ -164,6 +164,51 @@ BEGIN
     dbms_output.put_line('Le salaire de ' || r_employe.id_personne || ' a augmenter de ' || v_ancien_salaire || ' à ' || r_employe.salaire); 
     END LOOP;
 END p_augmenter_salaire;
+
+
+-- Affiche le nom des personnes qui ont travailler plus de 20 jours durant le mois de mai et qui ont recu 2 vaccins
+SELECT DISTINCT
+    p.nom, p.id_personne, l_v.nom_vaccin
+FROM 
+    personne p
+JOIN entree_sortie es 
+    ON p.id_personne = es.id_personne
+INNER JOIN liste_vaccine l_v  --Vérifie si un id_personne de employe existe dans la vue liste_vaccine
+    ON p.id_personne = l_v.id_personne
+WHERE(es.date_heure_sortie) BETWEEN TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') AND TO_DATE ('31-05-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
+AND (es.id_personne) IN
+    (SELECT es.id_personne FROM entree_sortie es
+    GROUP BY es.id_personne
+    HAVING count(id_personne) > 20 
+)
+ORDER BY p.nom; 
+
+-- Insertion d'un Matthew qui a travaillé 22 fois dans le mois de mai
+INSERT ALL
+INTO entree_sortie VALUES (TO_DATE('01-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('01-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.70, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('02-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('02-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('03-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('03-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 40.20, 'fievre', 'oui')
+INTO entree_sortie VALUES (TO_DATE('04-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('04-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 41.00, 'fievre', 'non')
+INTO entree_sortie VALUES (TO_DATE('05-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('05-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.10, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('06-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('06-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 35.80, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('07-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('07-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 38.00, 'faiblesse', 'oui')
+INTO entree_sortie VALUES (TO_DATE('08-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('08-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 38.20, 'fatigue', 'oui')
+INTO entree_sortie VALUES (TO_DATE('09-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('09-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.60, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('10-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('10-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('11-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('11-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 37.00, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('12-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('12-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 40.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('13-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('13-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 40.00, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('14-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('14-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 41.00, 'fievre', 'non')
+INTO entree_sortie VALUES (TO_DATE('15-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('15-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.10, 'aucun', 'non')
+INTO entree_sortie VALUES (TO_DATE('16-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('16-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 35.80, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('17-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('17-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 38.00, 'faiblesse', 'oui')
+INTO entree_sortie VALUES (TO_DATE('18-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('18-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 38.20, 'fatigue', 'oui')
+INTO entree_sortie VALUES (TO_DATE('19-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('19-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.60, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('20-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('20-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('21-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('21-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
+INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
+SELECT * FROM dual;
+
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
