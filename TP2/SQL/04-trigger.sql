@@ -11,7 +11,7 @@
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LES DÉCLENCHEURS ET LES FONCTIONS --
--- Les fonctions et les procedures doivent être lancés soit par EXECUTE nom__fonction/procedure; OU par BEGIN nom_fonction/procedure(); END; les triggers sont enclenchés avant ou après un UPDATE, INSERT OU un DELETE
+-- Les fonctions et les procedures doivent être lancés soit par EXECUTE nom__fonction/procedure; OU par BEGIN nom_fonction/procedure(); END; les triggers sont enclenchés avant ou après un UPDATE, INSERT ou un DELETE
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #3 --> Priorité : Obligatoire
 -- Créer une procédure « presence » permettant de fournir la liste des personnes dans l’usine entre deux dates (qui seront passées en paramètre à la procédure). 
@@ -24,14 +24,16 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- Pour certain, c'est la structure de base d'une procedure ⟹ voir la procedure #17 en bas pour plus
--- //TODO
--- Je ne suis pas certain, mais le ⟹ dbs_output.put_line("Un string ou une variable à imprimer à l'écran") dans le bloc BEGIN/END avec un FOR ou un WHILE pourrait être utile? 🤔 
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 BEGIN
-  NULL; -- remplacer le NULL par du code
+  SELECT es.date_heure_entree, e.nom_departement, p.nom 
+  FROM personne p
+  FULL OUTER JOIN entree_sortie es 
+  ON (p.id_personne = es.id_personne)
 END p_presence;
+-- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
+-- EXECUTE p_presence(TO_DATE('08-06-2021', 'DD-MM-YYYY'), TO_DATE('08-07-2021', 'DD-MM-YYYY'));
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
@@ -47,8 +49,8 @@ INSERT INTO alerte VALUES ('08-02-2021', 7);
 INSERT INTO alerte VALUES ('08-02-2021', 3);
 
 
-create or replace TRIGGER RISQUE_CONTAMINATION_T1 
-AFTER INSERT ON RENCONTRE 
+CREATE OR REPLACE TRIGGER t_risque_contamination
+AFTER INSERT ON rencontre 
 REFERENCING OLD AS OLD NEW AS NEW 
 FOR EACH ROW
 
@@ -83,11 +85,12 @@ dbms_output.Put_line('employé entrée correspond à : ' || :NEW.id_employe);
             dbms_output.Put_line('Le ID inséré ne correspond pas à un ID employé de la table Alerte');
         END IF;
     END LOOP;
-END RISQUE_CONTAMINATION_T1;
+END t_risque_contamination;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #12 --> Priorité : Important
--- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes.
+-- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes. 
 ------------------------------------------------------------------------------------------------------------------------
+-- //FIXME ⟹ Mettre ça dans une fonction
 DELETE FROM visiteur v
 WHERE EXISTS (
 SELECT es.date_heure_sortie
@@ -131,6 +134,8 @@ BEGIN
    EXECUTE IMMEDIATE 'DELETE FROM personne CASCADE';
    DBMS_OUTPUT.put_line ('Toutes les tables ont été vidées avec succès!..');
 END p_vider_tables;
+-- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
+-- EXECUTE p_vider_tables;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #15 --> Priorité : Important
 -- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
@@ -151,18 +156,17 @@ END p_vider_tables;
 -- //TODO ⟹ PAS FINIT ⟹ augmente les salaires one shot pour tout les employés
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
-CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe
-v_augmentation_salaire NUMERIC(7, 2) := 1.02; -- une variable contenant un nombre
-v_ancien_salaire NUMERIC(7, 2); -- une variable contenant un autre nombre
+CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe pour UPDATE
+v_augmentation_salaire NUMERIC(7, 2) := 1.02;
+v_ancien_salaire NUMERIC(7, 2); 
 BEGIN
-  FOR r_employe IN c_employe LOOP
-    v_ancien_salaire := r_employe.salaire;
-    r_employe.salaire := r_employe.salaire * v_augmentation_salaire;
-    UPDATE employe SET 
-    ROW = r_employe 
-    WHERE CURRENT OF c_employe;
+  FOR r_employe IN c_employe LOOP -- Début de la boucle pour parcourir les rangées
+    v_ancien_salaire := r_employe.salaire; -- le salaire actuelle est l'ancien salaire
+    r_employe.salaire := r_employe.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
+    UPDATE employe SET ROW = r_employe  -- affecte chacunes des rangées avec leur augmentation de 2%
+    WHERE CURRENT OF c_employe; -- condition pour le curseur ⟹ states that the most recent row fetched (by the cursor) from the table should be updated
     dbms_output.put_line('Le salaire de ' || r_employe.id_personne || ' a augmenter de ' || v_ancien_salaire || ' à ' || r_employe.salaire); 
-    END LOOP;
+    END LOOP; -- fin du parcours sur la table employe
 END p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
