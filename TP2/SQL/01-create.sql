@@ -46,15 +46,14 @@ DROP VIEW liste_entreprise_a_risque;
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop procedures
 DROP PROCEDURE p_presence;
-DROP PROCEDURE p_supprimer_visiteur;
 DROP PROCEDURE p_vider_tables;
 DROP PROCEDURE p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop fonctions
-
+-- ø 
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop triggers
-DROP TRIGGER t_personne_a_risque;
+DROP TRIGGER t_risque_contamination;
 DROP TRIGGER t_personne_alerte;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
@@ -203,7 +202,7 @@ CREATE TABLE vaccination (
 -- GRANT INSERT, SELECT ON vaccin TO visiteur; 
 -- GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
 ------------------------------------------------------------------------------------------------------------------------
--- Administrateur (pour ∀ les TABLEs)
+-- Administrateur (pour ∀ les TABLES)
 
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de remplir chacune des tables avec des données de test.

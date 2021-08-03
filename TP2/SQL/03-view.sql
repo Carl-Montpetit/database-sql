@@ -76,8 +76,10 @@ ORDER BY e.id_personne;
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #7 --> Priorité : Obligatoire
--- Créer une vue (liste_disponiblites) permettant de fournir la liste des employés d’un département dans une journée précise qui seront disponibles pour remplacer un employé du même département atteint par le virus.
+-- Créer une vue (liste_disponibilites) permettant de fournir la liste des employés d’un département dans une journée précise qui seront disponibles pour remplacer un employé du même département atteint par le virus.
 ------------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW liste_disponibilites 
+AS 
 SELECT q.id_personne, p.nom, e.nom_departement
 FROM employe e
 INNER JOIN personne p
