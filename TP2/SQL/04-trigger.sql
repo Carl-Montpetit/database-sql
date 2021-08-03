@@ -11,7 +11,7 @@
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LES DÉCLENCHEURS ET LES FONCTIONS --
--- Les fonctions et les procedures doivent être lancés soit par EXECUTE nom__fonction/procedure; OU par BEGIN nom_fonction/procedure(); END; les triggers sont enclenchés avant ou après un UPDATE, INSERT ou un DELETE
+-- Les fonctions et les procedures doivent être lancés soit par EXECUTE nom__fonction/procedure; OU par BEGIN nom_fonction/procedure(param1, param2…(s'il ∃ des paramètres explicites)); END; les triggers sont enclenchés avant ou après un UPDATE, INSERT ou un DELETE
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #3 --> Priorité : Obligatoire
 -- Créer une procédure « presence » permettant de fournir la liste des personnes dans l’usine entre deux dates (qui seront passées en paramètre à la procédure). 
@@ -38,22 +38,18 @@ END p_presence;
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
 ------------------------------------------------------------------------------------------------------------------------
-
 --Insertion qui va avec pour le tester
 INSERT INTO rencontre VALUES (12, 7, '08-08-2021 13:04:00');
 INSERT INTO rencontre VALUES (12, 17, '08-01-2021 13:16:00');
-
 INSERT INTO alerte VALUES ('08-01-2021', 17);
 INSERT INTO alerte VALUES ('08-01-2021', 9);
 INSERT INTO alerte VALUES ('08-02-2021', 7);
 INSERT INTO alerte VALUES ('08-02-2021', 3);
 
-
 CREATE OR REPLACE TRIGGER t_risque_contamination
 AFTER INSERT ON rencontre 
 REFERENCING OLD AS OLD NEW AS NEW 
 FOR EACH ROW
-
 DECLARE
     valide INTEGER;
 BEGIN
@@ -90,7 +86,7 @@ END t_risque_contamination;
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes. 
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME ⟹ Mettre ça dans une fonction
+-- //FIXME ⟹ Mettre ça dans une une procedure??
 DELETE FROM visiteur v
 WHERE EXISTS (
 SELECT es.date_heure_sortie
@@ -111,13 +107,12 @@ REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour 
 BEGIN
   NULL; -- remplacer le NULL par du code
 END;
-
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
 ------------------------------------------------------------------------------------------------------------------------
 -- DELETE FROM nom_table ⟹ supprime ∀ les rows d'une table, mais ne supprime pas les tables en soit 
--- S'il ∃ une relation par foreign key avec une autre table on ajoute le mot clé ⟹ CASCADE
+-- S'il ∃ une relation par "foreign key" avec une autre table on ajoute le mot clé CASCADE à la fin de la requête ⟹ ajouter aussi ON DELETE CASCADE dans le CREATE TABLE après la déclaration du "foreign key" pour rendre le CASCADE fonctionnel 
 CREATE OR REPLACE PROCEDURE p_vider_tables 
 AS
 BEGIN
@@ -152,8 +147,7 @@ END p_vider_tables;
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
 ------------------------------------------------------------------------------------------------------------------------
--- On va utiliser le UPDATE ici pour augmenter les salaires
--- //TODO ⟹ PAS FINIT ⟹ augmente les salaires one shot pour tout les employés
+-- //TODO ⟹ PAS FINIT ⟹ augmente les salaires one shot pour tous les employés
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseur sur la table employe pour UPDATE
@@ -170,7 +164,7 @@ BEGIN
 END p_augmenter_salaire;
 
 
--- Affiche le nom des personnes qui ont travailler plus de 20 jours durant le mois de mai et qui ont recu 2 vaccins
+-- Affiche le nom des personnes qui ont travailler plus de 20 jours durant le mois de mai et qui ont reçu 2 vaccins
 SELECT DISTINCT
     p.nom, p.id_personne, l_v.nom_vaccin
 FROM 
@@ -187,7 +181,7 @@ AND (es.id_personne) IN
 )
 ORDER BY p.nom; 
 
--- Insertion d'un Matthew qui a travaillé 22 fois dans le mois de mai
+-- Insertions d'un Matthew qui a travaillé 22 fois dans le mois de mai
 INSERT ALL
 INTO entree_sortie VALUES (TO_DATE('01-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('01-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.70, 'aucun', 'non')
 INTO entree_sortie VALUES (TO_DATE('02-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('02-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'oui')
@@ -212,7 +206,8 @@ INTO entree_sortie VALUES (TO_DATE('20-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 INTO entree_sortie VALUES (TO_DATE('21-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('21-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
-
+-- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
+-- EXECUTE p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------
