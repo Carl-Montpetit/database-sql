@@ -36,6 +36,17 @@ END p_presence;
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
 ------------------------------------------------------------------------------------------------------------------------
+
+--Insertion qui va avec pour le tester
+INSERT INTO rencontre VALUES (12, 7, '08-08-2021 13:04:00');
+INSERT INTO rencontre VALUES (12, 17, '08-01-2021 13:16:00');
+
+INSERT INTO alerte VALUES ('08-01-2021', 17);
+INSERT INTO alerte VALUES ('08-01-2021', 9);
+INSERT INTO alerte VALUES ('08-02-2021', 7);
+INSERT INTO alerte VALUES ('08-02-2021', 3);
+
+
 create or replace TRIGGER RISQUE_CONTAMINATION_T1 
 AFTER INSERT ON RENCONTRE 
 REFERENCING OLD AS OLD NEW AS NEW 
