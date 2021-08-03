@@ -78,26 +78,25 @@ ORDER BY e.id_personne;
 -- Id #7 --> Priorité : Obligatoire
 -- Créer une vue (liste_disponiblites) permettant de fournir la liste des employés d’un département dans une journée précise qui seront disponibles pour remplacer un employé du même département atteint par le virus.
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME
-CREATE OR REPLACE VIEW liste_disponibilites
-AS
-SELECT p.id_personne, p.nom, e.nom_departement
+SELECT q.id_personne, p.nom, e.nom_departement
 FROM employe e
-INNER JOIN personne p  
+INNER JOIN personne p
 ON (e.id_personne = p.id_personne)
-INNER JOIN departement d  -- L'⋂ des 3 tables
-ON (e.nom_departement = d.nom_departement)
-WHERE NOT EXISTS (
-    SELECT NULL
-    FROM entree_sortie es
-    WHERE (e.id_personne = es.id_personne) -- assure que la personne entrante et sortante est un employé
-)
-AND NOT EXISTS(
-    SELECT NULL
-    FROM alerte a
-    WHERE (e.id_personne = a.id_personne) -- assure que l'alerte est généré par un employé
-)
-ORDER BY d.nom_departement;
+INNER JOIN quarantaine q
+on (e.id_personne = q.id_personne)
+WHERE e.nom_departement IN (
+    SELECT e.nom_departement
+    FROM quarantaine q
+    INNER JOIN employe e
+    ON (q.id_personne = e.id_personne)
+    WHERE ('01-03-2021' BETWEEN q.date_debut AND q.date_fin))
+AND e.id_personne NOT IN (
+    SELECT e.id_personne
+    FROM quarantaine q
+    INNER JOIN employe e
+    ON (q.id_personne = e.id_personne)
+    WHERE ('01-03-2021' BETWEEN q.date_debut AND q.date_fin)
+);
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #9 --> Priorité : Très important
 -- Créer une vue (liste_arisque) permettant de fournir la liste des visiteurs qui ont contacté un employé atteint du Covid-19 durant la visite (l’employé a déclaré les symptômes au maximum 24 heures plus tard).
