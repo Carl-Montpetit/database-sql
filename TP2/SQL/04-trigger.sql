@@ -24,13 +24,23 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
+-- //FIXME ya de quoi qui fonctionne pas
+create or replace PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 BEGIN
+  EXECUTE IMMEDIATE '
   SELECT es.date_heure_entree, e.nom_departement, p.nom 
   FROM personne p
   FULL OUTER JOIN entree_sortie es 
   ON (p.id_personne = es.id_personne)
+  FULL OUTER JOIN employe e 
+  ON (p.id_personne = e.id_personne)
+  WHERE 
+    (
+    TO_DATE(es.date_heure_entree,''DD-MM-YYYY'') > TO_DATE(date_debut, ''DD-MM-YYYY'') -- borne exclusive
+    AND
+    TO_DATE(es.date_heure_entree,''DD-MM-YYYY'') < TO_DATE(date_fin, ''DD-MM-YYYY'') -- borne exclusive
+    )';
 END p_presence;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
 -- EXECUTE p_presence(TO_DATE('08-06-2021', 'DD-MM-YYYY'), TO_DATE('08-07-2021', 'DD-MM-YYYY'));

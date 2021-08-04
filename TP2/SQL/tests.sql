@@ -15,12 +15,12 @@ select * from risque;           -- ✔
 select * from vaccin;           -- ✔
 select * from vaccination;      -- ✔
 ------------------------------------------------------------------------------------------------------------------------
--- Tests views -- ⚠
+-- Tests views -- ✔
 ------------------------------------------------------------------------------------------------------------------------
 select * from liste_vaccine;            -- ✔
 select * from liste_quarantaine;        -- ✔
 select * from liste_admissible_vaccin;  -- ✔
-select * from liste_disponibilites;     -- ∅ À fixer
+select * from liste_disponibilites;     -- ✔
 select * from liste_arisque;            -- ✔
 select * from liste_paresseux;          -- ✔ 
 select * from entreprise_a_risque;      -- ✔
