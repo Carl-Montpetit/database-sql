@@ -21,12 +21,12 @@ Code permanent : DUMM21059400
 import java.sql.*;
 
 class OracleCon {
-    public static void main( String args[] ) {
+    public static void main( String args[] ) throws ClassNotFoundException {
 // étape #1 : chargement des driver de la classe
         // FIXME ça ne fonctionne pas pour ça encore supposément qu'il faut télécharger quelque chose et ensuite le
         //  pointer sur ce truc ici ☟ après ça devrait se connecter et fonctionner!
         Class.forName( "oracle.jdbc.driver.OracleDriver" );
-        // ou ??
+        // ou ?? ⟿ ne trouve pas la classe OracleDriver ou de quoi du genre…
 //            DriverManager.registerDriver( new oracle.jdbc.driver.OracleDriver( ) );
 
 // étape #2 : création d'un object de connection avec le serveur zeta2 de l'UQAM
