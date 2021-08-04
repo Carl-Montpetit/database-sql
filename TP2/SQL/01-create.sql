@@ -71,7 +71,7 @@ CREATE  TABLE  personne (
     adresse_numero      VARCHAR(45) NULL ,
     rue                 VARCHAR(45) NOT NULL ,
     ville               VARCHAR(45) NOT NULL ,
-    code_postal         VARCHAR(45) NOT NULL ,
+    code_postal         VARCHAR(45) NOT NULL CHECK (regexp_like (nom, '^[[:alpha:]] {1}...')) , -- //TODO pas complet
 
     PRIMARY KEY (id_personne)
 );
