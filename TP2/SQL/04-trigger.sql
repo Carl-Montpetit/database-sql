@@ -226,7 +226,7 @@ FOR UPDATE;
     -- déclarations des variables
     v_augmentation_salaire NUMERIC(7, 2) := 1.02;
     v_ancien_salaire NUMERIC(7, 2);
-    v_salaire_courant employe.salaire%type;
+    v_salaire_courant employe.salaire%TYPE;
     v_nom personne.nom%TYPE;
 BEGIN
     OPEN c_salaire;
