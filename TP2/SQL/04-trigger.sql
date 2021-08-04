@@ -24,26 +24,39 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME ya de quoi qui fonctionne pas
-create or replace PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
+-- //FIXME je suis proche mais j'ai cette erreur ☞ PLS-00225: subprogram or cursor 'C_PRESENCE' reference is out of scope
+CREATE OR replace PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
+    -- Déclaration du curseur 
+CURSOR c_presence IS SELECT es.date_heure_entree, e.nom_departement, p.nom 
+    FROM (
+        personne p
+        FULL OUTER JOIN entree_sortie es 
+        ON (p.id_personne = es.id_personne)
+        FULL OUTER JOIN employe e 
+        ON (p.id_personne = e.id_personne)
+            WHERE (
+                TO_DATE(es.date_heure_entree,'DD-MM-YYYY') > TO_DATE(date_debut, 'DD-MM-YYYY') -- borne exclusive
+                AND
+                TO_DATE(es.date_heure_entree,'DD-MM-YYYY') < TO_DATE(date_fin, 'DD-MM-YYYY') -- borne exclusive
+            )
+    );
+    -- déclarations des variables
+    v_date_heure_entree entree_sortie.date_heure_entree%TYPE;
+    v_nom_departement employe.nom_departement%TYPE;
+    v_nom personne.nom%TYPE;
 BEGIN
-  EXECUTE IMMEDIATE '
-  SELECT es.date_heure_entree, e.nom_departement, p.nom 
-  FROM personne p
-  FULL OUTER JOIN entree_sortie es 
-  ON (p.id_personne = es.id_personne)
-  FULL OUTER JOIN employe e 
-  ON (p.id_personne = e.id_personne)
-  WHERE 
-    (
-    TO_DATE(es.date_heure_entree,''DD-MM-YYYY'') > TO_DATE(date_debut, ''DD-MM-YYYY'') -- borne exclusive
-    AND
-    TO_DATE(es.date_heure_entree,''DD-MM-YYYY'') < TO_DATE(date_fin, ''DD-MM-YYYY'') -- borne exclusive
-    )';
+    OPEN c_presence;
+        LOOP
+            FETCH c_presence INTO v_date_heure_entree, v_nom_departement, v_nom; -- parcours et met les résultats dans les variables à chaque tours de boucle
+            -- Imprime le contenue des variables sur une ligne
+            dbms_output.put_line('Présence de : ' || v_nom || ' ⟺ du département' || v_nom_departement || 
+            ' ⟺ pour le ' || v_date_heure_entree);
+        END LOOP;
+    CLOSE c_presence;
 END p_presence;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
--- EXECUTE p_presence(TO_DATE('08-06-2021', 'DD-MM-YYYY'), TO_DATE('08-07-2021', 'DD-MM-YYYY'));
+-- EXECUTE p_presence('08-06-2021', '08-07-2021');
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
@@ -63,7 +76,7 @@ FOR EACH ROW
 DECLARE
     valide INTEGER;
 BEGIN
-dbms_output.Put_line('employé entrée correspond à : ' || :NEW.id_employe);
+dbms_output.put_line('employé entrée correspond à : ' || :NEW.id_employe);
     FOR rec IN(
         SELECT
             employe.id_personne 
@@ -76,19 +89,19 @@ dbms_output.Put_line('employé entrée correspond à : ' || :NEW.id_employe);
         )
     )
     LOOP
-    dbms_output.Put_line('ID employé présent dans la table alerte : ' || rec.id_personne); 
+    dbms_output.put_line('ID employé présent dans la table alerte : ' || rec.id_personne); 
         IF rec.id_personne = :NEW.id_employe THEN
             valide := 1;
         END IF;
         IF valide = 1 THEN
-        dbms_output.Put_line('Le ID inséré correspond à un ID employé de la table Alerte');
+        dbms_output.put_line('Le ID inséré correspond à un ID employé de la table Alerte');
             INSERT INTO Risque
             VALUES
             (:NEW.Date_rencontre,
             :NEW.ID_visiteur);
             valide := 0;
         ELSE
-            dbms_output.Put_line('Le ID inséré ne correspond pas à un ID employé de la table Alerte');
+            dbms_output.put_line('Le ID inséré ne correspond pas à un ID employé de la table Alerte');
         END IF;
     END LOOP;
 END t_risque_contamination;
@@ -114,6 +127,8 @@ SELECT es.date_heure_sortie
 CREATE OR REPLACE TRIGGER t_personne_alerte
 AFTER INSERT ON entree_sortie 
 REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour l'instant 
+DECLARE
+
 BEGIN
   NULL; -- remplacer le NULL par du code
 END;
@@ -137,7 +152,7 @@ BEGIN
    EXECUTE IMMEDIATE 'DELETE FROM visiteur CASCADE';
    EXECUTE IMMEDIATE 'DELETE FROM alerte CASCADE';
    EXECUTE IMMEDIATE 'DELETE FROM personne CASCADE';
-   DBMS_OUTPUT.put_line ('Toutes les tables ont été vidées avec succès!..');
+   dbms_output.put_line ('Toutes les tables ont été vidées avec succès!..');
 END p_vider_tables;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
 -- EXECUTE p_vider_tables;
@@ -164,7 +179,8 @@ CURSOR c_employe IS SELECT * FROM employe FOR UPDATE; -- declaration d'un curseu
 v_augmentation_salaire NUMERIC(7, 2) := 1.02;
 v_ancien_salaire NUMERIC(7, 2); 
 BEGIN
-  FOR r_employe IN c_employe LOOP -- Début de la boucle pour parcourir les rangées
+  FOR r_employe IN c_employe 
+  LOOP -- Début de la boucle pour parcourir les rangées
     v_ancien_salaire := r_employe.salaire; -- le salaire actuelle est l'ancien salaire
     r_employe.salaire := r_employe.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
     UPDATE employe SET ROW = r_employe  -- affecte chacunes des rangées avec leur augmentation de 2%
