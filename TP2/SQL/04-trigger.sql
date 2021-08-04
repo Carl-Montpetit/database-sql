@@ -25,9 +25,9 @@
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME je suis proche mais j'ai cette erreur ☞ PLS-00225: subprogram or cursor 'C_PRESENCE' reference is out of scope
-CREATE OR replace PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
+CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
-    -- Déclaration du curseur 
+-- Déclaration du curseur 
 CURSOR c_presence IS SELECT es.date_heure_entree, e.nom_departement, p.nom 
     FROM (
         personne p
@@ -198,43 +198,47 @@ INTO entree_sortie VALUES (TO_DATE('19-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 INTO entree_sortie VALUES (TO_DATE('20-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('20-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 INTO entree_sortie VALUES (TO_DATE('21-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('21-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS'), 3, TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
-------------------------------------------------------------------------------------------------------------------------
 SELECT * FROM dual;
+------------------------------------------------------------------------------------------------------------------------
+-- //FIXME le GROUP BY et le DISTINCT dans le SELECT n'est pas compatible avec le CURSOR...FOR UPDATE qui est aussi dépendant du UPDATE...WHERE CURRENT OF dans le bloc BEGIN/END ce qui rend le code encore plus complexe...
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
--- Selectionne le nom des personnes qui ont travailler plus de 20 jours durant le mois de mai et qui ont reçu 2 vaccins
+CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
+p.nom, p.id_personne, lv.nom_vaccin
 FROM 
-    personne p
-    JOIN entree_sortie es 
-    ON p.id_personne = es.id_personne
-    INNER JOIN liste_vaccine l_v  --Vérifie si un id_personne de employe existe dans la vue liste_vaccine
-    ON p.id_personne = l_v.id_personne
-        WHERE(es.date_heure_sortie) 
-        BETWEEN 
-            TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
-            AND 
-            TO_DATE ('31-05-2021 23:59:59' , 'DD-MM-YYYY HH24:MI:SS')
-            AND (es.id_personne) 
-                IN
-                (SELECT es.id_personne FROM entree_sortie es
-    GROUP BY es.id_personne
-    HAVING count(id_personne) > 20 
-)
-ORDER BY p.nom 
-FOR UPDATE;
-DECLARE
-    CURSOR c_employe IS SELECT DISTINCT p.nom, p.id_personne, l_v.nom_vaccin -- declaration d'un curseur sur la table employe pour UPDATE
+personne p
+FULL OUTER JOIN employe e 
+ON (e.id_personne = p.id_personne)
+INNER JOIN entree_sortie es
+ON (p.id_personne = es.id_personne)
+INNER JOIN liste_vaccine lv  --Vérifie si un id_personne de employe existe dans la vue liste_vaccine
+ON (p.id_personne = lv.id_personne)
+    WHERE(es.date_heure_sortie) 
+        BETWEEN TO_DATE('01-05-2021 00:00:00', 'DD-MM-YYYY HH24:MI:SS') 
+        AND 
+        TO_DATE ('31-05-2021 23:59:59', 'DD-MM-YYYY HH24:MI:SS')
+        AND (es.id_personne) 
+        IN (SELECT es.id_personne FROM entree_sortie es
+        GROUP BY es.id_personne
+        HAVING count(id_personne) > 20 
+    )
+FOR UPDATE;  
+    -- déclarations des variables
     v_augmentation_salaire NUMERIC(7, 2) := 1.02;
-    v_ancien_salaire NUMERIC(7, 2); 
+    v_ancien_salaire NUMERIC(7, 2);
+    v_salaire_courant employe.salaire%type;
+    v_nom personne.nom%TYPE;
 BEGIN
-    FOR r_employe IN c_employe 
+    OPEN c_salaire;
     LOOP -- Début de la boucle pour parcourir les rangées
-        v_ancien_salaire := r_employe.salaire; -- le salaire actuelle est l'ancien salaire
-        r_employe.salaire := r_employe.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
-        UPDATE employe SET ROW = r_employe  -- affecte chacunes des rangées avec leur augmentation de 2%
-        WHERE CURRENT OF c_employe; -- condition pour le curseur ⟹ states that the most recent row fetched (by the cursor) from the table should be updated
-        dbms_output.put_line('Le salaire de ' || r_employe.id_personne || ' a augmenter de ' || v_ancien_salaire || ' à ' || r_employe.salaire); 
+        v_ancien_salaire := v_salaire_courant; -- le salaire actuelle est l'ancien salaire
+        v_salaire_courant := v_ancien_salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
+        UPDATE employe 
+            SET salaire = v_salaire_courant  -- affecte chacunes des rangées avec leur augmentation de 2%
+            WHERE CURRENT OF c_salaire; -- condition pour le curseur ⟹ states that the most recent row fetched (by the cursor) from the table should be updated
+        dbms_output.put_line('Le salaire de ' || v_nom || ' a augmenter de ' || v_ancien_salaire || ' à ' || v_salaire_courant); 
     END LOOP; -- fin du parcours sur la table employe
+    CLOSE c_salaire;
 END p_augmenter_salaire;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
 -- EXECUTE p_augmenter_salaire;
