@@ -34,9 +34,9 @@ class OracleCon {
         try ( Connection connection = DriverManager.getConnection(
                 "jdbc:oracle:thin:@zeta2.labunix.uqam.ca:1521:baclab", "system", "" ) ) {
             if ( connection != null ) {
-                System.out.println( "Connected to the database!" );
+                System.out.println( "✔︎ Connecté à la base de données!" );
             } else {
-                System.out.println( "Failed to make connection!" );
+                System.out.println( "✗ Échec, la connection à la base de données a échouée!.." );
             }
 
             // étape #3 : création de l'object de statement
@@ -52,7 +52,7 @@ class OracleCon {
             ResultSet resultSet = statement.executeQuery( "SELECT SYSDATE FROM DUAL" );
             if ( resultSet.next( ) ) {
                 Date currentDate = resultSet.getDate( 1 ); // get first column returned
-                System.out.println( "Current Date from Oracle is : " + currentDate );
+                System.out.println( "La base de données courrante d'Oracle est : " + currentDate );
             }
 
 // étape #5 : fermer la connection à l'object
