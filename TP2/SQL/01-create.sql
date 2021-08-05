@@ -77,6 +77,7 @@ CREATE  TABLE  personne (
     rue                 VARCHAR(45) NOT NULL ,
     ville               VARCHAR(45) NOT NULL ,
     code_postal         VARCHAR(45) NOT NULL CHECK (regexp_like (code_postal, '^([A-Z]\d[A-Z]\s\d[A-Z]\d)$')) ,
+    -- Regex qui force l'utilisateur d'entrée un format de code postal : A#A #A# (incluant l'espace blanc)
 
     PRIMARY KEY (id_personne)
 );
