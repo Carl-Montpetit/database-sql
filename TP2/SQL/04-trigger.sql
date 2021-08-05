@@ -132,16 +132,33 @@ SELECT es.date_heure_sortie
 -- Id #13 --> Priorité : Obligatoire
 -- Créer un déclencheur qui insère dans la table « alerte » la liste des personnes (leur id, le nom, la température, la date actuelle) qui ont une température de 39 degrés ou plus au moins 3 fois pendant les 5 derniers jours lors de l’entrée à l’usine.
 ------------------------------------------------------------------------------------------------------------------------
--- //TODO
--- On va utiliser le INSERT pour ajouter à la table alerte
-CREATE OR REPLACE TRIGGER t_personne_alerte
-AFTER INSERT ON entree_sortie 
-REFERENCING OLD AS avant NEW AS apres -- des noms de variables aléatoires pour l'instant 
+CREATE OR REPLACE TRIGGER temperature_elevee
+BEFORE INSERT ON entree_sortie
+REFERENCING OLD AS OLD NEW AS NEW
+FOR EACH ROW
 DECLARE
-
+oui number(1);
 BEGIN
-  NULL; -- remplacer le NULL par du code
-END;
+dbms_output.Put_line('employe entree correspond a : ' || :NEW.id_personne);
+    SELECT CASE
+        WHEN EXISTS (
+        SELECT es.date_heure_entree
+        FROM entree_sortie es
+        WHERE es.date_heure_entree BETWEEN (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS') - 5) AND TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS');)
+
+        --HAVING count(es.id_personne) = 2)
+        THEN 1
+        ELSE 0
+    END into oui
+    FROM dual;
+    IF oui = 1
+    THEN
+    INSERT INTO alerte VALUES (:NEW.date_heure_entree, 10);
+    END IF;
+END temperature_elevee;
+----------------------------
+INSERT INTO entree_sortie VALUES (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS'), 10,
+    TO_DATE('04-08-2021 22:16:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'non');
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
