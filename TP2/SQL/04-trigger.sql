@@ -219,7 +219,7 @@ END p_vider_tables;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création de l'index pour les noms des personnes (employés ou visiteurs)
 CREATE INDEX index_nom_personne
-ON personne (nom); -- Le nom est relié à la primary key id_personne pour la table visiteur et employé par foreign key ⟹ l'index sur la colonne nom de la table personne suffit pour optimiser la performace des requêtes en lien avec le nom des visiteurs et des employés ⟹ Les indexes requièrent beaucoup d'espace mémoire alors vaut mieux en créer le moins poissbile selon les besoins essentiels 
+ON personne (nom); -- Le nom est relié à la primary key id_personne pour la table visiteur et employé par foreign key ⟹ l'index sur la colonne nom de la table personne suffit pour optimiser la performance des requêtes en lien avec le nom des visiteurs et des employés ⟹ Les indexes requièrent beaucoup d'espace mémoire alors il vaut mieux en créer le moins poissbile selon les besoins essentiels 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
