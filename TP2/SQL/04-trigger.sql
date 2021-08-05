@@ -26,7 +26,6 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME Compile, mais : ORA-01830: date format picture ends before converting entire input string
 -- Il y a un problème lors de la conversion de TIMESTAMP ⟹ DATE avec le format JJ-MM-YYYY sinon je crois que tout est bon
-
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
@@ -46,15 +45,11 @@ BEGIN
 dbms_output.put_line('TROUVER ERREUR 1');
     v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
     v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
-    --dbms_output.put_line('TROUVER ERREUR 2');
     OPEN c_presence;
-    --dbms_output.put_line('TROUVER ERREUR 3');
         LOOP
          EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
             FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
-            --dbms_output.put_line('TROUVER ERREUR 4');
             v_presence.date_heure_entree := to_char(cast(v_presence.date_heure_entree as date), 'DD-MM-YYYY'); 
-            --dbms_output.put_line('TROUVER ERREUR 5');
             -- Imprime le contenue des variables sur une ligne
             IF (
                 v_presence.date_heure_entree > v_date_debut  
@@ -62,11 +57,10 @@ dbms_output.put_line('TROUVER ERREUR 1');
                 v_presence.date_heure_entree < v_date_fin
                 ) 
                     THEN
-                    --dbms_output.put_line('TROUVER ERREUR 6');
                     dbms_output.put_line('Présence de : ' || v_presence.nom || ' ⟺ du département' || 
                     v_presence.nom_departement || ' ⟺ pour le ' || v_presence.date_heure_entree);
             ELSE
-                dbms_output.put_line('Il n''existe aucunes présences entre ces deux dates!..');
+                dbms_output.put_line('Il n''existe aucune présence entre ces deux dates pour cet enregistrement!..');
             END IF;
         END LOOP;
     CLOSE c_presence;
