@@ -217,17 +217,9 @@ END p_vider_tables;
 -- Id #16 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux que votre base de données soit déjà optimisée à l’aide d’index, un index sur les noms des visiteurs et un index sur les noms des employés.
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME : pas encore finit
--- Création de l'index pour les noms des visiteurs
-CREATE BITMAP INDEX index_nom_visiteur 
-ON personne (personne.nom)
-FROM personne, visiteur 
-WHERE (personne.id_personne = visiteur.id_personne);
--- Création de l'index pour les noms des employés 
-CREATE BITMAP INDEX index_nom_employe 
-ON personne (personne.nom)
-FROM personne, employe 
-WHERE (personne.id_personne = employe.id_personne);      
+-- Création de l'index pour les noms des personnes (employés ou visiteurs)
+CREATE INDEX index_nom_personne
+ON personne (nom); -- Le nom est relié à la primary key id_personne pour la table visiteur et employé par foreign key ⟹ l'index sur la colonne nom de la table personne suffit pour optimiser la performace des requêtes en lien avec le nom des visiteurs et des employés
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
