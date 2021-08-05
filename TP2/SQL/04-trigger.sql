@@ -232,11 +232,10 @@ INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME Encore là je crois que c'est bon ⟹ compile ⟹ mais j'ai un erreur : ORA-06502: PL/SQL: numeric or value error: number precision too large ⟹ probablement qu'on obtient des nombres trop grands après les opérations arithmétiques 🤷🏻
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
-p.nom, p.id_personne, lv.nom_vaccin -- le contenu du curseur en mémoire
+p.nom, p.id_personne, lv.nom_vaccin, e.salaire -- le contenu du curseur en mémoire
 FROM 
 personne p
 FULL OUTER JOIN employe e 
@@ -261,11 +260,12 @@ ON (p.id_personne = lv.id_personne)
 BEGIN
     OPEN c_salaire;
     LOOP -- Début de la boucle pour parcourir les rangées
-    EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
+    EXIT WHEN c_salaire%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
     FETCH c_salaire INTO v_salaire;
         v_ancien_salaire := v_salaire.salaire; -- le salaire actuelle est l'ancien salaire
-        v_salaire_courant := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
-        v_salaire.salaire = v_salaire_courant;
+        v_salaire.salaire := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
+        UPDATE employe
+        SET salaire = v_salaire.salaire;
         dbms_output.put_line('Le salaire de ⟺ ' || v_salaire.nom || ' a augmenter de ⟺ ' || v_ancien_salaire || ' à ⟺ ' || v_salaire.salaire); 
     END LOOP; -- fin du parcours sur la table employe
     CLOSE c_salaire;
