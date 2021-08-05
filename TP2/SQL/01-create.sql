@@ -76,7 +76,7 @@ CREATE  TABLE  personne (
     adresse_numero      VARCHAR(45) NULL ,
     rue                 VARCHAR(45) NOT NULL ,
     ville               VARCHAR(45) NOT NULL ,
-    code_postal         VARCHAR(45) NOT NULL CHECK (regexp_like (nom, '^[[:alpha:]] {1}...')) , -- //TODO pas complet
+    code_postal         VARCHAR(45) NOT NULL CHECK (regexp_like (code_postal, '^([A-Z]\d[A-Z]\s\d[A-Z]\d)$')) ,
 
     PRIMARY KEY (id_personne)
 );
@@ -89,7 +89,7 @@ CREATE TABLE Departement (
 );
 
 CREATE TABLE Employe (
-    id_personne          INTEGER NOT NULL ,
+    id_personne         INTEGER NOT NULL ,
     date_naissance      DATE NOT NULL ,
     poste               VARCHAR(45) NOT NULL ,
     salaire             NUMERIC(7, 2) NOT NULL ,
