@@ -26,7 +26,8 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME Compile, mais : ORA-01830: date format picture ends before converting entire input string
 -- Il y a un problème lors de la conversion de TIMESTAMP ⟹ DATE avec le format JJ-MM-YYYY sinon je crois que tout est bon
-CREATE OR REPLACE PROCEDURE p_presence (date_debut IN TIMESTAMP, date_fin IN TIMESTAMP) -- 2 paramètres explicites  
+
+CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
 CURSOR c_presence IS 
@@ -42,10 +43,18 @@ v_presence c_presence%ROWTYPE;
 v_date_debut DATE;
 v_date_fin DATE;
 BEGIN
+dbms_output.put_line('TROUVER ERREUR 1');
+    v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
+    v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
+    --dbms_output.put_line('TROUVER ERREUR 2');
     OPEN c_presence;
+    --dbms_output.put_line('TROUVER ERREUR 3');
         LOOP
-        EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
+         EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
             FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
+            --dbms_output.put_line('TROUVER ERREUR 4');
+            v_presence.date_heure_entree := to_char(cast(v_presence.date_heure_entree as date), 'DD-MM-YYYY'); 
+            --dbms_output.put_line('TROUVER ERREUR 5');
             -- Imprime le contenue des variables sur une ligne
             IF (
                 v_presence.date_heure_entree > v_date_debut  
@@ -53,6 +62,7 @@ BEGIN
                 v_presence.date_heure_entree < v_date_fin
                 ) 
                     THEN
+                    --dbms_output.put_line('TROUVER ERREUR 6');
                     dbms_output.put_line('Présence de : ' || v_presence.nom || ' ⟺ du département' || 
                     v_presence.nom_departement || ' ⟺ pour le ' || v_presence.date_heure_entree);
             ELSE
@@ -61,8 +71,8 @@ BEGIN
         END LOOP;
     CLOSE c_presence;
 END p_presence;
--- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
--- EXECUTE p_presence('08-06-2021', '08-07-2021');
+
+--EXECUTE p_presence('01-05-2021', '31-05-2021'); 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
