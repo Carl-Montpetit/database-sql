@@ -226,7 +226,7 @@ INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- 
+-- Le FOR UPDATE ne veut pas fonctionner à cause de la présence d'un GROUP BY et d'un DISTINCT dans le SELECT, mais en négligant ces aspects, le code devrait fonctionner. On a essayer sans le FOR UPDATE du curseur, mais c'était vraiment complexe car c'est impossible d"utiliser le WHERE CURRENT OF dans le bloc BEGIN/END.
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
@@ -262,7 +262,7 @@ BEGIN
         v_salaire.salaire := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
         UPDATE employe
         SET salaire = v_salaire.salaire;
-        WHERE CURRENT c_salaire;
+        WHERE CURRENT OF c_salaire;
         dbms_output.put_line('Le salaire de ⟺ ' || v_salaire.nom || ' a augmenter de ⟺ ' || v_ancien_salaire || ' à ⟺ ' || v_salaire.salaire); 
     END LOOP; -- fin du parcours sur la table employe
     CLOSE c_salaire;
