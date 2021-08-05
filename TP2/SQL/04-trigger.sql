@@ -24,34 +24,41 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME je suis proche mais j'ai cette erreur ☞ PLS-00225: subprogram or cursor 'C_PRESENCE' reference is out of scope
+-- //FIXME Compile, mais : ORA-01830: date format picture ends before converting entire input string
+-- Il y a un problème lors de la conversion de TIMESTAMP ⟹ DATE avec le format JJ-MM-YYYY sinon je crois que tout est bon
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
 CURSOR c_presence IS SELECT es.date_heure_entree, e.nom_departement, p.nom 
-    FROM (
+    FROM 
         personne p
         FULL OUTER JOIN entree_sortie es 
         ON (p.id_personne = es.id_personne)
         FULL OUTER JOIN employe e 
-        ON (p.id_personne = e.id_personne)
-            WHERE (
-                TO_DATE(es.date_heure_entree,'DD-MM-YYYY') > TO_DATE(date_debut, 'DD-MM-YYYY') -- borne exclusive
-                AND
-                TO_DATE(es.date_heure_entree,'DD-MM-YYYY') < TO_DATE(date_fin, 'DD-MM-YYYY') -- borne exclusive
-            )
-    );
-    -- déclarations des variables
-    v_date_heure_entree entree_sortie.date_heure_entree%TYPE;
-    v_nom_departement employe.nom_departement%TYPE;
-    v_nom personne.nom%TYPE;
+        ON (p.id_personne = e.id_personne);
+-- déclarations des variables
+v_presence c_presence%ROWTYPE;
+v_date_debut DATE;
+v_date_fin DATE;
 BEGIN
+    v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
+    v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
     OPEN c_presence;
         LOOP
-            FETCH c_presence INTO v_date_heure_entree, v_nom_departement, v_nom; -- parcours et met les résultats dans les variables à chaque tours de boucle
+            FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
+            v_presence.date_heure_entree := TO_DATE(v_presence.date_heure_entree, 'DD-MM-YYYY');
             -- Imprime le contenue des variables sur une ligne
-            dbms_output.put_line('Présence de : ' || v_nom || ' ⟺ du département' || v_nom_departement || 
-            ' ⟺ pour le ' || v_date_heure_entree);
+            IF (
+                v_presence.date_heure_entree > v_date_debut  
+                AND -- bornes exclusives
+                v_presence.date_heure_entree < v_date_fin
+                ) 
+                    THEN
+                    dbms_output.put_line('Présence de : ' || v_presence.nom || ' ⟺ du département' || 
+                    v_presence.nom_departement || ' ⟺ pour le ' || v_presence.date_heure_entree);
+            ELSE
+                dbms_output.put_line('Il n''existe aucunes présences entre ces deux dates!..');
+            END IF;
         END LOOP;
     CLOSE c_presence;
 END p_presence;
