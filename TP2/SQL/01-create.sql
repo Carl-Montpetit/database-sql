@@ -54,7 +54,12 @@ DROP PROCEDURE p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop triggers
 DROP TRIGGER t_risque_contamination;
+DROP TRIGGER t_temperature_elevee;
 DROP TRIGGER t_personne_alerte;
+------------------------------------------------------------------------------------------------------------------------
+-- Drop index
+DROP INDEX index_nom_visiteur;
+DROP INDEX index_nom_employe;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
 ------------------------------------------------------------------------------------------------------------------------

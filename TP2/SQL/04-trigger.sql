@@ -42,14 +42,13 @@ v_presence c_presence%ROWTYPE;
 v_date_debut DATE;
 v_date_fin DATE;
 BEGIN
-dbms_output.put_line('TROUVER ERREUR 1');
     v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
     v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
     OPEN c_presence;
         LOOP
          EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
             FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
-            v_presence.date_heure_entree := to_char(cast(v_presence.date_heure_entree as date), 'DD-MM-YYYY'); 
+            v_presence.date_heure_entree := to_char(cast(v_presence.date_heure_entree AS dDATE), 'DD-MM-YYYY'); 
             -- Imprime le contenue des variables sur une ligne
             IF (
                 v_presence.date_heure_entree > v_date_debut  
@@ -65,8 +64,8 @@ dbms_output.put_line('TROUVER ERREUR 1');
         END LOOP;
     CLOSE c_presence;
 END p_presence;
-
---EXECUTE p_presence('01-05-2021', '31-05-2021'); 
+-- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
+-- EXECUTE p_presence('01-05-2021', '31-05-2021'); 
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #8 --> Priorité : Obligatoire 
 -- Créer un déclencheur qui insère dans la table « risque » la liste des personnes (employé/visiteur) (leur id, le nom, la date actuelle) qui ont été en contact avec une personne (employé/visiteur) qui est suspectée d’avoir le Covid-19 jusqu’à 48 heures avant sa déclaration.
@@ -78,7 +77,7 @@ INSERT INTO alerte VALUES ('08-01-2021', 17);
 INSERT INTO alerte VALUES ('08-01-2021', 9);
 INSERT INTO alerte VALUES ('08-02-2021', 7);
 INSERT INTO alerte VALUES ('08-02-2021', 3);
-
+------------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER t_risque_contamination
 AFTER INSERT ON rencontre 
 REFERENCING OLD AS OLD NEW AS NEW 
@@ -119,7 +118,6 @@ END t_risque_contamination;
 -- Id #12 --> Priorité : Important
 -- Supprimer les visiteurs qui ont visité l’entreprise avant le 1er mars 2021 et qui n’ont pas déclaré des symptômes. 
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME ⟹ Mettre ça dans une une procedure??
 DELETE FROM visiteur v
 WHERE EXISTS (
 SELECT es.date_heure_sortie
@@ -132,33 +130,65 @@ SELECT es.date_heure_sortie
 -- Id #13 --> Priorité : Obligatoire
 -- Créer un déclencheur qui insère dans la table « alerte » la liste des personnes (leur id, le nom, la température, la date actuelle) qui ont une température de 39 degrés ou plus au moins 3 fois pendant les 5 derniers jours lors de l’entrée à l’usine.
 ------------------------------------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER temperature_elevee
+-- //FIXME
+-- CREATE OR REPLACE TRIGGER temperature_elevee
+-- BEFORE INSERT ON entree_sortie
+-- REFERENCING OLD AS OLD NEW AS NEW
+-- FOR EACH ROW
+-- DECLARE
+-- oui number(1);
+-- BEGIN
+-- dbms_output.Put_line('employe entree correspond a : ' || :NEW.id_personne);
+--     SELECT CASE
+--         WHEN EXISTS (
+--         SELECT es.date_heure_entree
+--         FROM entree_sortie es
+--         WHERE es.date_heure_entree BETWEEN (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS') - 5) AND TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS');)
+
+--         --HAVING count(es.id_personne) = 2)
+--         THEN 1
+--         ELSE 0
+--     END into oui
+--     FROM dual;
+--     IF oui = 1
+--     THEN
+--     INSERT INTO alerte VALUES (:NEW.date_heure_entree, 10);
+--     END IF;
+-- END temperature_elevee;
+-- ----------------------------
+-- INSERT INTO entree_sortie VALUES (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS'), 10,
+--     TO_DATE('04-08-2021 22:16:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'non');
+------------------------------------------------------------------------------------------------------------------------
+-- //TODO : pas finit
+CREATE OR REPLACE TRIGGER t_temperature_elevee
 BEFORE INSERT ON entree_sortie
 REFERENCING OLD AS OLD NEW AS NEW
 FOR EACH ROW
 DECLARE
-oui number(1);
+CURSOR c_personne 
+SELECT p.id_personne, p_nom, es_temperature, a.date_actuelle
+IS
+FROM 
+personne p
+INNER JOIN alerte a
+ON (p.id_personne = a.id_personne)
+INNER JOIN entree_sortie es 
+ON (es.id_personne = p.id_personne)
+WHERE (
+    NEW.temperature >= 39 -- on inclue la temperature de 39°
+    AND
+    HAVING COUNT(ALL :NEW.id_personne BETWEEN (:NEW.date_heure_entree - 5 AND :NEW.date_heure_entree)) = 2
+)
+FOR INSERT;
+v_personne c_personne%ROWTYPE;
 BEGIN
-dbms_output.Put_line('employe entree correspond a : ' || :NEW.id_personne);
-    SELECT CASE
-        WHEN EXISTS (
-        SELECT es.date_heure_entree
-        FROM entree_sortie es
-        WHERE es.date_heure_entree BETWEEN (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS') - 5) AND TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS');)
-
-        --HAVING count(es.id_personne) = 2)
-        THEN 1
-        ELSE 0
-    END into oui
-    FROM dual;
-    IF oui = 1
-    THEN
-    INSERT INTO alerte VALUES (:NEW.date_heure_entree, 10);
-    END IF;
-END temperature_elevee;
-----------------------------
-INSERT INTO entree_sortie VALUES (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH24:MI:SS'), 10,
-    TO_DATE('04-08-2021 22:16:00', 'DD-MM-YYYY HH24:MI:SS'), 36.00, 'aucun', 'non');
+    OPEN c_personne;
+    FETCH c_personne INTO v_personne;
+        IF (v_personne.temperature >= 39 AND HAVING count(:NEW.id_personne) = 2) 
+            THEN 
+            INSERT INTO alerte VALUE (NEW.id_personne, :NEW.date_heure_entree); 
+    CLOSE c_personne;
+END t_temperature_elevee;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de vider l’ensemble des tables de leurs enregistrements.
@@ -168,7 +198,7 @@ INSERT INTO entree_sortie VALUES (TO_DATE('04-08-2021 22:15:00', 'DD-MM-YYYY HH2
 CREATE OR REPLACE PROCEDURE p_vider_tables 
 AS
 BEGIN
-   EXECUTE IMMEDIATE 'DELETE FROM vaccin CASCADE';
+   EXECUTE IMMEDIATE 'DELETE FROM vaccin CASCADE'; -- EXECUTE en chaïne les requêtes SQL DELETE ⇩
    EXECUTE IMMEDIATE 'DELETE FROM vaccination CASCADE';
    EXECUTE IMMEDIATE 'DELETE FROM risque CASCADE';
    EXECUTE IMMEDIATE 'DELETE FROM entree_sortie CASCADE';
@@ -187,13 +217,20 @@ END p_vider_tables;
 -- Id #16 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux que votre base de données soit déjà optimisée à l’aide d’index, un index sur les noms des visiteurs et un index sur les noms des employés.
 ------------------------------------------------------------------------------------------------------------------------
--- code ici
--- //TODO
+-- //FIXME : pas encore finit
+-- Création de l'index pour les noms des visiteurs
+CREATE BITMAP INDEX index_nom_visiteur 
+ON personne (personne.nom)
+FROM personne, visiteur 
+WHERE (personne.id_personne = visiteur.id_personne);
+-- Création de l'index pour les noms des employés 
+CREATE BITMAP INDEX index_nom_employe 
+ON personne (personne.nom)
+FROM personne, employe 
+WHERE (personne.id_personne = employe.id_personne);      
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
-------------------------------------------------------------------------------------------------------------------------
--- //TODO ⟹ PAS FINIT 
 ------------------------------------------------------------------------------------------------------------------------
 -- Insertions d'un Matthew qui a travaillé 22 fois dans le mois de mai
 INSERT ALL
@@ -243,7 +280,7 @@ INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- Le FOR UPDATE ne veut pas fonctionner à cause de la présence d'un GROUP BY et d'un DISTINCT dans le SELECT, mais en négligant ces aspects, le code devrait fonctionner. On a essayer sans le FOR UPDATE du curseur, mais c'était vraiment complexe car c'est impossible d"utiliser le WHERE CURRENT OF dans le bloc BEGIN/END.
+-- Le FOR UPDATE ne veut pas fonctionner à cause de la présence d'un GROUP BY et d'un DISTINCT dans le SELECT, mais en négligant ces aspects, le code devrait fonctionner. On a essayé sans le FOR UPDATE du curseur, mais c'était vraiment complexe car c'est impossible d"utiliser le WHERE CURRENT OF dans le bloc BEGIN/END.
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
