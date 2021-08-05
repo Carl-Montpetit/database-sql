@@ -29,7 +29,8 @@
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
-CURSOR c_presence IS SELECT es.date_heure_entree, e.nom_departement, p.nom 
+CURSOR c_presence IS 
+SELECT es.date_heure_entree, e.nom_departement, p.nom -- le contenu du curseur en mémoire
     FROM 
         personne p
         FULL OUTER JOIN entree_sortie es 
@@ -229,11 +230,11 @@ INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME le GROUP BY et le DISTINCT dans le SELECT n'est pas compatible avec le CURSOR...FOR UPDATE qui est aussi dépendant du UPDATE...WHERE CURRENT OF dans le bloc BEGIN/END ce qui rend le code encore plus complexe...
+-- //FIXME Encore là je crois que c'est bon ⟹ compile ⟹ mais j'ai un erreur : ORA-06502: PL/SQL: numeric or value error: number precision too large ⟹ probablement qu'on obtient des nombres trop grands après les opérations arithmétiques 🤷🏻
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
-p.nom, p.id_personne, lv.nom_vaccin
+p.nom, p.id_personne, lv.nom_vaccin -- le contenu du curseur en mémoire
 FROM 
 personne p
 FULL OUTER JOIN employe e 
@@ -250,23 +251,19 @@ ON (p.id_personne = lv.id_personne)
         IN (SELECT es.id_personne FROM entree_sortie es
         GROUP BY es.id_personne
         HAVING count(id_personne) > 20 
-    )
-FOR UPDATE;  
+    );  
     -- déclarations des variables
     v_augmentation_salaire NUMERIC(7, 2) := 1.02;
     v_ancien_salaire NUMERIC(7, 2);
-    v_salaire_courant employe.salaire%TYPE;
-    v_nom personne.nom%TYPE;
+    v_salaire c_salaire%ROWTYPE;
 BEGIN
     OPEN c_salaire;
     LOOP -- Début de la boucle pour parcourir les rangées
-    FETCH c_salaire ON employe;
-        v_ancien_salaire := v_salaire_courant; -- le salaire actuelle est l'ancien salaire
-        v_salaire_courant := v_ancien_salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
-        UPDATE employe 
-            SET salaire = v_salaire_courant  -- affecte chacunes des rangées avec leur augmentation de 2%
-            WHERE CURRENT OF c_salaire; -- condition pour le curseur ⟹ states that the most recent row fetched (by the cursor) from the table should be updated
-        dbms_output.put_line('Le salaire de ⟺ ' || c_salaire.nom || ' a augmenter de ⟺ ' || v_ancien_salaire || ' à ⟺ ' || c_salaire.salaire); 
+    FETCH c_salaire INTO v_salaire;
+        v_ancien_salaire := v_salaire.salaire; -- le salaire actuelle est l'ancien salaire
+        v_salaire_courant := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
+        v_salaire.salaire = v_salaire_courant;
+        dbms_output.put_line('Le salaire de ⟺ ' || v_salaire.nom || ' a augmenter de ⟺ ' || v_ancien_salaire || ' à ⟺ ' || v_salaire.salaire); 
     END LOOP; -- fin du parcours sur la table employe
     CLOSE c_salaire;
 END p_augmenter_salaire;
