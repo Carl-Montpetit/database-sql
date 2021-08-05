@@ -167,12 +167,6 @@ END p_vider_tables;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
 -- EXECUTE p_vider_tables;
 ------------------------------------------------------------------------------------------------------------------------
--- Id #15 --> Priorité : Important
--- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
-------------------------------------------------------------------------------------------------------------------------
--- code ici
--- //TODO
-------------------------------------------------------------------------------------------------------------------------
 -- Id #16 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux que votre base de données soit déjà optimisée à l’aide d’index, un index sur les noms des visiteurs et un index sur les noms des employés.
 ------------------------------------------------------------------------------------------------------------------------
@@ -232,13 +226,14 @@ INTO entree_sortie VALUES (TO_DATE('22-05-2021 04:00:00', 'DD-MM-YYYY HH24:MI:SS
 TO_DATE('22-05-2021 23:59:00', 'DD-MM-YYYY HH24:MI:SS'), 36.90, 'aucun', 'oui')
 SELECT * FROM dual;
 ------------------------------------------------------------------------------------------------------------------------
+-- 
 CREATE OR REPLACE PROCEDURE p_augmenter_salaire 
 AS 
 CURSOR c_salaire IS SELECT DISTINCT -- declaration d'un curseur sur la table employe pour UPDATE
 p.nom, p.id_personne, lv.nom_vaccin, e.salaire -- le contenu du curseur en mémoire
 FROM 
 personne p
-FULL OUTER JOIN employe e 
+INNER JOIN employe e 
 ON (e.id_personne = p.id_personne)
 INNER JOIN entree_sortie es
 ON (p.id_personne = es.id_personne)
@@ -252,7 +247,8 @@ ON (p.id_personne = lv.id_personne)
         IN (SELECT es.id_personne FROM entree_sortie es
         GROUP BY es.id_personne
         HAVING count(id_personne) > 20 
-    );  
+    ) 
+FOR UPDATE;  
     -- déclarations des variables
     v_augmentation_salaire NUMERIC(7, 2) := 1.02;
     v_ancien_salaire NUMERIC(7, 2);
@@ -266,6 +262,7 @@ BEGIN
         v_salaire.salaire := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
         UPDATE employe
         SET salaire = v_salaire.salaire;
+        WHERE CURRENT c_salaire;
         dbms_output.put_line('Le salaire de ⟺ ' || v_salaire.nom || ' a augmenter de ⟺ ' || v_ancien_salaire || ' à ⟺ ' || v_salaire.salaire); 
     END LOOP; -- fin du parcours sur la table employe
     CLOSE c_salaire;
