@@ -26,7 +26,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- //FIXME Compile, mais : ORA-01830: date format picture ends before converting entire input string
 -- Il y a un problème lors de la conversion de TIMESTAMP ⟹ DATE avec le format JJ-MM-YYYY sinon je crois que tout est bon
-CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
+CREATE OR REPLACE PROCEDURE p_presence (date_debut IN TIMESTAMP, date_fin IN TIMESTAMP) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
 CURSOR c_presence IS 
@@ -42,12 +42,10 @@ v_presence c_presence%ROWTYPE;
 v_date_debut DATE;
 v_date_fin DATE;
 BEGIN
-    v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
-    v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
     OPEN c_presence;
         LOOP
+        EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
             FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
-            v_presence.date_heure_entree := TO_DATE(v_presence.date_heure_entree, 'DD-MM-YYYY');
             -- Imprime le contenue des variables sur une ligne
             IF (
                 v_presence.date_heure_entree > v_date_debut  
@@ -259,6 +257,7 @@ ON (p.id_personne = lv.id_personne)
 BEGIN
     OPEN c_salaire;
     LOOP -- Début de la boucle pour parcourir les rangées
+    EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
     FETCH c_salaire INTO v_salaire;
         v_ancien_salaire := v_salaire.salaire; -- le salaire actuelle est l'ancien salaire
         v_salaire_courant := v_salaire.salaire * v_augmentation_salaire; -- le nouveau salaire après l'augmentation
