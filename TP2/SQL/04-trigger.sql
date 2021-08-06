@@ -141,17 +141,24 @@ CREATE OR REPLACE TRIGGER t_temperature_elevee
     FOR EACH ROW
 DECLARE
     v_nombre number;
+    v_temperature number;
 BEGIN
-    SELECT COUNT(id_personne)
-    INTO v_nombre
-    FROM entree_sortie
+    SELECT COUNT(es.id_personne), es.temperature
+    INTO v_nombre, v_temperature
+    FROM entree_sortie es
     WHERE (id_personne = :NEW.id_personne AND
-           (:NEW.date_heure_entree BETWEEN :NEW.date_heure_entree - 5 AND :NEW.date_heure_entree));
+           (:NEW.date_heure_entree BETWEEN :NEW.date_heure_entree - 5 AND :NEW.date_heure_entree) AND
+           v_temperature >= 39)
+           GROUP BY es.temperature;
     IF (v_nombre >= 3 AND :NEW.temperature >= 39) THEN
         INSERT INTO alerte
         VALUES (:NEW.date_heure_entree, :NEW.id_personne);
         dbms_output.put_line('Un enregistrement a été ajouté à la table alterte!..');
     END IF;
+    EXCEPTION
+      WHEN NO_DATA_FOUND THEN
+        v_nombre := NULL;
+        v_temperature := NULL;
 END t_temperature_elevee;
 ------------------------------------------------------------------------------------------------------------------------
 -- Id #14 --> Priorité : Important
@@ -314,9 +321,9 @@ END p_augmenter_salaire;
 --  Développer une application affichant la liste des employés et des visiteurs qui étaient à l’usine entre deux dates
 --  et qui ont visité un département spécifique.
 ------------------------------------------------------------------------------------------------------------------------
--- Procedure pour l'application Java☕️
-create or replace FUNCTION f_presence_departement(date_debut IN DATE, date_fin IN DATE, departement IN VARCHAR2)
--- 3 paramètres explicites 
+-- Function pour l'application Java☕️
+CREATE OR REPLACE FUNCTION f_presence_departement(date_debut IN DATE, date_fin IN DATE, departement IN VARCHAR2)
+-- 3 paramètres explicites
     RETURN VARCHAR2
 AS
 -- Déclaration du curseur 
