@@ -8,6 +8,7 @@
 --  Code permanent : DUMM21059400 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 -- Dépôt GIT du TP au besoin --> https://gitlab.info.uqam.ca/mONtpetit.carl/basededONnees.git
+-- Pour l'application Java voir ⟹ TP2/APP/src/OracleCon.java 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LA CRÉATION DES TABLES --
@@ -50,7 +51,7 @@ DROP PROCEDURE p_vider_tables;
 DROP PROCEDURE p_augmenter_salaire;
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop fonctions
--- ø 
+DROP FUNCTION f_presence_departement;
 ------------------------------------------------------------------------------------------------------------------------
 -- Drop triggers
 DROP TRIGGER t_risque_contamination;
@@ -63,10 +64,10 @@ DROP INDEX index_nom_employe;
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des utilisateurs (avec un mot de passe commun pour simplifier) --
 ------------------------------------------------------------------------------------------------------------------------
--- CREATE USER directeur IDENTIFIED BY '1234';
--- CREATE USER employe IDENTIFIED BY '1234';
--- CREATE USER visiteur IDENTIFIED BY '1234';
--- CREATE USER administrateur IDENTIFIED BY '1234';
+CREATE USER directeur IDENTIFIED BY '1234';
+CREATE USER employe IDENTIFIED BY '1234';
+CREATE USER visiteur IDENTIFIED BY '1234';
+CREATE USER administrateur IDENTIFIED BY '1234';
 ------------------------------------------------------------------------------------------------------------------------
 -- Création des tables --
 ------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +75,6 @@ DROP INDEX index_nom_employe;
 -- Id #15 --> Priorité : Important
 -- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
 ------------------------------------------------------------------------------------------------------------------------
--- //TODO
 CREATE  TABLE  personne (
     id_personne         INTEGER NOT NULL ,
     nom                 VARCHAR(45) NOT NULL ,
@@ -195,39 +195,38 @@ CREATE TABLE vaccination (
 -- Permissions pour les utilisateurs --
 ------------------------------------------------------------------------------------------------------------------------
 -- Directeur
-
 -- Id #17 --> Priorité : Important
 -- En tant que directeur, je veux être en mesure d’augmenter les salaires de 2% pour les employés qui ont reçu les deux vaccins et qui ont travaillé plus de 20 jours entre le 1er mai et le 30 mai 2021.
--- GRANT INSERT, UPDATE, DELETE, SELECT ON personne TO directeur;
--- GRANT INSERT, UPDATE, DELETE, SELECT ON employe TO directeur;
--- GRANT INSERT, UPDATE, DELETE, SELECT ON visiteur TO directeur;
--- GRANT INSERT, UPDATE, DELETE, SELECT ON vaccination TO directeur;
+GRANT INSERT, UPDATE, DELETE, SELECT ON personne TO directeur;
+GRANT INSERT, UPDATE, DELETE, SELECT ON employe TO directeur;
+GRANT INSERT, UPDATE, DELETE, SELECT ON visiteur TO directeur;
+GRANT INSERT, UPDATE, DELETE, SELECT ON vaccination TO directeur;
 ------------------------------------------------------------------------------------------------------------------------
 -- Employés
--- GRANT INSERT, SELECT ON vaccination TO employe;
--- GRANT INSERT, SELECT ON vaccin TO employe; 
--- GRANT INSERT, SELECT ON Entree_Sortie TO employe;
+GRANT INSERT, SELECT ON vaccination TO employe;
+GRANT INSERT, SELECT ON vaccin TO employe; 
+GRANT INSERT, SELECT ON Entree_Sortie TO employe;
 ------------------------------------------------------------------------------------------------------------------------
 -- Visiteurs
--- GRANT INSERT, SELECT ON vaccination TO visiteur;
--- GRANT INSERT, SELECT ON vaccin TO visiteur; 
--- GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
+GRANT INSERT, SELECT ON vaccination TO visiteur;
+GRANT INSERT, SELECT ON vaccin TO visiteur; 
+GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
 ------------------------------------------------------------------------------------------------------------------------
 -- Administrateur (pour ∀ les TABLES)
 
 -- Id #14 --> Priorité : Important
 -- En tant qu’administrateur de la base de données, je veux avoir accès à un script me permettant de remplir chacune des tables avec des données de test.
 -- Les drop n'existe pas pour le grant
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON personne TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON departement TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON visiteur TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON alerte TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Entree_Sortie TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Quarantaine TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON rencONtre TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON risque TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccin TO administrateur;
--- GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccination TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON personne TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON departement TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON visiteur TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON alerte TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Entree_Sortie TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON Quarantaine TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON rencONtre TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON risque TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccin TO administrateur;
+GRANT INSERT, UPDATE, DELETE, TRUNCATE ON vaccination TO administrateur;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------

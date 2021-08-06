@@ -8,6 +8,7 @@
 --  Code permanent : DUMM21059400 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 -- Dépôt GIT du TP au besoin --> https://gitlab.info.uqam.ca/montpetit.carl/basededonnees.git
+-- Pour l'application Java voir ⟹ TP2/APP/src/OracleCon.java ☆
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LES DÉCLENCHEURS ET LES FONCTIONS --
@@ -24,8 +25,6 @@
 -- ▪ La date doit être saisie en utilisant les paramètres de la procédure.
 -- ▪ Le format de saisie de la date se fait selon le format par défaut : jj-mm-aaaa
 ------------------------------------------------------------------------------------------------------------------------
--- //FIXME Compile, mais : ORA-01830: date format picture ends before converting entire input string
--- Il y a un problème lors de la conversion de TIMESTAMP ⟹ DATE avec le format JJ-MM-YYYY sinon je crois que tout est bon
 CREATE OR REPLACE PROCEDURE p_presence (date_debut IN DATE, date_fin IN DATE) -- 2 paramètres explicites  
 AS 
 -- Déclaration du curseur 
@@ -39,24 +38,20 @@ SELECT es.date_heure_entree, e.nom_departement, p.nom -- le contenu du curseur e
         ON (p.id_personne = e.id_personne);
 -- déclarations des variables
 v_presence c_presence%ROWTYPE;
-v_date_debut DATE;
-v_date_fin DATE;
 BEGIN
-    v_date_debut := TO_DATE(date_debut, 'DD-MM-YYYY');
-    v_date_fin := TO_DATE(date_fin, 'DD-MM-YYYY');
     OPEN c_presence;
         LOOP
          EXIT WHEN c_presence%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
             FETCH c_presence INTO v_presence; -- parcours et met les résultats dans les variables à chaque tours de boucle
-            v_presence.date_heure_entree := to_char(cast(v_presence.date_heure_entree AS dDATE), 'DD-MM-YYYY'); 
+            v_presence.date_heure_entree := TO_CHAR(CAST(v_presence.date_heure_entree AS DATE), 'DD-MM-YYYY'); 
             -- Imprime le contenue des variables sur une ligne
             IF (
-                v_presence.date_heure_entree > v_date_debut  
+                v_presence.date_heure_entree > date_debut  
                 AND -- bornes exclusives
-                v_presence.date_heure_entree < v_date_fin
+                v_presence.date_heure_entree < date_fin
                 ) 
                     THEN
-                    dbms_output.put_line('Présence de : ' || v_presence.nom || ' ⟺ du département' || 
+                    dbms_output.put_line('Présence de ⟺' || v_presence.nom || ' ⟺ du département' || 
                     v_presence.nom_departement || ' ⟺ pour le ' || v_presence.date_heure_entree);
             ELSE
                 dbms_output.put_line('Il n''existe aucune présence entre ces deux dates pour cet enregistrement!..');
@@ -315,6 +310,49 @@ BEGIN
 END p_augmenter_salaire;
 -- Execution de la procedure (en commentaire pour la remise, mais c'est là au besoin)
 -- EXECUTE p_augmenter_salaire;
+------------------------------------------------------------------------------------------------------------------------
+-- Id #10 --> Priorité : Très important
+--  Développer une application affichant la liste des employés et des visiteurs qui étaient à l’usine entre deux dates
+--  et qui ont visité un département spécifique.
+------------------------------------------------------------------------------------------------------------------------
+-- Procedure pour l'application Java☕️
+create or replace FUNCTION f_presence_departement (date_debut IN DATE, date_fin IN DATE, departement IN VARCHAR2) 
+-- 3 paramètres explicites 
+RETURN VARCHAR2
+AS 
+-- Déclaration du curseur 
+CURSOR c_presence_departement IS 
+SELECT es.date_heure_entree, e.nom_departement, p.nom -- le contenu du curseur en mémoire
+    FROM 
+        personne p
+        INNER JOIN entree_sortie es 
+        ON (p.id_personne = es.id_personne)
+        INNER JOIN employe e 
+        ON (p.id_personne = e.id_personne);
+-- déclarations des variables
+v_presence_departement c_presence_departement%ROWTYPE;
+BEGIN
+    OPEN c_presence_departement;
+        LOOP
+         EXIT WHEN c_presence_departement%NOTFOUND; -- sort de la boucle si les données ne sont pas trouvés
+            FETCH c_presence_departement INTO v_presence_departement; -- parcours et met les résultats dans les variables à chaque tours de boucle
+            -- Imprime le contenue des variables sur une ligne
+            IF (
+                v_presence_departement.date_heure_entree > date_debut  
+                AND -- bornes exclusives
+                v_presence_departement.date_heure_entree < date_fin
+                AND 
+                v_presence_departement.nom_departement = departement
+                ) 
+                    THEN
+                    RETURN ('Présence de ⟺ ' || v_presence_departement.nom || ' ⟺ du département' || 
+                    v_presence_departement.nom_departement || ' ⟺ pour le ' || v_presence_departement.date_heure_entree);
+            ELSE
+                dbms_output.put_line('Il n''existe aucune présence entre ces deux dates pour cet enregistrement!..');
+            END IF;
+        END LOOP;
+    CLOSE c_presence_departement;
+END f_presence_departement;
 ------------------------------------------------------------------------------------------------------------------------
 --xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--
 ------------------------------------------------------------------------------------------------------------------------

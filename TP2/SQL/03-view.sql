@@ -8,6 +8,7 @@
 --  Code permanent : DUMM21059400 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 -- Dépôt GIT du TP au besoin --> https://gitlab.info.uqam.ca/montpetit.carl/basededonnees.git
+-- Pour l'application Java voir ⟹ TP2/APP/src/OracleCon.java ☆
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--
 ------------------------------------------------------------------------------------------------------------------------
 -- CE FICHIER INCLUT LA CRÉATION DES VUES --
@@ -64,13 +65,13 @@ ON (e.id_personne = p.id_personne)
 WHERE NOT EXISTS (
     SELECT null
     FROM vaccination v
-    WHERE (e.id_personne = v.id_personne) -- assure //TODO
+    WHERE (e.id_personne = v.id_personne) 
 )
 OR (v.nom_vaccin = 'Moderna') -- ou le vaccin est Moderna
 AND NOT EXISTS (
     SELECT null
     FROM liste_vaccine lv
-    WHERE (e.id_personne = lv.id_personne) -- assure //TODO
+    WHERE (e.id_personne = lv.id_personne) 
 )
 ORDER BY e.id_personne;
 
@@ -133,7 +134,7 @@ ON (e.nom_departement = d.nom_departement)
 WHERE NOT EXISTS (
     SELECT NULL
     FROM vaccination v
-    WHERE (e.id_personne = v.id_personne) -- assure //TODO
+    WHERE (e.id_personne = v.id_personne)
 )
 AND (d.pourcentage_risque > 80) -- et le pourcentage de risque est supérieur à 80 (exclusivement)
 ORDER BY d.nom_departement;
