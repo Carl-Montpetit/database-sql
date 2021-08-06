@@ -147,7 +147,7 @@ BEGIN
     FROM entree_sortie
     WHERE (id_personne = :NEW.id_personne AND
            (:NEW.date_heure_entree BETWEEN :NEW.date_heure_entree - 5 AND :NEW.date_heure_entree));
-    IF (v_nombre >= 3 AND :NEW.temperature >= 33) THEN
+    IF (v_nombre >= 3 AND :NEW.temperature >= 39) THEN
         INSERT INTO alerte
         VALUES (:NEW.date_heure_entree, :NEW.id_personne);
         dbms_output.put_line('Un enregistrement a été ajouté à la table alterte!..');
