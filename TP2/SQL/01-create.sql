@@ -19,7 +19,8 @@ SET AUTOCOMMIT ON;
 SET SERVEROUTPUT ON;
 -- Changement de format des dates --> Par défaut c'est DD-MON-YY dans Oracle SQL --
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'; -- Pour jj-mm-aaaa
-ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH24:MI:SS'; -- idem, mais pour le timestamp 
+ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'DD-MM-YYYY HH24:MI:SS';
+-- idem, mais pour le timestamp
 ------------------------------------------------------------------------------------------------------------------------
 -- On efface les tables et les vues  s'ils existent préalablement --
 ------------------------------------------------------------------------------------------------------------------------
@@ -75,121 +76,132 @@ CREATE USER administrateur IDENTIFIED BY '1234';
 -- Id #15 --> Priorité : Important
 -- Le système doit s’assurer que les codes postaux respectent bien le format suivant : A#A #A#
 ------------------------------------------------------------------------------------------------------------------------
-CREATE  TABLE  personne (
-    id_personne         INTEGER NOT NULL ,
-    nom                 VARCHAR(45) NOT NULL ,
-    adresse_numero      VARCHAR(45) NULL ,
-    rue                 VARCHAR(45) NOT NULL ,
-    ville               VARCHAR(45) NOT NULL ,
-    code_postal         VARCHAR(45) NOT NULL CHECK (regexp_like (code_postal, '^([A-Z]\d[A-Z]\s\d[A-Z]\d)$')) ,
+CREATE TABLE personne
+(
+    id_personne    INTEGER     NOT NULL,
+    nom            VARCHAR(45) NOT NULL,
+    adresse_numero VARCHAR(45) NULL,
+    rue            VARCHAR(45) NOT NULL,
+    ville          VARCHAR(45) NOT NULL,
+    code_postal    VARCHAR(45) NOT NULL CHECK (regexp_like(code_postal, '^([A-Z]\d[A-Z]\s\d[A-Z]\d)$')),
     -- Regex qui force l'utilisateur d'entrée un format de code postal : A#A #A# (incluant l'espace blanc)
 
     PRIMARY KEY (id_personne)
 );
 
-CREATE TABLE Departement (
-    nom_departement     VARCHAR(45) NOT NULL ,
-    pourcentage_risque  NUMERIC(5, 2) NOT NULL ,
+CREATE TABLE Departement
+(
+    nom_departement    VARCHAR(45)   NOT NULL,
+    pourcentage_risque NUMERIC(5, 2) NOT NULL,
 
     PRIMARY KEY (nom_departement)
 );
 
-CREATE TABLE Employe (
-    id_personne         INTEGER NOT NULL ,
-    date_naissance      DATE NOT NULL ,
-    poste               VARCHAR(45) NOT NULL ,
-    salaire             NUMERIC(7, 2) NOT NULL ,
-    nom_departement     VARCHAR(45) NOT NULL ,
-
-    PRIMARY KEY (id_personne),
-    FOREIGN KEY (id_personne) REFERENCES personne(id_personne)
-     ON DELETE CASCADE,
-    FOREIGN KEY (nom_departement) REFERENCES Departement (nom_departement)
-     ON DELETE CASCADE
-);
-
-CREATE TABLE Visiteur (
-    id_personne         INTEGER NOT NULL ,
-    nom_entreprise      VARCHAR(45) NOT NULL ,
+CREATE TABLE Employe
+(
+    id_personne     INTEGER       NOT NULL,
+    date_naissance  DATE          NOT NULL,
+    poste           VARCHAR(45)   NOT NULL,
+    salaire         NUMERIC(7, 2) NOT NULL,
+    nom_departement VARCHAR(45)   NOT NULL,
 
     PRIMARY KEY (id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (nom_departement) REFERENCES Departement (nom_departement)
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Alerte (
-    date_actuelle       DATE NOT NULL ,
-    id_personne         INTEGER NOT NULL ,
+CREATE TABLE Visiteur
+(
+    id_personne    INTEGER     NOT NULL,
+    nom_entreprise VARCHAR(45) NOT NULL,
+
+    PRIMARY KEY (id_personne),
+    FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Alerte
+(
+    date_actuelle DATE    NOT NULL,
+    id_personne   INTEGER NOT NULL,
 
     PRIMARY KEY (date_actuelle, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Entree_Sortie (
-    date_heure_entree   TIMESTAMP NOT NULL ,
-    id_personne         INTEGER NOT NULL ,
-    date_heure_sortie   TIMESTAMP NULL ,
-    temperature         NUMERIC(5, 2) NOT NULL ,
-    symptomes           VARCHAR(45) null,
-    risque_voisinage    VARCHAR(45) NOT NULL ,
+CREATE TABLE Entree_Sortie
+(
+    date_heure_entree TIMESTAMP     NOT NULL,
+    id_personne       INTEGER       NOT NULL,
+    date_heure_sortie TIMESTAMP     NULL,
+    temperature       NUMERIC(5, 2) NOT NULL,
+    symptomes         VARCHAR(45)   null,
+    risque_voisinage  VARCHAR(45)   NOT NULL,
 
     PRIMARY KEY (date_heure_entree, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Quarantaine (
-    id_quarantaine      INTEGER NOT NULL ,
-    date_debut          DATE NOT NULL ,
-    date_fin            DATE NOT NULL ,
-    id_personne         INTEGER NOT NULL ,
+CREATE TABLE Quarantaine
+(
+    id_quarantaine INTEGER NOT NULL,
+    date_debut     DATE    NOT NULL,
+    date_fin       DATE    NOT NULL,
+    id_personne    INTEGER NOT NULL,
 
     PRIMARY KEY (id_quarantaine),
     FOREIGN KEY (id_personne) REFERENCES Employe (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Rencontre (
-    id_visiteur         INTEGER NOT NULL ,
-    id_employe          INTEGER NOT NULL ,
-    date_rencontre      TIMESTAMP NOT NULL ,
+CREATE TABLE Rencontre
+(
+    id_visiteur    INTEGER   NOT NULL,
+    id_employe     INTEGER   NOT NULL,
+    date_rencontre TIMESTAMP NOT NULL,
 
     PRIMARY KEY (id_visiteur, id_employe, date_rencontre),
     FOREIGN KEY (id_visiteur) REFERENCES Visiteur (id_personne)
-     ON DELETE CASCADE,
+        ON DELETE CASCADE,
     FOREIGN KEY (id_employe) REFERENCES Employe (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Risque (
-    date_actuelle       DATE NOT NULL ,
-    id_personne         INTEGER NOT NULL ,
+CREATE TABLE Risque
+(
+    date_actuelle DATE    NOT NULL,
+    id_personne   INTEGER NOT NULL,
 
     PRIMARY KEY (date_actuelle, id_personne),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 
-CREATE TABLE Vaccin (
-    nom_vaccin          VARCHAR(45) NOT NULL ,
-    age_min             INTEGER NOT NULL ,
-    date_autorisatio    DATE NOT NULL ,
-    effets_secondaires  VARCHAR(500) NOT NULL ,
+CREATE TABLE Vaccin
+(
+    nom_vaccin         VARCHAR(45)  NOT NULL,
+    age_min            INTEGER      NOT NULL,
+    date_autorisatio   DATE         NOT NULL,
+    effets_secondaires VARCHAR(500) NOT NULL,
 
     PRIMARY KEY (nom_vaccin)
 );
 
-CREATE TABLE vaccination (
-    id_personne         INTEGER NOT NULL ,
-    nom_vaccin          VARCHAR(45) NOT NULL ,
-    date_vaccination    DATE NOT NULL ,
+CREATE TABLE vaccination
+(
+    id_personne      INTEGER     NOT NULL,
+    nom_vaccin       VARCHAR(45) NOT NULL,
+    date_vaccination DATE        NOT NULL,
 
     PRIMARY KEY (id_personne, nom_vaccin, date_vaccination),
     FOREIGN KEY (id_personne) REFERENCES personne (id_personne)
-     ON DELETE CASCADE,
+        ON DELETE CASCADE,
     FOREIGN KEY (nom_vaccin) REFERENCES Vaccin (nom_vaccin)
-     ON DELETE CASCADE
+        ON DELETE CASCADE
 );
 ------------------------------------------------------------------------------------------------------------------------
 -- Permissions pour les utilisateurs --
@@ -204,12 +216,12 @@ GRANT INSERT, UPDATE, DELETE, SELECT ON vaccination TO directeur;
 ------------------------------------------------------------------------------------------------------------------------
 -- Employés
 GRANT INSERT, SELECT ON vaccination TO employe;
-GRANT INSERT, SELECT ON vaccin TO employe; 
+GRANT INSERT, SELECT ON vaccin TO employe;
 GRANT INSERT, SELECT ON Entree_Sortie TO employe;
 ------------------------------------------------------------------------------------------------------------------------
 -- Visiteurs
 GRANT INSERT, SELECT ON vaccination TO visiteur;
-GRANT INSERT, SELECT ON vaccin TO visiteur; 
+GRANT INSERT, SELECT ON vaccin TO visiteur;
 GRANT INSERT, SELECT ON Entree_Sortie TO visiteur;
 ------------------------------------------------------------------------------------------------------------------------
 -- Administrateur (pour ∀ les TABLES)
