@@ -31,7 +31,7 @@ class OracleCon {
         // ✦Constantes utiles✦
         //************************************************************************************************************//
         // Informations
-        final String nomUtilisateur = "nomUtilisateur"; // FIXME ➬ mettre son nom utilisateur Oracle ☞ Uqam︎ ️️︎⚠️
+        final String nomUtilisateur = "codeMsUqam"; // FIXME ➬ mettre son nom utilisateur Oracle ☞ code MS ☞ Uqam︎ ️️︎⚠️
         final String motDePasse = "motDePasseOracleUqam"; // FIXME ➬ mettre son mot de passe Oracle ☞ Uqam︎ ️️︎⚠️
         final String nomServeur = "zeta2.labunix.uqam.ca";
         final String URLbaseDeDonnees = "jdbc:oracle:thin:@zeta2.labunix.uqam.ca:1521:baclab";
